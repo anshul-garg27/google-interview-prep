@@ -1,0 +1,21 @@
+# Project source code (proprietary)
+beat/
+stir/
+coffee/
+event-grpc/
+fake_follower_analysis/
+saas-gateway/
+
+# OS files
+.DS_Store
+*.swp
+*.swo
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Misc
+*.log
+*.tmp
