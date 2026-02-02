@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Active sidebar item */
+.sidebar-active {
+  @apply bg-blue-50 text-blue-600 border-l-4 border-blue-600 dark:bg-blue-900/30 dark:text-blue-400;
+}
+
+/* Code block styling */
+pre {
+  border-radius: 0.5rem !important;
+  margin: 1rem 0 !important;
+}
+
+/* Table styling for markdown */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.prose th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+.dark .prose th {
+  background-color: #374151;
+}
+
+.prose td, .prose th {
+  border: 1px solid #d1d5db;
+  padding: 0.5rem 1rem;
+}
+
+.dark .prose td, .dark .prose th {
+  border-color: #4b5563;
+}
+
+/* Animation for sidebar */
+.sidebar-enter {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Search highlight */
+.search-highlight {
+  background-color: #fef08a;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+.dark .search-highlight {
+  background-color: #854d0e;
+}
+
+/* Mobile menu overlay */
+.menu-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
