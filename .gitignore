@@ -19,3 +19,4 @@ saas-gateway/
 # Misc
 *.log
 *.tmp
+.wibey-tasks/
