@@ -31,6 +31,7 @@ const documents = [
   { id: 'INTERVIEW_PREP_PART3', title: 'Walmart - Detailed Prep (Bullets 6-12)', category: 'walmart-detailed', file: 'INTERVIEW-PREP-PART3-NEW-BULLETS-6-12.md' },
 
   // Walmart Technical
+  { id: 'WALMART_PROJECTS_DEEP_DIVE', title: '🚀 Walmart - Projects Deep Dive (Ultra Detailed)', category: 'walmart-technical', file: 'WALMART_PROJECTS_DEEP_DIVE.md', badge: 'Ultra Deep' },
   { id: 'WALMART_RESUME_TO_CODE_MAPPING', title: 'Walmart - Resume ↔ Code Mapping', category: 'walmart-technical', file: 'WALMART_RESUME_TO_CODE_MAPPING.md' },
   { id: 'WALMART_SYSTEM_ARCHITECTURE', title: 'Walmart - System Architecture', category: 'walmart-technical', file: 'WALMART_SYSTEM_ARCHITECTURE.md' },
   { id: 'WALMART_SYSTEM_DESIGN_EXAMPLES', title: 'Walmart - System Design Examples', category: 'walmart-technical', file: 'WALMART_SYSTEM_DESIGN_EXAMPLES.md' },
@@ -49,6 +50,7 @@ const documents = [
   { id: 'ANALYSIS_06_INVENTORY_STATUS', title: 'Walmart - Inventory Status Service', category: 'walmart-microservices', file: '06-INVENTORY-STATUS-SRV-ANALYSIS.md' },
 
   // Google Technical (Previous Work)
+  { id: 'PREVIOUS_WORK_PROJECTS_DEEP_DIVE', title: '🚀 Previous - Projects Deep Dive (Ultra Detailed)', category: 'google-technical', file: 'PREVIOUS_WORK_PROJECTS_DEEP_DIVE.md', badge: 'Ultra Deep' },
   { id: 'RESUME_TO_CODE_MAPPING', title: 'Previous - Resume ↔ Code Mapping', category: 'google-technical', file: 'RESUME_TO_CODE_MAPPING.md' },
   { id: 'SYSTEM_INTERCONNECTIVITY', title: 'Previous - System Architecture', category: 'google-technical', file: 'SYSTEM_INTERCONNECTIVITY.md' },
   { id: 'BEAT_ADVANCED_FEATURES', title: 'Previous - ML/Stats Features', category: 'google-technical', file: 'BEAT_ADVANCED_FEATURES.md' },
