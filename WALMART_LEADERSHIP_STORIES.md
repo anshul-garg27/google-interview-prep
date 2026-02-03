@@ -433,7 +433,8 @@ Services I Fixed (Created PRs):
 
 PR Review Comments (Teaching):
 "This CompletableFuture uses common pool. For I/O operations (external API calls),
-use a dedicated thread pool to avoid exhausting common pool.
+use a dedicated thread pool to avoid exhausting common pool."
+```
 
 Example:
 ```java
@@ -444,7 +445,8 @@ CompletableFuture.supplyAsync(() -> apiClient.call());
 CompletableFuture.supplyAsync(() -> apiClient.call(), dedicatedExecutor);
 ```
 
-See team wiki: CompletableFuture Best Practices"
+```
+See team wiki: CompletableFuture Best Practices
 
 Result: 4 services fixed, 0 pushback (engineers understood WHY)
 ```
