@@ -66,8 +66,7 @@ const output = documents.map(doc => {
 
   try {
     content = fs.readFileSync(filePath, 'utf8');
-    // Escape backticks and ${} for template literals
-    content = content.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${');
+    // JSON.stringify handles escaping, no manual escaping needed
   } catch (e) {
     console.error(`Could not read ${doc.file}:`, e.message);
     content = `# ${doc.title}\n\nContent not available.`;
