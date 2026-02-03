@@ -239,15 +239,15 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center justify-between px-4 lg:px-6 h-16">
           {/* Left side */}
           <div className="flex items-center gap-4">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
               {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -263,10 +263,10 @@ function App() {
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" style={{animationDelay: '0.6s'}}></div>
               </div>
               <div>
-                <h1 className="text-base font-mono font-semibold text-neutral-900 dark:text-white tracking-tight">
+                <h1 className="text-base font-mono font-semibold text-gray-900 dark:text-white tracking-tight">
                   INTERVIEW.PREP
                 </h1>
-                <p className="text-[10px] font-mono text-neutral-500 dark:text-neutral-400 -mt-0.5">
+                <p className="text-[10px] font-mono text-gray-500 dark:text-gray-400 -mt-0.5">
                   Google L4 • {documents.length} docs
                 </p>
               </div>
@@ -277,20 +277,20 @@ function App() {
           <div className="flex items-center gap-1">
             <button
               onClick={() => setShowSearch(!showSearch)}
-              className="p-2.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              className="p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               title="Search (⌘K)"
             >
-              <Search size={18} className="text-neutral-600 dark:text-neutral-400" />
+              <Search size={18} className="text-gray-600 dark:text-gray-400" />
             </button>
 
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              className="p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
               {darkMode ? (
                 <Sun size={18} className="text-amber-500" />
               ) : (
-                <Moon size={18} className="text-neutral-600" />
+                <Moon size={18} className="text-gray-600" />
               )}
             </button>
 
@@ -298,31 +298,31 @@ function App() {
               href="https://github.com/anshul-garg27/google-interview-prep"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              className="p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
-              <Github size={18} className="text-neutral-600 dark:text-neutral-400" />
+              <Github size={18} className="text-gray-600 dark:text-gray-400" />
             </a>
           </div>
         </div>
 
         {/* Enhanced Search bar */}
         {showSearch && (
-          <div className="px-4 lg:px-6 pb-4 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl">
+          <div className="px-4 lg:px-6 pb-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl">
             <div className="max-w-2xl mx-auto">
               <div className="relative">
-                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400" />
+                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Search across 32 documents..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 font-mono text-sm transition-all"
+                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 font-mono text-sm transition-all"
                   autoFocus
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                   >
                     <X size={16} />
                   </button>
@@ -331,7 +331,7 @@ function App() {
 
               {/* Enhanced Search results */}
               {searchResults.length > 0 && (
-                <div className="mt-3 bg-white dark:bg-neutral-900 rounded-xl shadow-2xl border border-neutral-200 dark:border-neutral-800 max-h-96 overflow-y-auto">
+                <div className="mt-3 bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 max-h-96 overflow-y-auto">
                   {searchResults.map((result, index) => {
                     const meta = getDocumentMetadata(result.item)
                     const context = getSearchContext(result.item.content, result.matches)
@@ -339,12 +339,12 @@ function App() {
                       <button
                         key={result.item.id}
                         onClick={() => handleDocSelect(result.item.id)}
-                        className={`w-full text-left px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors ${
-                          index !== searchResults.length - 1 ? 'border-b border-neutral-100 dark:border-neutral-800' : ''
+                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${
+                          index !== searchResults.length - 1 ? 'border-b border-gray-100 dark:border-gray-800' : ''
                         }`}
                       >
                         <div className="flex items-start justify-between gap-3 mb-1">
-                          <div className="font-semibold text-neutral-900 dark:text-white text-sm">
+                          <div className="font-semibold text-gray-900 dark:text-white text-sm">
                             {result.item.title}
                           </div>
                           {result.item.badge && (
@@ -353,13 +353,13 @@ function App() {
                             </span>
                           )}
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 mb-1">
+                        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-1">
                           <span className="font-mono">{meta.company}</span>
                           <span>•</span>
                           <span>{meta.readingTime} min read</span>
                         </div>
                         {context && (
-                          <p className="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-2 font-mono">
+                          <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 font-mono">
                             {context}
                           </p>
                         )}
@@ -370,7 +370,7 @@ function App() {
               )}
 
               {searchQuery.length > 2 && searchResults.length === 0 && (
-                <div className="mt-3 text-center py-8 text-neutral-500 dark:text-neutral-400 text-sm font-mono">
+                <div className="mt-3 text-center py-8 text-gray-500 dark:text-gray-400 text-sm font-mono">
                   No results found for "{searchQuery}"
                 </div>
               )}
@@ -389,7 +389,7 @@ function App() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-16 left-0 z-40 w-80 h-[calc(100vh-4rem)] bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 overflow-y-auto transition-transform duration-300 ${
+        className={`fixed top-16 left-0 z-40 w-80 h-[calc(100vh-4rem)] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 overflow-y-auto transition-transform duration-300 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0`}
       >
@@ -399,7 +399,7 @@ function App() {
               {/* Category header */}
               <button
                 onClick={() => toggleCategory(category.id)}
-                className="w-full flex items-center justify-between px-3 py-2 text-xs font-mono font-bold text-neutral-900 dark:text-white uppercase tracking-wider hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2 text-xs font-mono font-bold text-gray-900 dark:text-white uppercase tracking-wider hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
               >
                 <div className="flex items-center gap-2">
                   <category.icon size={14} />
@@ -425,7 +425,7 @@ function App() {
                             className={`w-full text-left px-3 py-2.5 rounded-lg text-xs transition-all ${
                               activeDoc === doc.id
                                 ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 font-semibold border-l-2 border-blue-500'
-                                : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
+                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50'
                             }`}
                           >
                             <div className="flex items-start justify-between gap-2">
@@ -449,12 +449,12 @@ function App() {
                         <div key={subcat.id}>
                           <button
                             onClick={() => toggleCategory(subcat.id)}
-                            className="w-full flex items-center justify-between px-3 py-1.5 text-[10px] font-mono font-semibold text-neutral-600 dark:text-neutral-400 uppercase tracking-wider hover:text-neutral-900 dark:hover:text-white transition-colors"
+                            className="w-full flex items-center justify-between px-3 py-1.5 text-[10px] font-mono font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider hover:text-gray-900 dark:hover:text-white transition-colors"
                           >
                             <div className="flex items-center gap-2">
                               <subcat.icon size={12} />
                               {subcat.name}
-                              <span className="text-[9px] text-neutral-400">({subcat.docs.length})</span>
+                              <span className="text-[9px] text-gray-400">({subcat.docs.length})</span>
                             </div>
                             <ChevronDown
                               size={12}
@@ -473,7 +473,7 @@ function App() {
                                     className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all ${
                                       activeDoc === doc.id
                                         ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 font-semibold border-l-2 border-blue-500'
-                                        : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
+                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50'
                                     }`}
                                   >
                                     <div className="flex items-start justify-between gap-2">
@@ -500,14 +500,14 @@ function App() {
         </nav>
 
         {/* Quick stats */}
-        <div className="p-4 border-t border-neutral-200 dark:border-neutral-800">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800">
           <div className="space-y-2">
             <div className="flex items-center justify-between px-3 py-2 bg-blue-50 dark:bg-blue-950/30 rounded-lg">
-              <span className="text-xs font-mono text-neutral-600 dark:text-neutral-400">Total Docs</span>
+              <span className="text-xs font-mono text-gray-600 dark:text-gray-400">Total Docs</span>
               <span className="text-lg font-bold font-mono text-blue-600 dark:text-blue-400">{documents.length}</span>
             </div>
             <div className="flex items-center justify-between px-3 py-2 bg-emerald-50 dark:bg-emerald-950/30 rounded-lg">
-              <span className="text-xs font-mono text-neutral-600 dark:text-neutral-400">Questions</span>
+              <span className="text-xs font-mono text-gray-600 dark:text-gray-400">Questions</span>
               <span className="text-lg font-bold font-mono text-emerald-600 dark:text-emerald-400">140+</span>
             </div>
           </div>
@@ -521,12 +521,12 @@ function App() {
           <div className="max-w-6xl mx-auto px-6 py-12">
             {/* Hero section */}
             <div className="mb-12">
-              <h1 className="text-5xl font-bold font-mono text-neutral-900 dark:text-white mb-4 tracking-tight">
+              <h1 className="text-5xl font-bold font-mono text-gray-900 dark:text-white mb-4 tracking-tight">
                 Google L4 Interview
                 <br />
                 <span className="text-blue-600 dark:text-blue-400">Preparation Hub</span>
               </h1>
-              <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl leading-relaxed">
+              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed">
                 Comprehensive interview materials covering <span className="font-mono font-semibold">6 microservices</span>,
                 {' '}<span className="font-mono font-semibold">140+ questions</span>, and
                 {' '}<span className="font-mono font-semibold">2 companies</span> worth of experience.
@@ -535,7 +535,7 @@ function App() {
 
             {/* Quick start paths */}
             <div className="mb-16">
-              <h2 className="text-sm font-mono font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-6">
+              <h2 className="text-sm font-mono font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-6">
                 Quick Start Paths
               </h2>
               <div className="grid md:grid-cols-3 gap-4">
@@ -545,21 +545,21 @@ function App() {
                     <button
                       key={path.id}
                       onClick={() => handleDocSelect(path.docs[0])}
-                      className="group relative text-left p-6 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-800 hover:border-blue-500 dark:hover:border-blue-500 transition-all hover:shadow-xl"
+                      className="group relative text-left p-6 rounded-2xl bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 transition-all hover:shadow-xl"
                     >
                       <div className="flex items-start justify-between mb-4">
                         <div className={`p-3 rounded-xl bg-${path.color}-100 dark:bg-${path.color}-950/30`}>
                           <PathIcon size={24} className={`text-${path.color}-600 dark:text-${path.color}-400`} />
                         </div>
-                        <ArrowRight size={20} className="text-neutral-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+                        <ArrowRight size={20} className="text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
                       </div>
-                      <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-2">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
                         {path.name}
                       </h3>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
                         {path.description}
                       </p>
-                      <div className="flex items-center gap-2 text-xs font-mono text-neutral-500">
+                      <div className="flex items-center gap-2 text-xs font-mono text-gray-500">
                         <FileText size={12} />
                         <span>{path.docs.length} documents</span>
                       </div>
@@ -578,26 +578,26 @@ function App() {
                     <Building2 size={20} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold font-mono text-neutral-900 dark:text-white">Walmart</h3>
-                    <p className="text-xs font-mono text-neutral-600 dark:text-neutral-400">Current Company • 2024-Present</p>
+                    <h3 className="text-xl font-bold font-mono text-gray-900 dark:text-white">Walmart</h3>
+                    <p className="text-xs font-mono text-gray-600 dark:text-gray-400">Current Company • 2024-Present</p>
                   </div>
                 </div>
                 <div className="space-y-2 mb-4">
-                  <p className="text-sm text-neutral-700 dark:text-neutral-300">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
                     6 microservices • Spring Boot 3 • Kafka • PostgreSQL
                   </p>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     Multi-region inventory systems processing 2M+ events/day
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 rounded-lg bg-white/50 dark:bg-neutral-900/50">
+                  <div className="p-3 rounded-lg bg-white/50 dark:bg-gray-900/50">
                     <div className="text-2xl font-bold font-mono text-blue-600 dark:text-blue-400">18</div>
-                    <div className="text-xs font-mono text-neutral-600 dark:text-neutral-400">Documents</div>
+                    <div className="text-xs font-mono text-gray-600 dark:text-gray-400">Documents</div>
                   </div>
-                  <div className="p-3 rounded-lg bg-white/50 dark:bg-neutral-900/50">
+                  <div className="p-3 rounded-lg bg-white/50 dark:bg-gray-900/50">
                     <div className="text-2xl font-bold font-mono text-blue-600 dark:text-blue-400">12</div>
-                    <div className="text-xs font-mono text-neutral-600 dark:text-neutral-400">Bullets</div>
+                    <div className="text-xs font-mono text-gray-600 dark:text-gray-400">Bullets</div>
                   </div>
                 </div>
               </div>
@@ -609,26 +609,26 @@ function App() {
                     <Brain size={20} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold font-mono text-neutral-900 dark:text-white">Good Creator Co</h3>
-                    <p className="text-xs font-mono text-neutral-600 dark:text-neutral-400">Previous Company • 2021-2024</p>
+                    <h3 className="text-xl font-bold font-mono text-gray-900 dark:text-white">Good Creator Co</h3>
+                    <p className="text-xs font-mono text-gray-600 dark:text-gray-400">Previous Company • 2021-2024</p>
                   </div>
                 </div>
                 <div className="space-y-2 mb-4">
-                  <p className="text-sm text-neutral-700 dark:text-neutral-300">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
                     6 projects • Python • Go • ClickHouse • ML
                   </p>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     Distributed systems processing 10K+ events/sec
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 rounded-lg bg-white/50 dark:bg-neutral-900/50">
+                  <div className="p-3 rounded-lg bg-white/50 dark:bg-gray-900/50">
                     <div className="text-2xl font-bold font-mono text-purple-600 dark:text-purple-400">14</div>
-                    <div className="text-xs font-mono text-neutral-600 dark:text-neutral-400">Documents</div>
+                    <div className="text-xs font-mono text-gray-600 dark:text-gray-400">Documents</div>
                   </div>
-                  <div className="p-3 rounded-lg bg-white/50 dark:bg-neutral-900/50">
+                  <div className="p-3 rounded-lg bg-white/50 dark:bg-gray-900/50">
                     <div className="text-2xl font-bold font-mono text-purple-600 dark:text-purple-400">6</div>
-                    <div className="text-xs font-mono text-neutral-600 dark:text-neutral-400">Projects</div>
+                    <div className="text-xs font-mono text-gray-600 dark:text-gray-400">Projects</div>
                   </div>
                 </div>
               </div>
@@ -644,12 +644,12 @@ function App() {
               ].map((stat) => {
                 const StatIcon = stat.icon
                 return (
-                  <div key={stat.label} className="p-4 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-                    <StatIcon size={20} className="text-neutral-400 mb-2" />
-                    <div className="text-3xl font-bold font-mono text-neutral-900 dark:text-white mb-1">
+                  <div key={stat.label} className="p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+                    <StatIcon size={20} className="text-gray-400 mb-2" />
+                    <div className="text-3xl font-bold font-mono text-gray-900 dark:text-white mb-1">
                       {stat.value}
                     </div>
-                    <div className="text-xs font-mono text-neutral-600 dark:text-neutral-400">
+                    <div className="text-xs font-mono text-gray-600 dark:text-gray-400">
                       {stat.label}
                     </div>
                   </div>
@@ -666,36 +666,36 @@ function App() {
                 {/* Document header */}
                 <div className="mb-8">
                   {/* Breadcrumb */}
-                  <div className="flex items-center gap-2 text-xs font-mono text-neutral-500 dark:text-neutral-400 mb-4">
+                  <div className="flex items-center gap-2 text-xs font-mono text-gray-500 dark:text-gray-400 mb-4">
                     <button
                       onClick={() => setActiveDoc(null)}
-                      className="hover:text-neutral-900 dark:hover:text-white transition-colors"
+                      className="hover:text-gray-900 dark:hover:text-white transition-colors"
                     >
                       Home
                     </button>
                     <ChevronRight size={12} />
                     <span>{currentDoc?.category}</span>
                     <ChevronRight size={12} />
-                    <span className="text-neutral-900 dark:text-white font-semibold">{currentDoc?.title}</span>
+                    <span className="text-gray-900 dark:text-white font-semibold">{currentDoc?.title}</span>
                   </div>
 
                   {/* Title */}
-                  <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4 leading-tight">
+                  <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
                     {currentDoc?.title}
                   </h1>
 
                   {/* Metadata */}
                   {metadata && (
                     <div className="flex flex-wrap items-center gap-4 text-sm">
-                      <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 font-mono">
+                      <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 font-mono">
                         <Building2 size={14} />
                         <span className="font-semibold">{metadata.company}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 font-mono">
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 font-mono">
                         <Clock size={14} />
                         <span>{metadata.readingTime} min read</span>
                       </div>
-                      <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 font-mono">
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 font-mono">
                         <FileText size={14} />
                         <span>{metadata.sections} sections</span>
                       </div>
@@ -723,7 +723,7 @@ function App() {
                 </div>
 
                 {/* Markdown content */}
-                <article className="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-neutral-200 dark:prose-h2:border-neutral-800 prose-h3:text-xl prose-h3:mt-8 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline prose-code:text-sm prose-code:bg-neutral-100 dark:prose-code:bg-neutral-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-pre:bg-neutral-900 dark:prose-pre:bg-neutral-950 prose-pre:border prose-pre:border-neutral-800">
+                <article className="prose prose-gray dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-200 dark:prose-h2:border-gray-800 prose-h3:text-xl prose-h3:mt-8 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline prose-code:text-sm prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-pre:bg-gray-900 dark:prose-pre:bg-gray-950 prose-pre:border prose-pre:border-gray-800">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{
@@ -751,7 +751,7 @@ function App() {
                       },
                       table({ children }) {
                         return (
-                          <div className="overflow-x-auto my-6 rounded-lg border border-neutral-200 dark:border-neutral-800">
+                          <div className="overflow-x-auto my-6 rounded-lg border border-gray-200 dark:border-gray-800">
                             <table className="min-w-full">{children}</table>
                           </div>
                         )
@@ -771,7 +771,7 @@ function App() {
                 </article>
 
                 {/* Navigation footer */}
-                <div className="mt-16 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+                <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
                   <div className="flex items-center justify-between">
                     {(() => {
                       const allDocs = documents
@@ -784,12 +784,12 @@ function App() {
                           {prevDoc ? (
                             <button
                               onClick={() => handleDocSelect(prevDoc.id)}
-                              className="group flex items-center gap-3 p-4 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+                              className="group flex items-center gap-3 p-4 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
                             >
-                              <ChevronRight size={20} className="rotate-180 text-neutral-400 group-hover:text-blue-500 transition-colors" />
+                              <ChevronRight size={20} className="rotate-180 text-gray-400 group-hover:text-blue-500 transition-colors" />
                               <div className="text-left">
-                                <div className="text-xs font-mono text-neutral-500 dark:text-neutral-400 mb-1">Previous</div>
-                                <div className="text-sm font-semibold text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                <div className="text-xs font-mono text-gray-500 dark:text-gray-400 mb-1">Previous</div>
+                                <div className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                   {prevDoc.title}
                                 </div>
                               </div>
@@ -798,15 +798,15 @@ function App() {
                           {nextDoc ? (
                             <button
                               onClick={() => handleDocSelect(nextDoc.id)}
-                              className="group flex items-center gap-3 p-4 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+                              className="group flex items-center gap-3 p-4 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
                             >
                               <div className="text-right">
-                                <div className="text-xs font-mono text-neutral-500 dark:text-neutral-400 mb-1">Next</div>
-                                <div className="text-sm font-semibold text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                <div className="text-xs font-mono text-gray-500 dark:text-gray-400 mb-1">Next</div>
+                                <div className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                   {nextDoc.title}
                                 </div>
                               </div>
-                              <ChevronRight size={20} className="text-neutral-400 group-hover:text-blue-500 transition-colors" />
+                              <ChevronRight size={20} className="text-gray-400 group-hover:text-blue-500 transition-colors" />
                             </button>
                           ) : <div />}
                         </>
@@ -823,7 +823,7 @@ function App() {
                 <div className="sticky top-20 p-6">
                   <button
                     onClick={() => setTocExpanded(!tocExpanded)}
-                    className="flex items-center justify-between w-full mb-4 text-xs font-mono font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider hover:text-neutral-900 dark:hover:text-white transition-colors"
+                    className="flex items-center justify-between w-full mb-4 text-xs font-mono font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider hover:text-gray-900 dark:hover:text-white transition-colors"
                   >
                     <span>On This Page</span>
                     <ChevronDown
@@ -839,8 +839,8 @@ function App() {
                           href={`#${heading.id}`}
                           className={`block text-xs hover:text-blue-600 dark:hover:text-blue-400 transition-colors ${
                             heading.level === 2
-                              ? 'font-semibold text-neutral-900 dark:text-white'
-                              : 'pl-3 text-neutral-600 dark:text-neutral-400'
+                              ? 'font-semibold text-gray-900 dark:text-white'
+                              : 'pl-3 text-gray-600 dark:text-gray-400'
                           }`}
                           onClick={(e) => {
                             e.preventDefault()
@@ -862,11 +862,11 @@ function App() {
         )}
 
         {/* Footer */}
-        <footer className="border-t border-neutral-200 dark:border-neutral-800 mt-16 py-8 text-center">
-          <p className="text-sm font-mono text-neutral-600 dark:text-neutral-400">
+        <footer className="border-t border-gray-200 dark:border-gray-800 mt-16 py-8 text-center">
+          <p className="text-sm font-mono text-gray-600 dark:text-gray-400">
             Comprehensive Google L4 Interview Preparation
           </p>
-          <p className="text-xs font-mono text-neutral-500 dark:text-neutral-500 mt-2">
+          <p className="text-xs font-mono text-gray-500 dark:text-gray-500 mt-2">
             {documents.length} documents • 140+ questions • 2 companies • Good luck! 🚀
           </p>
         </footer>

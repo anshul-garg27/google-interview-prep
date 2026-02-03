@@ -71,25 +71,25 @@ html {
 
 /* Enhanced prose styling */
 .prose {
-  --tw-prose-body: theme('colors.neutral.700');
-  --tw-prose-headings: theme('colors.neutral.900');
+  --tw-prose-body: theme('colors.gray.700');
+  --tw-prose-headings: theme('colors.gray.900');
   --tw-prose-links: theme('colors.blue.600');
-  --tw-prose-bold: theme('colors.neutral.900');
-  --tw-prose-code: theme('colors.neutral.900');
-  --tw-prose-pre-bg: theme('colors.neutral.900');
-  --tw-prose-th-borders: theme('colors.neutral.300');
-  --tw-prose-td-borders: theme('colors.neutral.200');
+  --tw-prose-bold: theme('colors.gray.900');
+  --tw-prose-code: theme('colors.gray.900');
+  --tw-prose-pre-bg: theme('colors.gray.900');
+  --tw-prose-th-borders: theme('colors.gray.300');
+  --tw-prose-td-borders: theme('colors.gray.200');
 }
 
 .dark .prose {
-  --tw-prose-body: theme('colors.neutral.300');
+  --tw-prose-body: theme('colors.gray.300');
   --tw-prose-headings: theme('colors.white');
   --tw-prose-links: theme('colors.blue.400');
   --tw-prose-bold: theme('colors.white');
-  --tw-prose-code: theme('colors.neutral.200');
-  --tw-prose-pre-bg: theme('colors.neutral.950');
-  --tw-prose-th-borders: theme('colors.neutral.700');
-  --tw-prose-td-borders: theme('colors.neutral.800');
+  --tw-prose-code: theme('colors.gray.200');
+  --tw-prose-pre-bg: theme('colors.gray.950');
+  --tw-prose-th-borders: theme('colors.gray.700');
+  --tw-prose-td-borders: theme('colors.gray.800');
 }
 
 /* Table enhancements */
@@ -109,11 +109,11 @@ html {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 0.75rem 1rem;
-  background: theme('colors.neutral.50');
+  background: theme('colors.gray.50');
 }
 
 .dark .prose th {
-  background: theme('colors.neutral.900');
+  background: theme('colors.gray.900');
 }
 
 .prose td {
@@ -122,20 +122,20 @@ html {
 }
 
 .prose tbody tr {
-  border-bottom: 1px solid theme('colors.neutral.200');
+  border-bottom: 1px solid theme('colors.gray.200');
   transition: background-color 0.15s ease;
 }
 
 .prose tbody tr:hover {
-  background: theme('colors.neutral.50');
+  background: theme('colors.gray.50');
 }
 
 .dark .prose tbody tr {
-  border-bottom: 1px solid theme('colors.neutral.800');
+  border-bottom: 1px solid theme('colors.gray.800');
 }
 
 .dark .prose tbody tr:hover {
-  background: theme('colors.neutral.900');
+  background: theme('colors.gray.900');
 }
 
 /* Code block refinements */
@@ -144,11 +144,11 @@ html {
   overflow-x: auto;
   font-size: 0.875rem;
   line-height: 1.7;
-  border: 1px solid theme('colors.neutral.800');
+  border: 1px solid theme('colors.gray.800');
 }
 
 .dark .prose pre {
-  border-color: theme('colors.neutral.800');
+  border-color: theme('colors.gray.800');
 }
 
 /* Inline code */
@@ -183,11 +183,11 @@ html {
 }
 
 .prose ul > li::marker {
-  color: theme('colors.neutral.400');
+  color: theme('colors.gray.400');
 }
 
 .dark .prose ul > li::marker {
-  color: theme('colors.neutral.600');
+  color: theme('colors.gray.600');
 }
 
 /* Blockquote */
@@ -196,14 +196,14 @@ html {
   border-left-color: theme('colors.blue.500');
   padding-left: 1.5rem;
   font-style: italic;
-  background: theme('colors.neutral.50');
+  background: theme('colors.gray.50');
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
 }
 
 .dark .prose blockquote {
   border-left-color: theme('colors.blue.500');
-  background: theme('colors.neutral-900');
+  background: theme('colors.gray-900');
 }
 
 /* Heading anchor links */
@@ -212,7 +212,7 @@ html {
   content: '#';
   position: absolute;
   left: -1.5rem;
-  color: theme('colors.neutral.400');
+  color: theme('colors.gray.400');
   font-weight: 400;
 }
 
@@ -269,7 +269,7 @@ html {
 /* Selection */
 ::selection {
   background: theme('colors.blue.200');
-  color: theme('colors.neutral.900');
+  color: theme('colors.gray.900');
 }
 
 .dark ::selection {
