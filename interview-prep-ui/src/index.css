@@ -144,11 +144,13 @@ html {
   overflow-x: auto;
   font-size: 0.875rem;
   line-height: 1.7;
-  border: 1px solid #1f2937;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb !important;
 }
 
 .dark .prose pre {
   border-color: #1f2937;
+  background: #1f2937 !important;
 }
 
 /* Inline code */

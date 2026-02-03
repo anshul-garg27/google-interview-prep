@@ -723,7 +723,7 @@ function App() {
                 </div>
 
                 {/* Markdown content */}
-                <article className="prose prose-gray dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-200 dark:prose-h2:border-gray-800 prose-h3:text-xl prose-h3:mt-8 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline prose-code:text-sm prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-pre:bg-gray-900 dark:prose-pre:bg-gray-950 prose-pre:border prose-pre:border-gray-800">
+                <article className="prose prose-gray dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-200 dark:prose-h2:border-gray-800 prose-h3:text-xl prose-h3:mt-8 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline prose-code:text-sm prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-pre:bg-gray-50 dark:prose-pre:bg-gray-950 prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-800">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{
@@ -737,7 +737,9 @@ function App() {
                             customStyle={{
                               margin: 0,
                               borderRadius: '0.75rem',
-                              fontSize: '0.875rem'
+                              fontSize: '0.875rem',
+                              background: darkMode ? '#1f2937' : '#f9fafb',
+                              padding: '1.25rem'
                             }}
                             {...props}
                           >
