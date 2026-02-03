@@ -937,7 +937,7 @@ function App() {
             {/* TOC Sidebar (Desktop only) */}
             {currentDocTOC.length > 3 && (
               <div className="hidden xl:block w-64 shrink-0">
-                <div className="sticky top-20 p-6">
+                <div className="sticky top-20 p-6 max-h-[calc(100vh-5rem)] overflow-y-auto">
                   <button
                     onClick={() => setTocExpanded(!tocExpanded)}
                     className="flex items-center justify-between w-full mb-4 text-xs font-mono font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -949,7 +949,7 @@ function App() {
                     />
                   </button>
                   {tocExpanded && (
-                    <nav className="space-y-2">
+                    <nav className="space-y-2 pr-2">
                       {currentDocTOC.map((heading, index) => (
                         <a
                           key={index}
