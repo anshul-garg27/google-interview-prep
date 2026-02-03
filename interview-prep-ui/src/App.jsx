@@ -35,70 +35,108 @@ const getDocumentMetadata = (doc) => {
 
 // Convert blockquote code to proper code blocks
 const preprocessMarkdown = (content) => {
-  // Detect code-like blockquotes and convert to code blocks
   const lines = content.split('\n')
   const processed = []
-  let inCodeQuote = false
-  let codeBuffer = []
-  let detectedLanguage = 'java' // default
+  let inBlockquote = false
+  let inCodeFence = false
+  let blockquoteBuffer = []
+  let codeFenceLanguage = ''
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
-    const nextLine = lines[i + 1] || ''
+    const trimmedLine = line.replace(/^>\s?/, '') // Remove blockquote prefix
 
-    // Check if this looks like code in a blockquote
-    const isCodeLine = line.match(/^>\s*(public|private|protected|class|interface|function|const|let|var|def|import|package|@|\/\/|\/\*|\{|\})/)
-    const isIndentedCode = line.match(/^>\s{4,}/)
+    // Check if we're starting/ending a blockquote
+    if (line.startsWith('>') && !inBlockquote) {
+      inBlockquote = true
+      blockquoteBuffer = []
+    }
 
-    if (isCodeLine || (inCodeQuote && (isIndentedCode || line.startsWith('>')))) {
-      if (!inCodeQuote) {
-        // Start of code block
-        inCodeQuote = true
-        codeBuffer = []
-        // Detect language from keywords
-        if (line.match(/public|private|class|interface|@|import java/)) {
-          detectedLanguage = 'java'
-        } else if (line.match(/function|const|let|var|=>|import.*from/)) {
-          detectedLanguage = 'javascript'
-        } else if (line.match(/def |import |class .*:/)) {
-          detectedLanguage = 'python'
-        }
+    if (inBlockquote) {
+      // Check for code fence markers inside blockquote
+      const codeFenceMatch = trimmedLine.match(/^```(\w*)/)
+
+      if (codeFenceMatch && !inCodeFence) {
+        // Start of code fence inside blockquote
+        inCodeFence = true
+        codeFenceLanguage = codeFenceMatch[1] || 'java'
+        blockquoteBuffer.push(trimmedLine)
+      } else if (trimmedLine.match(/^```$/) && inCodeFence) {
+        // End of code fence inside blockquote
+        inCodeFence = false
+        blockquoteBuffer.push(trimmedLine)
+      } else if (line.startsWith('>')) {
+        // Regular blockquote line
+        blockquoteBuffer.push(trimmedLine)
+      } else if (!line.startsWith('>') && line.trim() === '' && inBlockquote) {
+        // Empty line might still be in blockquote
+        blockquoteBuffer.push('')
+      } else {
+        // End of blockquote
+        // Process the blockquote buffer
+        processed.push(...processBlockquoteBuffer(blockquoteBuffer))
+        processed.push(line)
+        inBlockquote = false
+        inCodeFence = false
+        blockquoteBuffer = []
       }
-      // Remove the '> ' prefix
-      codeBuffer.push(line.replace(/^>\s?/, ''))
-    } else if (inCodeQuote && !line.startsWith('>') && line.trim() !== '') {
-      // End of code block
-      processed.push('```' + detectedLanguage)
-      processed.push(...codeBuffer)
-      processed.push('```')
-      processed.push(line)
-      inCodeQuote = false
-      codeBuffer = []
-    } else if (inCodeQuote && line.trim() === '') {
-      // Empty line in code block
-      codeBuffer.push('')
     } else {
-      // Not in code block
-      if (inCodeQuote) {
-        // Flush code buffer
-        processed.push('```' + detectedLanguage)
-        processed.push(...codeBuffer)
-        processed.push('```')
-        inCodeQuote = false
-        codeBuffer = []
-      }
       processed.push(line)
     }
   }
 
-  // Flush any remaining code
-  if (inCodeQuote && codeBuffer.length > 0) {
-    processed.push('```' + detectedLanguage)
-    processed.push(...codeBuffer)
-    processed.push('```')
+  // Flush remaining blockquote
+  if (blockquoteBuffer.length > 0) {
+    processed.push(...processBlockquoteBuffer(blockquoteBuffer))
   }
 
   return processed.join('\n')
+}
+
+// Process blockquote buffer to handle code blocks inside
+const processBlockquoteBuffer = (buffer) => {
+  const result = []
+  let inCodeBlock = false
+  let codeBuffer = []
+  let language = 'java'
+
+  for (let i = 0; i < buffer.length; i++) {
+    const line = buffer[i]
+
+    // Check for code fence
+    const startFence = line.match(/^```(\w*)/)
+    const endFence = line.match(/^```$/)
+
+    if (startFence && !inCodeBlock) {
+      // Start of code block
+      inCodeBlock = true
+      language = startFence[1] || 'java'
+      codeBuffer = []
+    } else if (endFence && inCodeBlock) {
+      // End of code block - output it properly
+      result.push('```' + language)
+      result.push(...codeBuffer)
+      result.push('```')
+      result.push('') // Empty line after code block
+      inCodeBlock = false
+      codeBuffer = []
+    } else if (inCodeBlock) {
+      // Inside code block - collect lines
+      codeBuffer.push(line)
+    } else {
+      // Regular blockquote line - keep as blockquote
+      result.push('> ' + line)
+    }
+  }
+
+  // Flush any remaining code
+  if (inCodeBlock && codeBuffer.length > 0) {
+    result.push('```' + language)
+    result.push(...codeBuffer)
+    result.push('```')
+  }
+
+  return result
 }
 
 // Quick start paths
