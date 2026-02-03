@@ -33,6 +33,74 @@ const getDocumentMetadata = (doc) => {
   }
 }
 
+// Convert blockquote code to proper code blocks
+const preprocessMarkdown = (content) => {
+  // Detect code-like blockquotes and convert to code blocks
+  const lines = content.split('\n')
+  const processed = []
+  let inCodeQuote = false
+  let codeBuffer = []
+  let detectedLanguage = 'java' // default
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]
+    const nextLine = lines[i + 1] || ''
+
+    // Check if this looks like code in a blockquote
+    const isCodeLine = line.match(/^>\s*(public|private|protected|class|interface|function|const|let|var|def|import|package|@|\/\/|\/\*|\{|\})/)
+    const isIndentedCode = line.match(/^>\s{4,}/)
+
+    if (isCodeLine || (inCodeQuote && (isIndentedCode || line.startsWith('>')))) {
+      if (!inCodeQuote) {
+        // Start of code block
+        inCodeQuote = true
+        codeBuffer = []
+        // Detect language from keywords
+        if (line.match(/public|private|class|interface|@|import java/)) {
+          detectedLanguage = 'java'
+        } else if (line.match(/function|const|let|var|=>|import.*from/)) {
+          detectedLanguage = 'javascript'
+        } else if (line.match(/def |import |class .*:/)) {
+          detectedLanguage = 'python'
+        }
+      }
+      // Remove the '> ' prefix
+      codeBuffer.push(line.replace(/^>\s?/, ''))
+    } else if (inCodeQuote && !line.startsWith('>') && line.trim() !== '') {
+      // End of code block
+      processed.push('```' + detectedLanguage)
+      processed.push(...codeBuffer)
+      processed.push('```')
+      processed.push(line)
+      inCodeQuote = false
+      codeBuffer = []
+    } else if (inCodeQuote && line.trim() === '') {
+      // Empty line in code block
+      codeBuffer.push('')
+    } else {
+      // Not in code block
+      if (inCodeQuote) {
+        // Flush code buffer
+        processed.push('```' + detectedLanguage)
+        processed.push(...codeBuffer)
+        processed.push('```')
+        inCodeQuote = false
+        codeBuffer = []
+      }
+      processed.push(line)
+    }
+  }
+
+  // Flush any remaining code
+  if (inCodeQuote && codeBuffer.length > 0) {
+    processed.push('```' + detectedLanguage)
+    processed.push(...codeBuffer)
+    processed.push('```')
+  }
+
+  return processed.join('\n')
+}
+
 // Quick start paths
 const quickStartPaths = [
   {
@@ -777,7 +845,7 @@ function App() {
                       }
                     }}
                   >
-                    {currentDoc?.content || ''}
+                    {preprocessMarkdown(currentDoc?.content || '')}
                   </ReactMarkdown>
                 </article>
 
