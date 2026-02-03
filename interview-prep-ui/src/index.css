@@ -140,17 +140,26 @@ html {
 
 /* Code block refinements */
 .prose pre {
-  padding: 1.25rem;
+  padding: 0 !important;
   overflow-x: auto;
   font-size: 0.875rem;
   line-height: 1.7;
   border: 1px solid #e5e7eb;
-  background: #f9fafb !important;
+  background: #ffffff !important;
+  border-radius: 0.75rem;
 }
 
 .dark .prose pre {
   border-color: #1f2937;
   background: #1f2937 !important;
+}
+
+/* Ensure code inside pre is visible */
+.prose pre code {
+  background: transparent !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font-size: inherit !important;
 }
 
 /* Inline code */
