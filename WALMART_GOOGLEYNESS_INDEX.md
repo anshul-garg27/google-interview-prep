@@ -2,10 +2,11 @@
 
 **Total Questions**: 10+ Googleyness questions with detailed STAR answers
 
-**Source Files**:
-- WALMART_GOOGLEYNESS_QUESTIONS.md
-- WALMART_INTERVIEW_ALL_QUESTIONS.md
-- WALMART_HIRING_MANAGER_GUIDE.md
+> 💡 **How to Use**: This page shows quick summaries of all questions. To view full STAR answers with detailed code examples, click on **"Walmart - Googleyness Questions"** in the sidebar.
+
+**Full Answers Available In**:
+- 📄 **Walmart - Googleyness Questions** ← Main document with complete answers
+- 📄 **Walmart - 60+ Questions with STAR Answers** ← Alternative detailed version
 
 ---
 
@@ -25,33 +26,40 @@
 
 ### Questions:
 
-- [Q1.1: "Tell me about a time you had to solve a problem with incomplete information."](#q11-tell-me-about-a-time-you-had-to-solve-a-problem-with-incomplete-information)
-  - **Story**: DC Inventory Search - no API existed, reverse-engineered EI endpoints
-  - **Result**: 4 weeks delivery (vs 12 weeks estimated), 30K+ queries/day
+#### Q1.1: "Tell me about a time you had to solve a problem with incomplete information."
+- **Story**: DC Inventory Search - no API existed, reverse-engineered EI endpoints
+- **Result**: 4 weeks delivery (vs 12 weeks estimated), 30K+ queries/day
+- 📄 **Full Answer**: Open "Walmart - Googleyness Questions" from sidebar
 
-- [Q1.2: "Describe a situation where requirements changed mid-project."](#q12-describe-a-situation-where-requirements-changed-mid-project)
-  - **Story**: Audit logging scope: 2 endpoints → 47 endpoints mid-project
-  - **Result**: Created filter pattern, zero code changes in consuming services
+#### Q1.2: "Describe a situation where requirements changed mid-project."
+- **Story**: Audit logging scope: 2 endpoints → 47 endpoints mid-project
+- **Result**: Created filter pattern, zero code changes in consuming services
+- 📄 **Full Answer**: Open "Walmart - Googleyness Questions" from sidebar
 
-- [Q1.3: "How do you approach a problem where the solution isn't obvious?"](#q13-how-do-you-approach-a-problem-where-the-solution-isnt-obvious)
-  - **Story**: Spring Boot 3 migration - 200+ failing tests, systematic triage
-  - **Result**: 200+ failures → 0 failures in 24 hours
+#### Q1.3: "How do you approach a problem where the solution isn't obvious?"
+- **Story**: Spring Boot 3 migration - 200+ failing tests, systematic triage
+- **Result**: 200+ failures → 0 failures in 24 hours
+- 📄 **Full Answer**: Open "Walmart - Googleyness Questions" from sidebar
 
-- [Q1.4: "Tell me about a time you had to make a decision without all the data you wanted."](#q14-tell-me-about-a-time-you-had-to-make-a-decision-without-all-the-data-you-wanted)
-  - **Story**: Multi-region Kafka architecture - no RPO/RTO requirements known
-  - **Result**: Active-Active pattern, 0 data loss, <30s failover
+#### Q1.4: "Tell me about a time you had to make a decision without all the data you wanted."
+- **Story**: Multi-region Kafka architecture - no RPO/RTO requirements known
+- **Result**: Active-Active pattern, 0 data loss, <30s failover
+- 📄 **Full Answer**: Open "Walmart - Googleyness Questions" from sidebar
 
-- [Q1.5: "Describe a time you navigated ambiguous stakeholder requirements."](#q15-describe-a-time-you-navigated-ambiguous-stakeholder-requirements)
-  - **Story**: DSD notification system - conflicting stakeholder needs
-  - **Result**: Event-driven architecture, 500K+ notifications, 5 consumers added post-launch
+#### Q1.5: "Describe a time you navigated ambiguous stakeholder requirements."
+- **Story**: DSD notification system - conflicting stakeholder needs
+- **Result**: Event-driven architecture, 500K+ notifications, 5 consumers added post-launch
+- 📄 **Full Answer**: Open "Walmart - Googleyness Questions" from sidebar
 
-- [Q1.6: "How do you handle situations where you don't have precedent to follow?"](#q16-how-do-you-handle-situations-where-you-dont-have-precedent-to-follow)
-  - **Story**: Multi-market architecture (US/CA/MX) - no team precedent
-  - **Result**: Site-based partitioning, 8M+ queries/month across 3 markets
+#### Q1.6: "How do you handle situations where you don't have precedent to follow?"
+- **Story**: Multi-market architecture (US/CA/MX) - no team precedent
+- **Result**: Site-based partitioning, 8M+ queries/month across 3 markets
+- 📄 **Full Answer**: Open "Walmart - Googleyness Questions" from sidebar
 
-- [Q1.7: "Describe a time you had to pivot your approach mid-execution."](#q17-describe-a-time-you-had-to-pivot-your-approach-mid-execution)
-  - **Story**: Spring Boot 3 migration - pivoted from big-bang to phased approach
-  - **Result**: Delivered on time, zero production incidents
+#### Q1.7: "Describe a time you had to pivot your approach mid-execution."
+- **Story**: Spring Boot 3 migration - pivoted from big-bang to phased approach
+- **Result**: Delivered on time, zero production incidents
+- 📄 **Full Answer**: Open "Walmart - Googleyness Questions" from sidebar
 
 ---
 
@@ -63,13 +71,15 @@
 
 ### Questions:
 
-- [Q2.1: "Tell me about a time you received critical feedback and how you responded."](#q21-tell-me-about-a-time-you-received-critical-feedback-and-how-you-responded)
-  - **Story**: CompletableFuture memory leak - architect's critical feedback
-  - **Result**: Thread pool isolation, 0% error rate, pattern adopted by 3 teams
+#### Q2.1: "Tell me about a time you received critical feedback and how you responded."
+- **Story**: CompletableFuture memory leak - architect's critical feedback
+- **Result**: Thread pool isolation, 0% error rate, pattern adopted by 3 teams
+- 📄 **Full Answer**: Open "Walmart - Googleyness Questions" from sidebar
 
-- [Q2.2: "Describe a time you asked for feedback and how you incorporated it."](#q22-describe-a-time-you-asked-for-feedback-and-how-you-incorporated-it)
-  - **Story**: Multi-region Kafka - asked 3 experts (architect, SRE, platform owner)
-  - **Result**: Async dual-write pattern, automatic failover, deduplication added
+#### Q2.2: "Describe a time you asked for feedback and how you incorporated it."
+- **Story**: Multi-region Kafka - asked 3 experts (architect, SRE, platform owner)
+- **Result**: Async dual-write pattern, automatic failover, deduplication added
+- 📄 **Full Answer**: Open "Walmart - Googleyness Questions" from sidebar
 
 ---
 
@@ -81,9 +91,10 @@
 
 ### Questions:
 
-- [Q3.1: "Tell me about a time you challenged the way things were done."](#q31-tell-me-about-a-time-you-challenged-the-way-things-were-done)
-  - **Story**: Challenged PostgreSQL for audit logs, proposed Kafka + GCS + BigQuery
-  - **Result**: 95% faster writes, 90% cost reduction ($5K → $500/month), 25x scalability
+#### Q3.1: "Tell me about a time you challenged the way things were done."
+- **Story**: Challenged PostgreSQL for audit logs, proposed Kafka + GCS + BigQuery
+- **Result**: 95% faster writes, 90% cost reduction ($5K → $500/month), 25x scalability
+- 📄 **Full Answer**: Open "Walmart - Googleyness Questions" from sidebar
 
 ---
 
