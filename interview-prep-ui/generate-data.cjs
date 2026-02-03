@@ -11,6 +11,7 @@ const documents = [
   { id: 'INTERVIEW_STORY_VERIFICATION', title: '⚠️ Story Verification Report', category: 'master', file: 'INTERVIEW_STORY_VERIFICATION.md', badge: 'Critical' },
 
   // Google Interview Prep
+  { id: 'PREVIOUS_WORK_GOOGLEYNESS_INDEX', title: '📋 Previous Work - Googleyness Index', category: 'google-interview', file: 'PREVIOUS_WORK_GOOGLEYNESS_INDEX.md', badge: 'Quick Ref' },
   { id: 'GOOGLEYNESS_ALL_QUESTIONS', title: '60+ Googleyness Questions', category: 'google-interview', file: 'GOOGLEYNESS_ALL_QUESTIONS.md', badge: 'Must Read' },
   { id: 'GOOGLE_L4_FINAL_PREP', title: 'L4 Final Prep Guide', category: 'google-interview', file: 'GOOGLE_L4_FINAL_PREP.md' },
   { id: 'GOOGLE_INTERVIEW_SCRIPTS', title: 'Interview Scripts', category: 'google-interview', file: 'GOOGLE_INTERVIEW_SCRIPTS.md' },
@@ -18,6 +19,7 @@ const documents = [
   { id: 'GOOGLE_INTERVIEW_DETAILED', title: 'Detailed Breakdown', category: 'google-interview', file: 'GOOGLE_INTERVIEW_DETAILED.md' },
 
   // Walmart Interview Prep - Summary
+  { id: 'WALMART_GOOGLEYNESS_INDEX', title: '📋 Walmart - Googleyness Index', category: 'walmart-interview', file: 'WALMART_GOOGLEYNESS_INDEX.md', badge: 'Quick Ref' },
   { id: 'WALMART_INTERVIEW_ALL_QUESTIONS', title: 'Walmart - 60+ Questions with STAR Answers', category: 'walmart-interview', file: 'WALMART_INTERVIEW_ALL_QUESTIONS.md', badge: 'Must Read' },
   { id: 'WALMART_GOOGLEYNESS_QUESTIONS', title: 'Walmart - Googleyness Questions', category: 'walmart-interview', file: 'WALMART_GOOGLEYNESS_QUESTIONS.md' },
   { id: 'WALMART_HIRING_MANAGER_GUIDE', title: 'Walmart - Hiring Manager Guide', category: 'walmart-interview', file: 'WALMART_HIRING_MANAGER_GUIDE.md' },
