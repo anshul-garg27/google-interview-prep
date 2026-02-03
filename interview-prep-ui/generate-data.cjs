@@ -5,26 +5,44 @@ const path = require('path');
 const parentDir = path.join(__dirname, '..');
 
 const documents = [
-  // Interview Prep
-  { id: 'GOOGLEYNESS_ALL_QUESTIONS', title: '60+ Googleyness Questions', category: 'interview', file: 'GOOGLEYNESS_ALL_QUESTIONS.md', badge: 'Must Read' },
-  { id: 'GOOGLE_L4_FINAL_PREP', title: 'L4 Final Prep Guide', category: 'interview', file: 'GOOGLE_L4_FINAL_PREP.md' },
-  { id: 'GOOGLE_INTERVIEW_SCRIPTS', title: 'Interview Scripts', category: 'interview', file: 'GOOGLE_INTERVIEW_SCRIPTS.md' },
-  { id: 'GOOGLE_INTERVIEW_PREP', title: 'STAR Stories', category: 'interview', file: 'GOOGLE_INTERVIEW_PREP.md' },
-  { id: 'GOOGLE_INTERVIEW_DETAILED', title: 'Detailed Breakdown', category: 'interview', file: 'GOOGLE_INTERVIEW_DETAILED.md' },
+  // Master Guides
+  { id: 'GOOGLE_INTERVIEW_MASTER_GUIDE', title: 'Google Interview Master Guide', category: 'master', file: 'GOOGLE_INTERVIEW_MASTER_GUIDE.md', badge: 'Start Here' },
 
-  // Technical
-  { id: 'RESUME_TO_CODE_MAPPING', title: 'Resume ↔ Code Mapping', category: 'technical', file: 'RESUME_TO_CODE_MAPPING.md' },
-  { id: 'SYSTEM_INTERCONNECTIVITY', title: 'System Architecture', category: 'technical', file: 'SYSTEM_INTERCONNECTIVITY.md' },
-  { id: 'BEAT_ADVANCED_FEATURES', title: 'ML/Stats Features', category: 'technical', file: 'BEAT_ADVANCED_FEATURES.md' },
+  // Google Interview Prep
+  { id: 'GOOGLEYNESS_ALL_QUESTIONS', title: '60+ Googleyness Questions', category: 'google-interview', file: 'GOOGLEYNESS_ALL_QUESTIONS.md', badge: 'Must Read' },
+  { id: 'GOOGLE_L4_FINAL_PREP', title: 'L4 Final Prep Guide', category: 'google-interview', file: 'GOOGLE_L4_FINAL_PREP.md' },
+  { id: 'GOOGLE_INTERVIEW_SCRIPTS', title: 'Interview Scripts', category: 'google-interview', file: 'GOOGLE_INTERVIEW_SCRIPTS.md' },
+  { id: 'GOOGLE_INTERVIEW_PREP', title: 'STAR Stories', category: 'google-interview', file: 'GOOGLE_INTERVIEW_PREP.md' },
+  { id: 'GOOGLE_INTERVIEW_DETAILED', title: 'Detailed Breakdown', category: 'google-interview', file: 'GOOGLE_INTERVIEW_DETAILED.md' },
 
-  // Analysis
-  { id: 'MASTER_PORTFOLIO_SUMMARY', title: 'Portfolio Summary', category: 'analysis', file: 'MASTER_PORTFOLIO_SUMMARY.md' },
-  { id: 'ANALYSIS_beat', title: 'Beat Analysis', category: 'analysis', file: 'ANALYSIS_beat.md' },
-  { id: 'ANALYSIS_stir', title: 'Stir Analysis', category: 'analysis', file: 'ANALYSIS_stir.md' },
-  { id: 'ANALYSIS_event_grpc', title: 'Event-grpc Analysis', category: 'analysis', file: 'ANALYSIS_event_grpc.md' },
-  { id: 'ANALYSIS_fake_follower', title: 'Fake Follower Analysis', category: 'analysis', file: 'ANALYSIS_fake_follower_analysis.md' },
-  { id: 'ANALYSIS_coffee', title: 'Coffee Analysis', category: 'analysis', file: 'ANALYSIS_coffee.md' },
-  { id: 'ANALYSIS_saas_gateway', title: 'SaaS Gateway Analysis', category: 'analysis', file: 'ANALYSIS_saas_gateway.md' },
+  // Walmart Interview Prep
+  { id: 'WALMART_INTERVIEW_ALL_QUESTIONS', title: 'Walmart - 60+ Questions with STAR Answers', category: 'walmart-interview', file: 'WALMART_INTERVIEW_ALL_QUESTIONS.md', badge: 'Must Read' },
+  { id: 'WALMART_GOOGLEYNESS_QUESTIONS', title: 'Walmart - Googleyness Questions', category: 'walmart-interview', file: 'WALMART_GOOGLEYNESS_QUESTIONS.md' },
+  { id: 'WALMART_HIRING_MANAGER_GUIDE', title: 'Walmart - Hiring Manager Guide', category: 'walmart-interview', file: 'WALMART_HIRING_MANAGER_GUIDE.md' },
+  { id: 'WALMART_LEADERSHIP_STORIES', title: 'Walmart - Leadership Stories', category: 'walmart-interview', file: 'WALMART_LEADERSHIP_STORIES.md' },
+
+  // Walmart Technical
+  { id: 'WALMART_RESUME_TO_CODE_MAPPING', title: 'Walmart - Resume ↔ Code Mapping', category: 'walmart-technical', file: 'WALMART_RESUME_TO_CODE_MAPPING.md' },
+  { id: 'WALMART_SYSTEM_ARCHITECTURE', title: 'Walmart - System Architecture', category: 'walmart-technical', file: 'WALMART_SYSTEM_ARCHITECTURE.md' },
+  { id: 'WALMART_SYSTEM_DESIGN_EXAMPLES', title: 'Walmart - System Design Examples', category: 'walmart-technical', file: 'WALMART_SYSTEM_DESIGN_EXAMPLES.md' },
+  { id: 'WALMART_METRICS_CHEATSHEET', title: 'Walmart - Metrics Cheatsheet', category: 'walmart-technical', file: 'WALMART_METRICS_CHEATSHEET.md' },
+
+  // Walmart Portfolio
+  { id: 'WALMART_MASTER_PORTFOLIO', title: 'Walmart - Master Portfolio', category: 'walmart-portfolio', file: 'WALMART_MASTER_PORTFOLIO.md' },
+
+  // Google Technical (Previous Work)
+  { id: 'RESUME_TO_CODE_MAPPING', title: 'Previous - Resume ↔ Code Mapping', category: 'google-technical', file: 'RESUME_TO_CODE_MAPPING.md' },
+  { id: 'SYSTEM_INTERCONNECTIVITY', title: 'Previous - System Architecture', category: 'google-technical', file: 'SYSTEM_INTERCONNECTIVITY.md' },
+  { id: 'BEAT_ADVANCED_FEATURES', title: 'Previous - ML/Stats Features', category: 'google-technical', file: 'BEAT_ADVANCED_FEATURES.md' },
+
+  // Google Analysis (Previous Work)
+  { id: 'MASTER_PORTFOLIO_SUMMARY', title: 'Previous - Portfolio Summary', category: 'google-analysis', file: 'MASTER_PORTFOLIO_SUMMARY.md' },
+  { id: 'ANALYSIS_beat', title: 'Previous - Beat Analysis', category: 'google-analysis', file: 'ANALYSIS_beat.md' },
+  { id: 'ANALYSIS_stir', title: 'Previous - Stir Analysis', category: 'google-analysis', file: 'ANALYSIS_stir.md' },
+  { id: 'ANALYSIS_event_grpc', title: 'Previous - Event-grpc Analysis', category: 'google-analysis', file: 'ANALYSIS_event_grpc.md' },
+  { id: 'ANALYSIS_fake_follower', title: 'Previous - Fake Follower Analysis', category: 'google-analysis', file: 'ANALYSIS_fake_follower_analysis.md' },
+  { id: 'ANALYSIS_coffee', title: 'Previous - Coffee Analysis', category: 'google-analysis', file: 'ANALYSIS_coffee.md' },
+  { id: 'ANALYSIS_saas_gateway', title: 'Previous - SaaS Gateway Analysis', category: 'google-analysis', file: 'ANALYSIS_saas_gateway.md' },
 ];
 
 const output = documents.map(doc => {
