@@ -8,6 +8,7 @@ const documents = [
   // Master Guides
   { id: 'GOOGLE_INTERVIEW_MASTER_GUIDE', title: 'Google Interview Master Guide', category: 'master', file: 'GOOGLE_INTERVIEW_MASTER_GUIDE.md', badge: 'Start Here' },
   { id: 'README_GOOGLE_PREP', title: 'README - Complete Prep Guide', category: 'master', file: 'README_GOOGLE_PREP.md' },
+  { id: 'INTERVIEW_STORY_VERIFICATION', title: '⚠️ Story Verification Report', category: 'master', file: 'INTERVIEW_STORY_VERIFICATION.md', badge: 'Critical' },
 
   // Google Interview Prep
   { id: 'GOOGLEYNESS_ALL_QUESTIONS', title: '60+ Googleyness Questions', category: 'google-interview', file: 'GOOGLEYNESS_ALL_QUESTIONS.md', badge: 'Must Read' },
