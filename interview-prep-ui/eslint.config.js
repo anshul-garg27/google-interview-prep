@@ -6,8 +6,21 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
   globalIgnores(['dist']),
+  // Config files (Node.js environment)
+  {
+    files: ['*.config.js', '*.cjs'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: {
+        ...globals.node,
+      },
+      sourceType: 'module',
+    },
+  },
+  // React/Browser files
   {
     files: ['**/*.{js,jsx}'],
+    ignores: ['*.config.js', '*.cjs'],
     extends: [
       js.configs.recommended,
       reactHooks.configs.flat.recommended,

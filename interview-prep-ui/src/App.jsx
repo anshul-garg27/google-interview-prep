@@ -40,7 +40,6 @@ const preprocessMarkdown = (content) => {
   let inBlockquote = false
   let inCodeFence = false
   let blockquoteBuffer = []
-  let codeFenceLanguage = ''
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
@@ -59,7 +58,6 @@ const preprocessMarkdown = (content) => {
       if (codeFenceMatch && !inCodeFence) {
         // Start of code fence inside blockquote
         inCodeFence = true
-        codeFenceLanguage = codeFenceMatch[1] || 'java'
         blockquoteBuffer.push(trimmedLine)
       } else if (trimmedLine.match(/^```$/) && inCodeFence) {
         // End of code fence inside blockquote
@@ -178,7 +176,6 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeDoc, setActiveDoc] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
-  const [searchResults, setSearchResults] = useState([])
   const [showSearch, setShowSearch] = useState(false)
   const [expandedCategories, setExpandedCategories] = useState(['master', 'walmart-interview'])
   const [tocExpanded, setTocExpanded] = useState(true)
@@ -209,13 +206,12 @@ function App() {
     })
   }, [])
 
-  useEffect(() => {
+  // Memoized search results
+  const searchResults = useMemo(() => {
     if (searchQuery.length > 2) {
-      const results = fuse.search(searchQuery).slice(0, 8)
-      setSearchResults(results)
-    } else {
-      setSearchResults([])
+      return fuse.search(searchQuery).slice(0, 8)
     }
+    return []
   }, [searchQuery, fuse])
 
   // Extract TOC from current document
@@ -320,8 +316,7 @@ function App() {
     setActiveDoc(docId)
     setSidebarOpen(false)
     setShowSearch(false)
-    setSearchQuery('')
-    setSearchResults([])
+    setSearchQuery('') // This will auto-clear searchResults via useMemo
     window.scrollTo(0, 0)
   }
 
@@ -833,7 +828,7 @@ function App() {
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{
-                      code({ node, inline, className, children, ...props }) {
+                      code({ inline, className, children, ...props }) {
                         const match = /language-(\w+)/.exec(className || '')
                         return !inline && match ? (
                           <SyntaxHighlighter
