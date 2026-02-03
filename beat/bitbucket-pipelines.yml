@@ -1,0 +1,79 @@
+image: atlassian/default-image:4
+
+clone:
+    depth: full
+
+definitions:
+    caches:
+        sonar: ~/.sonar/cache
+    services: 
+        docker:
+           memory: 3072
+
+    steps:
+        - step: &sonarqube
+            name: sonarQube analysis
+            script: 
+              - printf "$projectKey" > sonar-project.properties
+              - npm install
+              - pipe: sonarsource/sonarqube-scan:1.2.0
+                variables:
+                    SONAR_HOST_URL: ${SONAR_HOST_URL}
+                    SONAR_TOKEN: ${S_TOKEN}
+              #- pipe: sonarsource/sonarqube-quality-gate:1.1.0
+                #variables:
+                  #SONAR_TOKEN: ${S_TOKEN}    
+
+pipelines:
+
+      
+      branches:
+         default:
+            - step:
+                name: This step runs on all feature branches
+                script:
+                  - echo "This script runs on all feature branches'."
+                
+         dev:
+              - step:
+                    name: This step runs on Beat Production
+                    script:
+                      - echo "This script runs on master branch'."
+              - step:
+                    name: Deploy on Beat Staging
+                    script:
+                        - pipe: atlassian/rsync-deploy:0.7.0
+                          variables:
+                              USER: $User
+                              SERVER: $IPProd
+                              REMOTE_PATH: $RemotePath
+                              LOCAL_PATH: $LOCAL_PATH
+                        - ssh "$StagDeployIP" "bash /home/gitlab/build/scripts/start.sh 8000 stage"               
+         master:
+              - step:
+                    name: This step runs on Beat Production
+                    script:
+                      - echo "This script runs on master branch'."
+              - step:
+                    name: Deploy on Beat Production(BP2)
+                    trigger: manual
+                    script:
+                        - pipe: atlassian/rsync-deploy:0.7.0
+                          variables:
+                              USER: $User
+                              SERVER: $IPProdBP2
+                              REMOTE_PATH: $RemotePathBP2
+                              LOCAL_PATH: $LOCAL_PATH
+                        - ssh "$ProdDeployIPBP2" "bash /home/gitlab/beat/scripts/start.sh 8000 prod"
+              - step:
+                    name: Deploy on Beat Production(BP3)
+                    trigger: manual
+                    script:
+                        - pipe: atlassian/rsync-deploy:0.7.0
+                          variables:
+                              USER: $User
+                              SERVER: $IPProdBP3
+                              REMOTE_PATH: $RemotePathBP3
+                              LOCAL_PATH: $LOCAL_PATH
+                        - ssh "$ProdDeployIPBP3" "bash /home/gitlab/beat/scripts/start.sh 8000 prod"
+              

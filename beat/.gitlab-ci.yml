@@ -1,0 +1,48 @@
+variables:
+  PORT: 8000
+
+stages:
+  - deploy_stage
+  - deploy_prod
+
+deploy_stage:
+  stage: deploy_stage
+  variables:
+    ENV: stage
+  script:
+    - /bin/bash scripts/start.sh
+  tags:
+    - stage-aafat
+  environment:
+    name: stage
+  only:
+    - master
+    - dev
+
+deploy_prod_1:
+  stage: deploy_prod
+  variables:
+    ENV: prod
+  script:
+    - /bin/bash scripts/start.sh
+  tags:
+    - beat-deployer-1
+  environment:
+    name: prod
+  when: manual
+  only:
+    - master
+
+deploy_prod_2:
+  stage: deploy_prod
+  variables:
+    ENV: prod
+  script:
+    - /bin/bash scripts/start.sh
+  tags:
+    - beat-deployer-2
+  environment:
+    name: prod
+  when: manual
+  only:
+    - master

@@ -1,0 +1,124 @@
+variables:
+  PORT: 8017
+  GIN_PORT: 8019
+
+stages:
+  - build
+  - deploy
+  - publish
+
+build:
+  stage: build
+  variables:
+    GOOS: linux
+    GOARCH: amd64
+  script:
+    - echo "Generating code"
+    - echo $PATH
+    - protoc --go_out=. --go-grpc_out=. proto/eventservice.proto
+    - env GOOS=$GOOS GOARCH=$GOARCH go build
+  tags:
+    - builder
+  artifacts:
+    paths:
+      - .env
+      - .env.local
+      - .env.stage
+      - .env.production
+      - event-grpc
+      - scripts/start.sh
+    expire_in: 1 week
+  only:
+    - master
+    - dev
+
+
+deploy_staging:
+  stage: deploy
+  variables:
+    ENV: STAGE
+    GIT_STRATEGY: none
+    GOGC: 250
+  script:
+    - /bin/bash scripts/start.sh
+  tags:
+    - deployer-stage-search
+  environment:
+    name: STAGE
+  only:
+    - master
+    - dev
+
+
+deploy_prod_gateway:
+  stage: deploy
+  variables:
+    ENV: PRODUCTION
+    GIT_STRATEGY: none
+    GOGC: 250
+  script:
+    - /bin/bash scripts/start.sh
+  tags:
+    - deployer-prod-gateway
+  environment:
+    name: PRODUCTION
+  only:
+    - master
+  when: manual
+
+
+deploy_prod_pwa_gateway:
+  stage: deploy
+  variables:
+    ENV: PRODUCTION
+    GIT_STRATEGY: none
+    GOGC: 250
+  script:
+    - /bin/bash scripts/start.sh
+  tags:
+    - deployer-prod-pwa-gateway
+  environment:
+    name: PRODUCTION
+  only:
+    - master
+  when: manual
+
+
+publish_web:
+  stage: publish
+  variables:
+    GOOS: linux
+    GOARCH: amd64
+  script:
+    - echo "Generating code"
+    - echo $PATH
+    - protoc proto/eventservice.proto --js_out=import_style=commonjs:./proto/web/src --grpc-web_out=import_style=commonjs+dts,mode=grpcwebtext:./proto/web/src/
+    - cd proto/web
+    - npm install
+    - npm publish --registry http://artifactory.bulbul.tv:4873/
+  tags:
+    - builder
+  only:
+    - master
+    - dev
+  when: manual
+
+
+publish_java:
+  stage: publish
+  variables:
+    GOOS: linux
+    GOARCH: amd64
+  script:
+    - echo "Generating code"
+    - echo $PATH
+    - cd proto/java
+    - cp ../eventservice.proto src/main/proto
+    - mvn clean install -U
+    - mvn deploy
+  tags:
+    - builder
+  only:
+    - master
+    - dev
+  when: manual

@@ -1,0 +1,116 @@
+variables:
+  PORT: 7179
+
+stages:
+  - test
+  - build
+  - deploy_staging
+  - deploy_prod
+
+test:
+  stage: test
+  tags:
+    - saas-builder
+  script: 
+    - echo "Running tests"
+
+build:
+  stage: build
+  variables:
+    GOOS: linux
+    GOARCH: amd64
+  script:
+    - echo "Building Coffee"
+    - make build
+    - pwd
+    - tar -czvf /home/gitlab-runner/builds/KSN4WV8g/0/gcc-saas/coffee.tar.gz .
+    - ls -la
+    - ls -l /home/gitlab-runner/builds/KSN4WV8g/0/gcc-saas/coffee.tar.gz
+    - mv /home/gitlab-runner/builds/KSN4WV8g/0/gcc-saas/coffee.tar.gz /home/gitlab-runner/builds/KSN4WV8g/0/gcc-saas/coffee
+  tags:
+    - saas-builder
+  artifacts:
+    paths:
+      - .env
+      - .env.local
+      - .env.stage
+      - .env.prod
+      - bin/coffee
+      - scripts/start.sh
+      - scripts/ia_data.py
+      - scripts/ya_data.py
+      - scripts/audience_data.py
+      - scripts/createCpForMissingProfiles.py
+      - scripts/createCpForMissingIAProfiles.py
+      - scripts/createCpForMissingYAProfiles.py
+      - scripts/createCpForRemainingIA.py
+      - scripts/createCpForRemainingYA.py
+      - scripts/updateCp.py
+      - scripts/missing_ig_id.py
+      - scripts/check_duplicates.py
+      - scripts/resetpartnerusage.py
+      - scripts/updatesearchPhrase.py
+      - coffee.tar.gz
+      
+    expire_in: 1 week
+  only:
+    - master
+    - staging
+
+deploy_staging:
+  stage: deploy_staging
+  variables:
+    ENV: stage
+    GIT_STRATEGY: none
+    GOGC: 250
+  script:
+    - pwd
+    - ls -la
+    - tar -xzvf coffee.tar.gz
+    - go test -v ./...
+    - /bin/bash scripts/start.sh
+  tags:
+    - deployer-stage-search
+  environment:
+    name: stage
+  when: manual
+  only:
+    - master
+    - staging
+
+deploy_prod_1:
+  stage: deploy_prod
+  variables:
+    ENV: prod
+    GIT_STRATEGY: none
+    GOGC: 250
+  script:
+    - pwd
+    - ls -la
+    - tar -xzvf coffee.tar.gz
+    - go test -v ./...
+    - /bin/bash scripts/start.sh
+  tags:
+    - cb1-1
+  environment:
+    name: prod
+  when: manual
+  only:
+    - master
+
+deploy_prod_2:
+  stage: deploy_prod
+  variables:
+    ENV: prod
+    GIT_STRATEGY: none
+    GOGC: 250
+  script:
+    - /bin/bash scripts/start.sh
+  tags:
+    - cb2-1
+  environment:
+    name: prod
+  when: manual
+  only:
+    - master
+

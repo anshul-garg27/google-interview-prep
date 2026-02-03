@@ -1,10 +1,21 @@
-# Project source code (proprietary)
-beat/
-stir/
-coffee/
-event-grpc/
-fake_follower_analysis/
-saas-gateway/
+# Sensitive files - DO NOT COMMIT
+.env
+.env.*
+*.env
+credentials/
+*credential*
+*secret*
+*.pem
+*.key
+*.p12
+*.jks
+
+# Virtual environments
+venv/
+.venv/
+__pycache__/
+*.pyc
+node_modules/
 
 # OS files
 .DS_Store

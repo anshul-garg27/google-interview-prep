@@ -1,0 +1,50 @@
+[0m21:36:46  Running with dbt=1.4.6
+[0m21:36:46  Found 112 models, 0 tests, 0 snapshots, 0 analyses, 319 macros, 0 operations, 0 seed files, 0 sources, 0 exposures, 0 metrics
+[0m21:36:46  
+[0m21:36:46  Concurrency: 3 threads (target='production')
+[0m21:36:46  
+[0m21:36:46  1 of 1 START sql table model dbt.mart_collection_post .......................... [RUN]
+[0m21:36:46  1 of 1 ERROR creating sql table model dbt.mart_collection_post ................. [[31mERROR[0m in 0.32s]
+[0m21:36:46  
+[0m21:36:46  Finished running 1 table model in 0 hours 0 minutes and 0.56 seconds (0.56s).
+[0m21:36:46  
+[0m21:36:46  [31mCompleted with 1 error and 0 warnings:[0m
+[0m21:36:46  
+[0m21:36:46  [33mDatabase Error in model mart_collection_post (models/marts/collection/mart_collection_post.sql)[0m
+[0m21:36:46    Code: 386.
+[0m21:36:46    DB::Exception: There is no supertype for types Int64, UInt64 because some of them are signed integers and some are unsigned integers, but there is no signed integer type, that can exactly represent all required unsigned integer values: While processing platform, collection_id, profile_social_id, post_short_code, post_type, post_title, post_link, post_thumbnail, hashtags, keywords, post_collection_item_id, published_at, collection_type, profile_handle, profile_name, followers, views, likes, comments, impressions, saves, plays, reach, swipe_ups, mentions, sticker_taps, shares, story_exits, story_back_taps, story_forward_taps, if(`_--lc.clicks` > `_--mlc.clicks`, `_--lc.clicks`, `_--mlc.clicks`) AS link_clicks, all_orders AS orders, `_--lo.delivered_orders` AS delivered_orders, `_--lo.completed_orders` AS completed_orders, `_--lo.leaderboard_overall_orders` AS leaderboard_overall_orders, `_--lo.leaderboard_delivered_orders` AS leaderboard_delivered_orders, `_--lo.leaderboard_completed_orders` AS leaderboard_completed_orders, total_engagement, engagement_rate. Stack trace:
+[0m21:36:46    
+[0m21:36:46    0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000cdcda77 in /usr/bin/clickhouse
+[0m21:36:46    1. DB::Exception::Exception<String, std::basic_string_view<char, std::char_traits<char>>&>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<std::basic_string_view<char, std::char_traits<char>>&>::type>, String&&, std::basic_string_view<char, std::char_traits<char>>&) @ 0x000000000b94f436 in /usr/bin/clickhouse
+[0m21:36:46    2. std::shared_ptr<DB::IDataType const> DB::(anonymous namespace)::throwOrReturn<(DB::LeastSupertypeOnError)0, std::unordered_set<DB::TypeIndex, std::hash<DB::TypeIndex>, std::equal_to<DB::TypeIndex>, std::allocator<DB::TypeIndex>>>(std::unordered_set<DB::TypeIndex, std::hash<DB::TypeIndex>, std::equal_to<DB::TypeIndex>, std::allocator<DB::TypeIndex>> const&, std::basic_string_view<char, std::char_traits<char>>, int) @ 0x0000000011c6c887 in /usr/bin/clickhouse
+[0m21:36:46    3. std::shared_ptr<DB::IDataType const> DB::(anonymous namespace)::getNumericType<(DB::LeastSupertypeOnError)0>(std::unordered_set<DB::TypeIndex, std::hash<DB::TypeIndex>, std::equal_to<DB::TypeIndex>, std::allocator<DB::TypeIndex>> const&) @ 0x0000000011c6ba87 in /usr/bin/clickhouse
+[0m21:36:46    4. std::shared_ptr<DB::IDataType const> DB::getLeastSupertype<(DB::LeastSupertypeOnError)0>(std::vector<std::shared_ptr<DB::IDataType const>, std::allocator<std::shared_ptr<DB::IDataType const>>> const&) @ 0x0000000011c6a49e in /usr/bin/clickhouse
+[0m21:36:46    5. std::shared_ptr<DB::IDataType const> DB::getLeastSupertype<(DB::LeastSupertypeOnError)0>(std::vector<std::shared_ptr<DB::IDataType const>, std::allocator<std::shared_ptr<DB::IDataType const>>> const&) @ 0x0000000011c69eb2 in /usr/bin/clickhouse
+[0m21:36:46    6. DB::(anonymous namespace)::FunctionIf::getReturnTypeImpl(std::vector<std::shared_ptr<DB::IDataType const>, std::allocator<std::shared_ptr<DB::IDataType const>>> const&) const @ 0x0000000009c9c2b1 in /usr/bin/clickhouse
+[0m21:36:46    7. DB::(anonymous namespace)::FunctionIf::getReturnTypeImpl(std::vector<std::shared_ptr<DB::IDataType const>, std::allocator<std::shared_ptr<DB::IDataType const>>> const&) const @ 0x0000000009c9c438 in /usr/bin/clickhouse
+[0m21:36:46    8. DB::IFunction::getReturnTypeImpl(std::vector<DB::ColumnWithTypeAndName, std::allocator<DB::ColumnWithTypeAndName>> const&) const @ 0x00000000073bcb2c in /usr/bin/clickhouse
+[0m21:36:46    9. DB::IFunctionOverloadResolver::getReturnTypeWithoutLowCardinality(std::vector<DB::ColumnWithTypeAndName, std::allocator<DB::ColumnWithTypeAndName>> const&) const @ 0x0000000011463d85 in /usr/bin/clickhouse
+[0m21:36:46    10. DB::IFunctionOverloadResolver::getReturnType(std::vector<DB::ColumnWithTypeAndName, std::allocator<DB::ColumnWithTypeAndName>> const&) const @ 0x00000000114639a8 in /usr/bin/clickhouse
+[0m21:36:46    11. DB::IFunctionOverloadResolver::build(std::vector<DB::ColumnWithTypeAndName, std::allocator<DB::ColumnWithTypeAndName>> const&) const @ 0x0000000011464616 in /usr/bin/clickhouse
+[0m21:36:46    12. DB::ActionsDAG::addFunction(std::shared_ptr<DB::IFunctionOverloadResolver> const&, std::vector<DB::ActionsDAG::Node const*, std::allocator<DB::ActionsDAG::Node const*>>, String) @ 0x0000000011e07bba in /usr/bin/clickhouse
+[0m21:36:46    13. DB::ScopeStack::addFunction(std::shared_ptr<DB::IFunctionOverloadResolver> const&, std::vector<String, std::allocator<String>> const&, String) @ 0x000000001202a420 in /usr/bin/clickhouse
+[0m21:36:46    14. DB::ActionsMatcher::Data::addFunction(std::shared_ptr<DB::IFunctionOverloadResolver> const&, std::vector<String, std::allocator<String>> const&, String) @ 0x000000001203718f in /usr/bin/clickhouse
+[0m21:36:46    15. DB::ActionsMatcher::visit(DB::ASTFunction const&, std::shared_ptr<DB::IAST> const&, DB::ActionsMatcher::Data&) @ 0x000000001202df83 in /usr/bin/clickhouse
+[0m21:36:46    16. DB::ActionsMatcher::visit(std::shared_ptr<DB::IAST> const&, DB::ActionsMatcher::Data&) @ 0x000000001202a968 in /usr/bin/clickhouse
+[0m21:36:46    17. DB::InDepthNodeVisitor<DB::ActionsMatcher, true, false, std::shared_ptr<DB::IAST> const>::doVisit(std::shared_ptr<DB::IAST> const&) @ 0x0000000012022655 in /usr/bin/clickhouse
+[0m21:36:46    18. DB::ExpressionAnalyzer::getRootActions(std::shared_ptr<DB::IAST> const&, bool, std::shared_ptr<DB::ActionsDAG>&, bool) @ 0x0000000011fffefb in /usr/bin/clickhouse
+[0m21:36:46    19. DB::SelectQueryExpressionAnalyzer::appendSelect(DB::ExpressionActionsChain&, bool) @ 0x0000000012008178 in /usr/bin/clickhouse
+[0m21:36:46    20. DB::ExpressionAnalysisResult::ExpressionAnalysisResult(DB::SelectQueryExpressionAnalyzer&, std::shared_ptr<DB::StorageInMemoryMetadata const> const&, bool, bool, bool, std::shared_ptr<DB::FilterDAGInfo> const&, std::shared_ptr<DB::FilterDAGInfo> const&, DB::Block const&) @ 0x0000000012010c35 in /usr/bin/clickhouse
+[0m21:36:46    21. DB::InterpreterSelectQuery::getSampleBlockImpl() @ 0x00000000127ce4e3 in /usr/bin/clickhouse
+[0m21:36:46    22. DB::InterpreterSelectQuery::InterpreterSelectQuery(std::shared_ptr<DB::IAST> const&, std::shared_ptr<DB::Context> const&, std::optional<DB::Pipe>, std::shared_ptr<DB::IStorage> const&, DB::SelectQueryOptions const&, std::vector<String, std::allocator<String>> const&, std::shared_ptr<DB::StorageInMemoryMetadata const> const&, std::shared_ptr<DB::PreparedSets>)::$_0::operator()(bool) const @ 0x00000000127bbf2d in /usr/bin/clickhouse
+[0m21:36:46    23. DB::InterpreterSelectQuery::InterpreterSelectQuery(std::shared_ptr<DB::IAST> const&, std::shared_ptr<DB::Context> const&, std::optional<DB::Pipe>, std::shared_ptr<DB::IStorage> const&, DB::SelectQueryOptions const&, std::vector<String, std::allocator<String>> const&, std::shared_ptr<DB::StorageInMemoryMetadata const> const&, std::shared_ptr<DB::PreparedSets>) @ 0x00000000127b19d5 in /usr/bin/clickhouse
+[0m21:36:46    24. DB::InterpreterSelectWithUnionQuery::InterpreterSelectWithUnionQuery(std::shared_ptr<DB::IAST> const&, std::shared_ptr<DB::Context>, DB::SelectQueryOptions const&, std::vector<String, std::allocator<String>> const&) @ 0x0000000012861678 in /usr/bin/clickhouse
+[0m21:36:46    25. DB::InterpreterSelectWithUnionQuery::getSampleBlock(std::shared_ptr<DB::IAST> const&, std::shared_ptr<DB::Context const>, bool, bool) @ 0x0000000012864bef in /usr/bin/clickhouse
+[0m21:36:46    26. DB::getDatabaseAndTablesWithColumns(std::vector<DB::ASTTableExpression const*, std::allocator<DB::ASTTableExpression const*>> const&, std::shared_ptr<DB::Context const>, bool, bool, bool) @ 0x0000000012bf49ed in /usr/bin/clickhouse
+[0m21:36:46    27. DB::JoinedTables::resolveTables() @ 0x00000000128ab92d in /usr/bin/clickhouse
+[0m21:36:46    28. DB::InterpreterSelectQuery::InterpreterSelectQuery(std::shared_ptr<DB::IAST> const&, std::shared_ptr<DB::Context> const&, std::optional<DB::Pipe>, std::shared_ptr<DB::IStorage> const&, DB::SelectQueryOptions const&, std::vector<String, std::allocator<String>> const&, std::shared_ptr<DB::StorageInMemoryMetadata const> const&, std::shared_ptr<DB::PreparedSets>) @ 0x00000000127af6c3 in /usr/bin/clickhouse
+[0m21:36:46    29. DB::InterpreterSelectWithUnionQuery::InterpreterSelectWithUnionQuery(std::shared_ptr<DB::IAST> const&, std::shared_ptr<DB::Context>, DB::SelectQueryOptions const&, std::vector<String, std::allocator<String>> const&) @ 0x0000000012861678 in /usr/bin/clickhouse
+[0m21:36:46    30. DB::InterpreterSelectWithUnionQuery::getSampleBlock(std::shared_ptr<DB::IAST> const&, std::shared_ptr<DB::Context const>, bool, bool) @ 0x0000000012864bef in /usr/bin/clickhouse
+[0m21:36:46    31. DB::getDatabaseAndTablesWithColumns(std::vector<DB::ASTTableExpression const*, std::allocator<DB::ASTTableExpression const*>> const&, std::shared_ptr<DB::Context const>, bool, bool, bool) @ 0x0000000012bf49ed in /usr/bin/clickhouse
+[0m21:36:46  
+[0m21:36:46  Done. PASS=0 WARN=0 ERROR=1 SKIP=0 TOTAL=1

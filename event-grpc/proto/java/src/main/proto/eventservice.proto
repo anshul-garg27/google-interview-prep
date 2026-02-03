@@ -1,0 +1,231 @@
+syntax = "proto3";
+
+option go_package = "proto/go/bulbulgrpc";
+
+option java_multiple_files = true;
+option java_package = "com.bulbul.grpc.event";
+option java_outer_classname = "BulbulGrpc";
+
+package event;
+
+// Event service definition.
+service EventService {
+  // Sends app events
+  rpc dispatch(Events) returns (Response) {}
+}
+
+message Events {
+  Header header = 4;
+  repeated Event events = 5;
+}
+
+message Header {
+  int64 bbDeviceId = 5;
+  int64 userId = 6;
+  string deviceId = 7;
+  string androidAdvertisingId = 8;
+  string clientId = 9;
+  string channel = 10;
+  string os = 11;
+  string clientType = 12;
+  string appLanguage = 13;
+  string appVersion = 14;
+  string appVersionCode = 15;
+  string currentURL = 16;
+  string merchantId = 18;
+  string utmReferrer = 19;
+  string utmPlatform = 20;
+  string utmSource = 21;
+  string utmMedium = 22;
+  string utmCampaign = 24;
+}
+
+message Event {
+  string id = 3;
+  string timestamp = 5;
+  oneof EventOf {
+    LaunchEvent launchEvent = 9;
+    PageOpenedEvent pageOpenedEvent = 10;
+    PageLoadedEvent pageLoadedEvent = 11;
+    PageLoadFailedEvent pageLoadFailedEvent = 12;
+    StreamThumbnailViewEvent streamThumbnailViewEvent = 13;
+    StreamThumbnailClickEvent streamThumbnailClickEvent = 14;
+    WidgetShownEvent widgetShownEvent = 15;
+    WidgetClickedEvent widgetClickedEvent = 16;
+    EnterPWAProductPageEvent enterPWAProductPageEvent = 17;
+    StreamEnterEvent streamEnterEvent = 18;
+    ChooseProductEvent chooseProductEvent = 19;
+    PhoneVerificationInitiateEvent phoneVerificationInitiateEvent = 20;
+    PhoneNumberEntered phoneNumberEntered = 21;
+    OTPVerifiedEvent otpVerifiedEvent = 22;
+    AddToCartEvent addToCartEvent = 23;
+    GoToPaymentsEvent goToPaymentsEvent = 24;
+    InitiatePurchaseEvent initiatePurchaseEvent = 25;
+    CompletePurchaseEvent completePurchaseEvent = 26;
+  }
+}
+
+message RecoInfo {
+
+}
+
+message LaunchEvent {
+  string dynamicLink = 6;
+  int64 appLaunchCount = 7;
+}
+
+message PageOpenedEvent {
+  string pageQueryId = 5;
+}
+
+message PageLoadedEvent {
+  string pageQueryId = 5;
+  string backendVariant = 6;
+  string backendSourceType = 7;
+  string backendSource = 8;
+}
+
+message PageLoadFailedEvent {
+  string pageQueryId = 5;
+  string reason = 6;
+  string errorMessageShown = 7;
+}
+
+message StreamThumbnailViewEvent {
+  int64 streamId = 6;
+  int64 productId = 7;
+  string catalogType = 8;
+  string componentType = 9;
+  string title = 10;
+  int64 pageSlot = 11;
+  string label = 12;
+  RecoInfo recoInfo = 13;
+}
+
+message StreamThumbnailClickEvent {
+
+
+}
+
+// thumbnail
+// horizontal
+message WidgetShownEvent {
+  string widgetType = 5;
+  int64 elementCount = 6;
+  int64 pageSlot = 7;
+  string widgetId = 8;
+  int64 catalogId = 10;
+  RecoInfo recoInfo = 11;
+  string title = 12;
+  string label = 13;
+  string elementId = 14;
+  string elementType = 15;
+}
+
+message WidgetClickedEvent {
+  string widgetType = 5;
+  int64 elementCount = 6;
+  int64 pageSlot = 7;
+  string widgetId = 8;
+  int64 catalogId = 10;
+  RecoInfo recoInfo = 11;
+  string title = 12;
+  string label = 13;
+  string elementId = 14;
+  string elementType = 15;
+}
+
+message EnterPWAProductPageEvent {
+  int64 productId = 5;
+  string productType = 6;
+  string hcpId = 7;
+  string affiliateChannel = 8;
+}
+
+message StreamEnterEvent {
+  int64 streamId = 5;
+  string streamTitle = 6;
+  string streamDescription = 7;
+  bool isLive = 8;
+  repeated int64 productIds = 9;
+  string sourceURL = 10;
+  string sourceComponent = 11;
+}
+
+message ChooseProductEvent {
+  int64 streamId = 5;
+  string streamTitle = 6;
+  string streamDescription = 7;
+  bool isLive = 8;
+  repeated int64 productIds = 9;
+}
+
+message PhoneVerificationInitiateEvent {
+  string sourceAction = 5;
+  string loginFlow = 6;
+}
+
+message PhoneNumberEntered {
+  bool isNewUser = 5;
+  int64 phoneNumber = 8;
+}
+
+message OTPVerifiedEvent {
+  string profileName = 6;
+  bool isNewUser = 7;
+  int64 phoneNumber = 8;
+  string loginFlow = 9;
+}
+
+message AddToCartEvent {
+  int64 productId = 5;
+  string productType = 6;
+  int64 variantId = 7;
+  int32 quantity = 8;
+  int32 chargeableAmount = 10;
+  string checkoutId = 11;
+  int64 streamId = 12;
+  bool isLive = 13;
+  int64 hcpId = 14;
+}
+
+message GoToPaymentsEvent {
+  int64 productId = 6;
+  string checkoutId = 7;
+  string productType = 8;
+  string coupon = 9;
+  float chargeableAmount = 10;
+}
+
+message InitiatePurchaseEvent {
+  bool isBag = 6;
+  int64 productId = 7;
+  string productType = 8;
+  string checkoutId = 9;
+  float chargeableAmount = 10;
+  string coupon = 11;
+  string paymentMethod = 12;
+}
+
+message CompletePurchaseEvent {
+  int64 productId = 5;
+  string productType = 6;
+  string checkoutId = 7;
+  float chargeableAmount = 8;
+  string coupon = 9;
+  string paymentMethod = 10;
+  string transactionId = 11;
+  repeated int64 productIds = 12;
+}
+
+message PurchaseFailedEvent {
+  string checkoutId = 7;
+  float chargeableAmount = 8;
+  string reason = 9;
+}
+
+
+message Response {
+  string status = 1;
+  string message = 2;
+}

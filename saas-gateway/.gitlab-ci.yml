@@ -1,0 +1,88 @@
+variables:
+  PORT: 8009
+
+stages:
+  - test
+  - build
+  - deploy_staging
+  - deploy_production
+
+test:
+  stage: test
+  tags:
+    - saas-builder
+  script: echo "Running tests"
+
+build:
+  stage: build
+  variables:
+    GOOS: linux
+    GOARCH: amd64
+  script:
+    - echo "Building SaaS gateway"
+    - env GOOS=$GOOS GOARCH=$GOARCH go build
+  tags:
+    - saas-builder
+  artifacts:
+    paths:
+      - .env
+      - .env.local
+      - .env.stage
+      - .env.production
+      - saas-gateway
+      - scripts/start.sh
+    expire_in: 1 week
+  only:
+    - master
+    - staging
+
+deploy_staging:
+  stage: deploy_staging
+  variables:
+    ENV: STAGE
+    GIT_STRATEGY: none
+    GOGC: 250
+  script:
+    - /bin/bash scripts/start.sh
+  tags:
+    - deployer-stage-search
+  environment:
+    name: STAGE
+  when: manual
+  only:
+    - master
+    - staging
+
+
+deploy_prod_1:
+  stage: deploy_production
+  variables:
+    ENV: PRODUCTION
+    GIT_STRATEGY: none
+    GOGC: 250
+  script:
+    - /bin/bash scripts/start.sh
+  tags:
+    - cb1-1
+  environment:
+    name: PRODUCTION
+  when: manual
+  only:
+    - master
+
+
+deploy_prod_2:
+  stage: deploy_production
+  variables:
+    ENV: PRODUCTION
+    GIT_STRATEGY: none
+    GOGC: 250
+  script:
+    - /bin/bash scripts/start.sh
+  tags:
+    - cb2-1
+  environment:
+    name: PRODUCTION
+  when: manual
+  only:
+    - master

@@ -1,0 +1,16 @@
+stages:
+  - deploy_prod
+
+deploy_prod:
+  stage: deploy_prod
+  variables:
+    ENV: prod
+  script:
+    - /bin/bash scripts/start.sh
+  tags:
+    - beat-deployer-1
+  environment:
+    name: prod
+  when: manual
+  only:
+    - master

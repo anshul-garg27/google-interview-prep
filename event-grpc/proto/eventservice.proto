@@ -1,0 +1,688 @@
+syntax = "proto3";
+
+option go_package = "proto/go/bulbulgrpc";
+
+option java_multiple_files = true;
+option java_package = "com.bulbul.grpc.event";
+option java_outer_classname = "BulbulGrpc";
+
+package event;
+
+// Event service definition.
+service EventService {
+  // Sends app events
+  rpc dispatch(Events) returns (Response) {}
+}
+
+message Events {
+  Header header = 4;
+  repeated Event events = 5;
+}
+
+message Header {
+  string sessionId = 5;
+  int64 bbDeviceId = 6;
+  int64 userId = 7;
+  string deviceId = 8;
+  string androidAdvertisingId = 9;
+  string clientId = 10;
+  string channel = 11;
+  string os = 12;
+  string clientType = 13;
+  string appLanguage = 14;
+  string appVersion = 15;
+  string appVersionCode = 16;
+  string currentURL = 17;
+  string merchantId = 18;
+  string utmReferrer = 19;
+  string utmPlatform = 20;
+  string utmSource = 21;
+  string utmMedium = 22;
+  string utmCampaign = 23;
+  string ppId = 24;
+}
+
+message Event {
+  string id = 4;
+  string timestamp = 5;
+  string currentURL = 6;
+  oneof EventOf {
+    LaunchEvent launchEvent = 9;
+    PageOpenedEvent pageOpenedEvent = 10;
+    PageLoadedEvent pageLoadedEvent = 11;
+    PageLoadFailedEvent pageLoadFailedEvent = 12;
+
+    WidgetViewEvent widgetViewEvent = 13;
+    WidgetCtaClickedEvent widgetCtaClickedEvent = 14;
+
+    WidgetElementViewEvent widgetElementViewEvent = 15;
+    WidgetElementClickedEvent widgetElementClickedEvent = 16;
+
+    EnterPWAProductPageEvent enterPWAProductPageEvent = 17;
+    StreamEnterEvent streamEnterEvent = 18;
+
+    ChooseProductEvent chooseProductEvent = 19;
+
+    PhoneVerificationInitiateEvent phoneVerificationInitiateEvent = 20;
+    PhoneNumberEntered phoneNumberEntered = 21;
+    OTPVerifiedEvent otpVerifiedEvent = 22;
+
+    AddToCartEvent addToCartEvent = 23;
+    GoToPaymentsEvent goToPaymentsEvent = 24;
+    InitiatePurchaseEvent initiatePurchaseEvent = 25;
+    CompletePurchaseEvent completePurchaseEvent = 26;
+
+    SocialStreamEnterEvent socialStreamEnterEvent = 27;
+    SocialStreamActionEvent socialStreamActionEvent = 28;
+    EnterProductEvent enterProductEvent = 29;
+
+    LaunchReferEvent launchReferEvent = 30;
+
+    PurchaseFailedEvent purchaseFailedEvent = 31;
+
+    InitiateSearchEvent initiateSearchEvent = 32;
+    CompleteSearchEvent completeSearchEvent = 33;
+    SearchRequestComplete searchRequestComplete = 34;
+
+    HighlightScreenEnterEvent highlightScreenEnterEvent = 35;
+    HighlightScreenLoadedEvent highlightScreenLoadedEvent = 36;
+    HighlightScreenErrorEvent highlightScreenErrorEvent = 37;
+    HighlightScreenActionEvent highlightScreenActionEvent = 38;
+
+    InitiateReview initiateReview = 39;
+    EnterReviewScreen enterReviewScreen = 40;
+    InitiateReviewMediaUpload initiateReviewMediaUpload = 41;
+    SubmitReview submitReview = 42;
+    EditReview editReview = 43;
+    ViewAllReviews viewAllReviews = 44;
+    ExpandReviewImage expandReviewImage = 45;
+    NudgeForReview nudgeForReview = 46;
+
+    SessionIdChangeEvent SessionIdChangeEvent = 47;
+
+    CheckDeliveryInfoEvent checkDeliveryInfoEvent = 48;
+    PDPTagClickEvent pdpTagClickEvent = 49;
+    ActionBarBagCLickEvent actionBarBagCLickEvent = 50;
+    PDPActionEvent pdpActionEvent = 51;
+
+    ProfileActionEvent profileActionEvent = 52;
+    BadgeClickEvent badgeClickEvent = 53;
+    HashTagClickEvent hashTagClickEvent = 54;
+
+    WhatsAppBuddyChatOpen whatsAppBuddyChatOpen = 55;
+    HeaderSearchBarClick headerSearchBarClick = 56;
+    HeaderCartIconClick headerCartIconClick = 57;
+
+    HelpActionEvent helpActionEvent = 58;
+    AppStartEvent appStartEvent = 59;
+
+    ReturnExchangeFlowActionEvent returnExchangeFlowActionEvent = 60;
+    TestEvent testEvent = 61;
+
+    NotificationActionEvent notificationActionEvent = 62;
+
+    AffiliateActionEvent affiliateActionEvent = 63;
+    HostActionEvent hostActionEvent = 64;
+  }
+}
+
+message RecoInfo {
+  string model = 5;
+  string personaType = 6;
+  string personaValue = 7;
+  string bucketLabel = 8;
+
+  map<string, string> recoInfoKV = 9;
+}
+
+message LaunchEvent {
+  string dynamicLink = 6;
+  int64 appLaunchCount = 7;
+}
+
+message LaunchReferEvent {
+  string dynamicLink = 6;
+
+  string utmSource = 7;
+  string utmMedium = 8;
+  string utmCampaign = 9;
+
+  string deepLink = 10;
+  string androidDeepLink = 11;
+}
+
+message PageOpenedEvent {
+  string pageQueryId = 5; //slug
+}
+
+message PageLoadedEvent {
+  string pageQueryId = 5; //slug
+  string backendVariant = 6;
+  string backendSourceType = 7;
+  string backendSource = 8;
+}
+
+message PageLoadFailedEvent {
+  string pageQueryId = 5;
+  string reason = 6;
+  string errorMessageShown = 7;
+}
+
+// thumbnail
+// horizontal
+message WidgetViewEvent {
+  string variantName = 4;
+  string widgetType = 5;
+  int64 elementCount = 6;
+  int64 pageSlot = 7;
+  string widgetId = 8;
+
+  RecoInfo recoInfo = 9;
+
+  string title = 10;
+  string subTitle = 11;
+  string label = 12;
+
+  string elementType = 14;
+  bool hasCTA = 15;
+
+  string source = 16;
+  string sourceIdentifier = 17;
+
+  string pageSlug = 18;
+
+  string widgetDataId = 19; // id of social stream or product like that
+
+  string headerVariantName = 21;
+  string footerVariantName = 22;
+
+  map<string, string> recoInfoKV = 23;
+
+  int64 pageNo = 24;
+
+  bool isAffiliateProduct=25;
+  string affiliatePartnerName=26;
+
+  string query = 27;
+
+  int32 position = 28;
+}
+
+message WidgetCtaClickedEvent {
+  string variantName = 4;
+  string widgetType = 5;
+  int64 elementCount = 6;
+  int64 pageSlot = 7;
+  string widgetId = 8;
+
+  RecoInfo recoInfo = 9;
+
+  string title = 10;
+  string subTitle = 11;
+  string label = 12;
+
+  string actionLink = 13;
+
+  string elementType = 14;
+  string ctaText = 15;
+
+  string source = 16;
+  string sourceIdentifier = 17;
+
+  string pageSlug = 18;
+
+  string widgetDataId = 19; // id of social stream or product like that
+
+  string headerVariantName = 21;
+  string footerVariantName = 22;
+
+  map<string, string> recoInfoKV = 23;
+
+  int64 pageNo = 24;
+
+  bool isAffiliateProduct=25;
+  string affiliatePartnerName=26;
+
+  string query = 27;
+}
+
+message WidgetElementViewEvent {
+  string variantName = 4;
+  string widgetType = 5;
+  int64 elementCount = 6;
+  int64 pageSlot = 7;
+  string widgetId = 8;
+  int64 position = 9;
+
+  RecoInfo recoInfo = 11;
+
+  string title = 12;
+  string subTitle = 13;
+  string label = 14;
+  string elementId = 15;
+  string elementType = 16;
+  string fomoText = 17;
+
+  float price = 18;
+
+  string source = 19;
+  string sourceIdentifier = 20;
+
+  string headerVariantName = 21;
+  string footerVariantName = 22;
+
+  string productType = 23;
+
+  string pageSlug = 24;
+
+  map<string, string> parentRecoInfoKV = 25;
+
+  string widgetDataId = 26;
+
+  map<string, string> recoInfoKV = 27;
+
+  int64 pageNo = 28;
+
+  bool isAffiliateProduct=29;
+  string affiliatePartnerName=30;
+
+  string query = 31;
+
+  bool isOOS = 32;
+}
+
+message WidgetElementClickedEvent {
+  string variantName = 4;
+  string widgetType = 5;
+  int64 elementCount = 6;
+  int64 pageSlot = 7;
+  string widgetId = 8;
+  int64 position = 9;
+
+  RecoInfo recoInfo = 11;
+
+  string title = 12;
+  string subTitle = 13;
+  string label = 14;
+  string elementId = 15;
+  string elementType = 16; // STREAM, PRODUCT, DIGITAL_PRODUCT, HOST_PROFILE, BANNER
+  string fomoText = 17;
+
+  float price = 18;
+
+  string source = 19;
+  string sourceIdentifier = 20;
+
+  string headerVariantName = 21;
+  string footerVariantName = 22;
+
+  string productType = 23;
+
+  string pageSlug = 24;
+
+  map<string, string> parentRecoInfoKV = 25;
+
+  string widgetDataId = 26;
+
+  map<string, string> recoInfoKV = 27;
+
+  int64 pageNo = 28;
+
+  bool isAffiliateProduct=29;
+  string affiliatePartnerName=30;
+
+  string query = 31;
+
+  bool isOOS = 32;
+}
+
+message EnterPWAProductPageEvent {
+  int64 productId = 5;
+  string productType = 6;
+  string hcpId = 7;
+  string affiliateChannel = 8;
+  string productName = 9;
+}
+
+message EnterProductEvent {
+  int64 productId = 5;
+  string productType = 6;
+  string subCategoryId = 7;
+  string categoryId = 8;
+  int64 socialStreamId = 9;
+  string productName = 10;
+  bool defaultSelectionOn = 11;
+  bool isOOS = 12;
+  string slug = 13;
+  string screenState = 14;
+}
+
+message SocialStreamEnterEvent {
+  int64 socialStreamId = 5;
+  string title = 6;
+  string hostProfileType = 7;
+  string socialNetwork = 8;
+  string videoOrientation = 9;
+  string streamingMode = 10;
+  int64 numberOfHashTags = 11;
+  int64 likeCount = 12;
+  bool orderOnlyOnWhatsapp = 13;
+}
+
+message SocialStreamActionEvent {
+  int64 socialStreamId = 5;
+  string actionType = 6; // play, pause, mute, unmute, skip, forward, like, share, comment, completed, repeated, watched, fullscreen, exit_fullscreen
+  string hostProfileType = 7;
+  string title = 8;
+  string socialNetwork = 9;
+  string videoOrientation = 10;
+  int64 timeElapsed = 11;
+  string streamingMode = 12;
+  int64 totalVideoDuration = 13;
+}
+
+message StreamEnterEvent {
+  int64 streamId = 5;
+  string streamTitle = 6;
+  string streamDescription = 7;
+  bool isLive = 8;
+  repeated int64 productIds = 9;
+  string sourceURL = 10;
+  string sourceComponent = 11;
+}
+
+message ChooseProductEvent {
+  int64 streamId = 5;
+  string streamTitle = 6;
+  string streamDescription = 7;
+  bool isLive = 8;
+  repeated int64 productIds = 9;
+}
+
+message PhoneVerificationInitiateEvent {
+  string sourceAction = 5;
+  string loginFlow = 6;
+}
+
+message PhoneNumberEntered {
+  bool isNewUser = 5;
+  int64 phoneNumber = 8;
+}
+
+message OTPVerifiedEvent {
+  string profileName = 6;
+  bool isNewUser = 7;
+  int64 phoneNumber = 8;
+  string loginFlow = 9; // login vs signup
+  string requestId = 10;
+}
+
+message AddToCartEvent {
+  int64 productId = 5;
+  string productType = 6;
+  int64 variantId = 7; // sku id
+  int32 quantity = 8;
+  int32 chargeableAmount = 10;
+  string checkoutId = 11; // does not exist here, ignore
+  int64 streamId = 12;
+  bool isLive = 13;
+  int64 hcpId = 14;
+  string cartId = 15;
+  string checkoutType = 16;
+}
+
+message GoToPaymentsEvent {
+  int64 productId = 6;
+  string checkoutId = 7; // ignore karna, nahi hota yahan
+  string productType = 8;
+  string coupon = 9;
+  float chargeableAmount = 10;
+  repeated int64 productIds = 11;
+  string cartId = 12;
+  repeated int64 socialStreamIds = 13;
+}
+
+message InitiatePurchaseEvent {
+  bool isBag = 6;
+  int64 productId = 7;
+  string productType = 8;
+  string checkoutId = 9;
+  float chargeableAmount = 10;
+  string coupon = 11;
+  string paymentMethod = 12;
+  repeated int64 productIds = 13;
+  string cartId = 14;
+  repeated int64 socialStreamIds = 15;
+}
+
+message CompletePurchaseEvent {
+  int64 productId = 5;
+  string productType = 6;
+  string checkoutId = 7;
+  float chargeableAmount = 8;
+  string coupon = 9;
+  string paymentMethod = 10;
+  string transactionId = 11;
+  repeated int64 productIds = 12;
+  string cartId = 13;
+  repeated int64 socialStreamIds = 14;
+}
+
+message PurchaseFailedEvent {
+  string checkoutId = 7; // this is storeOrderId
+  float chargeableAmount = 8;
+  string reason = 9;
+  string cartId = 10;
+}
+
+message HighlightScreenEnterEvent {
+  string id = 4;
+  string creator = 5;
+  string title = 6;
+  string  type = 7;
+  int64 visitCount = 8;
+}
+
+message HighlightScreenLoadedEvent {
+  string id = 4;
+  string creator = 5;
+  string title = 6;
+  string  type = 7;
+  int64 visitCount = 8;
+}
+
+message HighlightScreenErrorEvent {
+  string id = 4;
+  string creator = 5;
+  string title = 6;
+  string  type = 7;
+  int64 visitCount = 8;
+}
+
+message HighlightScreenActionEvent {
+  string id = 4;
+  string creator = 5;
+  string title = 6;
+  string  type = 7;
+  int64 visitCount = 8;
+  string actionType = 9;
+}
+
+// initiate search
+message InitiateSearchEvent {
+  string method = 4; // voice, keyboard
+}
+
+// search request complete
+message SearchRequestComplete {
+  string query = 4;
+  int32 responseCount = 5;
+  string method = 6; // voice, keyboard
+}
+
+// complete search
+message CompleteSearchEvent {
+  string query = 4;
+  string method = 5; // voice, keyboard
+  string actionPath = 6; // pressed_enter
+}
+
+message NudgeForReview {
+  string productId = 4;
+  string orderId = 5;
+}
+message InitiateReview{
+  string productId = 4;
+  string orderId = 5;
+}
+message EnterReviewScreen{
+  string productId = 4;
+  string orderId = 5;
+}
+message InitiateReviewMediaUpload{
+  string productId = 4;
+  string orderId = 5;
+}
+message SubmitReview{
+  string rating = 4;
+  string reviewText0 = 5;
+  string reviewText1 = 6;
+  bool mediaCountUploaded = 7;
+}
+message EditReview{
+  string productId = 4;
+  string orderId = 5;
+  string reviewId = 6;
+}
+message ViewAllReviews{
+  string productId = 4;
+}
+message ExpandReviewImage{
+  string componentName = 4;
+}
+
+
+message SessionIdChangeEvent {
+  string oldSessionId = 4;
+  string newSessionId = 5;
+}
+
+message CheckDeliveryInfoEvent {
+  string actionInstance = 4; // submit, success, error
+  int64 pincode = 5;
+}
+
+message PDPTagClickEvent {
+  string slug = 4;
+  string tagText = 5;
+  string tagId = 6;
+  int64 productId = 7;
+  string productType = 8;
+  string subCategoryId = 9;
+  string categoryId = 10;
+  int64 socialStreamId = 11;
+  string productName = 12;
+  bool defaultSelectionOn = 13;
+  bool isOOS = 14;
+  string screenState = 15;
+}
+
+message ActionBarBagCLickEvent {
+  string screen = 4;
+  bool redDot = 5;
+}
+
+message PDPActionEvent {
+  string slug = 4;
+  string action = 5;
+  int64 productId = 6;
+  string productType = 7;
+  string subCategoryId = 8;
+  string categoryId = 9;
+  int64 socialStreamId = 10;
+  string productName = 11;
+  bool defaultSelectionOn = 12;
+  bool isOOS = 13;
+  string screenState = 14;
+}
+
+message ProfileActionEvent{
+  string action = 4;
+}
+
+message BadgeClickEvent{
+  string name = 4;
+  string screen = 5;
+}
+
+message Response {
+  string status = 1;
+  string message = 2;
+}
+
+message HashTagClickEvent {
+  string hashtag = 4;
+  string url = 5;
+  string parentId = 6;
+  string parentType = 7;
+}
+
+
+message WhatsAppBuddyChatOpen {
+    string source = 4;
+}
+
+message HeaderSearchBarClick {
+    string source = 4;
+}
+
+message HeaderCartIconClick {
+    string source = 4;
+}
+
+message AppStartEvent {
+  string action = 4;
+  string error = 5;
+  bool isBlocking = 6;
+}
+
+message HelpActionEvent {
+  string source = 4;
+  string action = 5;
+}
+
+message ReturnExchangeFlowActionEvent {
+  string type = 4;
+  string action = 5;
+  int64 step = 6;
+  int64 existingAccountCount = 7;
+  string reason = 8;
+}
+
+message TestEvent {
+  string testParam1 = 4;
+  int64 testParam2 = 5;
+}
+
+message NotificationActionEvent{
+  string action = 4;
+  string deeplink = 5;
+  string type = 6;
+  bool isInAppNotification = 7;
+  string utmMedium = 8;
+  string utmCampaign = 9;
+  string utmSource = 10;
+  string title = 11;
+  string subtitle = 12;
+}
+
+message AffiliateActionEvent{
+  string action = 4;
+  string reason = 5;
+  string url = 6;
+}
+
+message HostActionEvent{
+  string action = 4;
+  string hostPpid = 5;
+}

@@ -1,0 +1,9 @@
+PLATFORM = 'platform'
+PLATFORM_ORDER_ID = 'platform_order_id'
+STATUS = 'status'
+NAME = 'name'
+STORE = 'store'
+LANDING_SITE = 'landing_site'
+ORDER_DATA = 'order_data'
+UTM_PARAMS = "utm_params"
+STORE_NAME = "store_name"

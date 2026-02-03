@@ -1,0 +1,88 @@
+{{ config(materialized = 'table', tags=["daily"], order_by='reterived_followers') }}
+with creator_follower_data as (select handle,
+                                      follower_handle,
+                                      follower_full_name,
+                                      max(symbolic_name)                     as symbolic_name,
+                                      max(fake_real_based_on_lang)           as fake_real_based_on_lang,
+                                      max(transliterated_follower_name)      as transliterated_follower_name,
+                                      max(decoded_name)                      as decoded_name,
+                                      max(cleaned_handle)                    as cleaned_handle,
+                                      max(cleaned_name)                      as cleaned_name,
+                                      max(chhitij_logic)                     as chhitij_logic,
+                                      max(number_handle)                     as number_handle,
+                                      max(number_more_than_4_handle)         as number_more_than_4_handle,
+                                      max(similarity_score)                  as similarity_score,
+                                      max(fake_real_based_on_fuzzy_score_90) as fake_real_based_on_fuzzy_score_90,
+                                      max(process1_)                         as process1_,
+                                      max(final_)                            as final_,
+                                      max(numeric_handle)                    as numeric_handle,
+                                      max(indian_name_score)                 as indian_name_score,
+                                      max(score_80)                          as score_80
+                               from dbt.creator_followers_fake_analysis
+                               group by handle, follower_handle, follower_full_name),
+     duplicate as (select handle, cleaned_name, count(*) count
+                   from creator_follower_data
+                   group by handle, cleaned_name),
+     follower_data as (select cffa.handle,
+                              d.handle,
+                              cffa.cleaned_name,
+                              d.cleaned_name,
+                              cffa.follower_handle,
+                              cffa.follower_full_name,
+                              cffa.symbolic_name,
+                              cffa.fake_real_based_on_lang,
+                              cffa.transliterated_follower_name,
+                              cffa.decoded_name,
+                              cffa.cleaned_handle,
+                              cffa.chhitij_logic,
+                              cffa.number_handle,
+                              cffa.number_more_than_4_handle,
+                              cffa.similarity_score,
+                              cffa.fake_real_based_on_fuzzy_score_90,
+                              cffa.process1_,
+                              cffa.final_,
+                              cffa.numeric_handle,
+                              cffa.indian_name_score,
+                              cffa.score_80,
+                              d.count,
+                              if(d.count > 3, 1, 0)  duplicate_more_than_3,
+                              if(d.count > 5, 1, 0)  duplicate_more_than_5,
+                              if(d.count > 10, 1, 0) duplicate_more_than_10
+                       from creator_follower_data cffa
+                                left join duplicate d on d.handle = cffa.handle and d.cleaned_name = cffa.cleaned_name)
+select handle,
+       count(*)                                                          reterived_followers,
+       max(sbia.followers)                                               total_followers,
+       countIf(chhitij_logic, chhitij_logic = 1)                         c_fake,
+       countIf(chhitij_logic, chhitij_logic = 0)                         c_real,
+       countIf(chhitij_logic, chhitij_logic = 2)                         c_unknown,
+       countIf(number_more_than_4_handle, number_more_than_4_handle = 1) number_more_than_4_handle_fake,
+       countIf(number_more_than_4_handle, number_more_than_4_handle = 0) number_more_than_4_handle_real,
+       countIf(fake_real_based_on_fuzzy_score_90,
+               fake_real_based_on_fuzzy_score_90 = 1)                    fake_real_based_on_fuzzy_score_90_fake,
+       countIf(fake_real_based_on_fuzzy_score_90,
+               fake_real_based_on_fuzzy_score_90 = 0)                    fake_real_based_on_fuzzy_score_90_real,
+       countIf(process1_, process1_ = 1)                                 process1_fake,
+       countIf(process1_, process1_ = 0)                                 process1_real,
+       countIf(final_, final_ = 1) + countIf(final_, final_ == 0.33) / 3 finall_fake,
+       countIf(final_, final_ = 0)                                       final_real,
+       countIf(duplicate_more_than_3, duplicate_more_than_3 = 1)         duplicate_more_than_3_fake,
+       countIf(duplicate_more_than_3, duplicate_more_than_3 = 0)         duplicate_more_than_3_real,
+       countIf(duplicate_more_than_5, duplicate_more_than_5 = 1)         duplicate_more_than_5_fake,
+       countIf(duplicate_more_than_5, duplicate_more_than_5 = 0)         duplicate_more_than_5_real,
+       countIf(duplicate_more_than_10, duplicate_more_than_10 = 1)       duplicate_more_than_10_fake,
+       countIf(duplicate_more_than_10, duplicate_more_than_10 = 0)       duplicate_more_than_10_real,
+       countIf(score_80, score_80 = 1)                                   follower_count_with_sore_greater_than_80,
+       avg(indian_name_score)                                            avg_of_evaluation_score,
+       (finall_fake / reterived_followers) * 100                         final_fake_reterived_follower_ratio,
+       (duplicate_more_than_5_fake / reterived_followers) * 100          duplicate_more_than_5_reterived_follower_ratio,
+       (duplicate_more_than_10_fake / reterived_followers) * 100         duplicate_more_than_10_reterived_follower_ratio,
+       (100 - avg_of_evaluation_score) * 3 + duplicate_more_than_5_reterived_follower_ratio +
+       final_fake_reterived_follower_ratio                               final_score,
+       (100 - avg_of_evaluation_score) * 3 + duplicate_more_than_10_reterived_follower_ratio +
+       final_fake_reterived_follower_ratio                               final_score_new
+from follower_data
+         left join dbt.stg_beat_instagram_account sbia on follower_data.handle = sbia.handle
+group by handle
+order by reterived_followers desc
+SETTINGS max_bytes_before_external_group_by = 40000000000, max_bytes_before_external_sort = 40000000000
