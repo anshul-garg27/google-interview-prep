@@ -1,0 +1,206 @@
+%-------------------------
+% Resume - Anshul Garg
+% Fixed & Enhanced Version
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+% --- Packages (cleaned up: removed conflicts and unused imports) ---
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{xcolor}  % xcolor only (removed conflicting 'color' package)
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+\input{glyphtounicode}
+
+% --- Enable a clean sans-serif font (ATS-safe) ---
+\usepackage[default]{sourcesanspro}
+
+% --- Colors ---
+\definecolor{title}{HTML}{1D76E2}
+\definecolor{primary}{HTML}{2b2b2b}
+\definecolor{headings}{HTML}{6A6A6A}
+\definecolor{subheadings}{HTML}{333333}
+
+% --- Page Style ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% --- Margins (symmetric) ---
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.6in}
+\addtolength{\textwidth}{1.2in}
+\addtolength{\topmargin}{-0.7in}
+\addtolength{\textheight}{1.6in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% --- Section Formatting ---
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{title}\titlerule \vspace{-5pt}]
+
+% --- ATS Parsability ---
+\pdfgentounicode=1
+
+%-------------------------
+% Custom Commands
+%-------------------------
+\newcommand{\resumeItem}[1]{
+  \item\small{{#1 \vspace{-2pt}}}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{\small #2} \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{1.0\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \textbf{\small #2}\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%
+%-------------------------------------------
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\Huge \scshape Anshul Garg} \\ \vspace{2pt}
+    \small Bengaluru, Karnataka \\ \vspace{3pt}
+    \small
+    \href{tel:+918560826690}{\faPhone\ +91-8560826690}\,|\,
+    \href{mailto:anshulgarg.garg509@gmail.com}{\faEnvelope\ anshulgarg.garg509@gmail.com}\,|\,
+    \href{https://anshul-garg27.github.io/}{\faGlobe\ anshul-garg27.github.io}\,|\,
+    \href{https://in.linkedin.com/in/anshullkgarg}{\faLinkedin\ anshullkgarg}\,|\,
+    \href{https://github.com/anshul-garg27}{\faGithub\ anshul-garg27}
+    \vspace{-8pt}
+\end{center}
+
+%----------SUMMARY----------
+\section{\textcolor{title}{Summary}}
+\small{Backend Software Engineer with 3.5+ years of experience building scalable microservices, real-time data platforms, and distributed systems across fintech and SaaS domains. Proficient in Java, Python, and Go with deep expertise in performance optimization, zero-downtime migrations, and high-throughput event processing. Proven impact at scale --- led systems handling 2M+ daily events, 10M+ data points, and integrations adopted by 12+ engineering teams.}
+
+\vspace{-0.3cm}
+
+%----------WORK EXPERIENCE----------
+\section{\textcolor{title}{Work Experience}}
+\vspace{-5pt}
+\resumeSubHeadingListStart
+
+    \resumeProjectHeading
+      {\textbf{Walmart} (NRT -- Data Venture) $|$ \emph{Software Engineer III}}{Jun 2024 -- Present}
+    \resumeItemListStart
+        \resumeItem{Engineered a high-throughput, Kafka-based audit logging system processing \textbf{2M+ events daily}; delivered as a reusable JAR library adopted by \textbf{12+ teams} for real-time API request/response monitoring via a single POM dependency.}
+        \resumeItem{Built a notification system for Direct-Shipment-Delivery (DSD) suppliers, automating alerts to \textbf{1,200+ Walmart associates across 300+ stores}, improving stock replenishment timing by \textbf{35\%}.}
+        \resumeItem{Led migration to \textbf{Spring Boot 3 and Java 17}, resolving critical CVEs and managing backward compatibility, library deprecations, and dependency conflicts with \textbf{zero downtime}.}
+        \resumeItem{Revamped all NRT application controllers using a design-first approach with \textbf{OpenAPI Specification}, reducing integration overhead by \textbf{30\%}.}
+    \resumeItemListEnd
+    \vspace{-13pt}
+
+    \resumeProjectHeading
+      {\textbf{Good Creator Co.} (SaaS Social Media Analytics Platform) $|$ \emph{Software Engineer I}}{Feb 2023 -- May 2024}
+    \resumeItemListStart
+        \resumeItem{Designed an asynchronous data processing system handling \textbf{10M+ daily data points}, improving real-time insights delivery and reducing \textbf{API response times by 25\%} with \textbf{30\% operational cost savings}.}
+        \resumeItem{Built a high-performance logging pipeline with \textbf{RabbitMQ, Python, and Go}, migrating to \textbf{ClickHouse} for a \textbf{2.5x reduction} in log retrieval times supporting \textbf{billions of records}.}
+        \resumeItem{Streamlined ETL pipelines using \textbf{Apache Airflow} and \textbf{DBT} for batch ingestion and data-mart updates, \textbf{cutting data latency by 50\%}.}
+        \resumeItem{Built an \textbf{AWS S3-based asset upload system} processing \textbf{8M images daily} with optimized infrastructure costs.}
+        \resumeItem{Developed real-time Genre Insights and Keyword Analytics modules, \textbf{driving 10\% user engagement growth} through actionable social media intelligence.}
+    \resumeItemListEnd
+    \vspace{-13pt}
+
+    \resumeProjectHeading
+      {\textbf{PayU} (API Lending) $|$ \emph{Software Engineer I}}{Jul 2022 -- Feb 2023}
+    \resumeItemListStart
+        \resumeItem{\textbf{Scaled business operations by 40\%} by enabling multi-source loan access post-disbursal, expanding lending partnerships.}
+        \resumeItem{Reduced loan disbursal journey error rate from \textbf{4.6\% to under 0.3\%} through partner onboarding and process optimization.}
+        \resumeItem{Optimized API responsiveness, cutting loan-disbursal \textbf{TAT from 3.2 minutes to 1.1 minutes} using \textbf{Java} and \textbf{Spring Boot}.}
+    \resumeItemListEnd
+    \vspace{-13pt}
+
+    \resumeProjectHeading
+      {\textbf{PayU} $|$ \emph{Software Engineer Intern}}{Jan 2022 -- Jul 2022}
+    \resumeItemListStart
+        \resumeItem{Refactored the Loan Origination System (LOS) in Java, boosting \textbf{unit test coverage from 30\% to 83\%} and reducing production bugs.}
+        \resumeItem{Automated code quality gates by integrating \textbf{SonarQube and GitHub Actions}, increasing code coverage by \textbf{20\%}.}
+        \resumeItem{Implemented \textbf{Flyway DB migrations}, reducing deployment errors by \textbf{90\%} and doubling release frequency.}
+    \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+\vspace{-8pt}
+
+%----------TECHNICAL SKILLS----------
+\section{\textcolor{title}{Technical Skills}}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+        \textbf{Languages}{: Java, Python, Go, C++, Shell Scripting} \\
+        \textbf{Backend Frameworks}{: Spring Boot 3, Hibernate, JPA, Django, FastAPI} \\
+        \textbf{Databases}{: PostgreSQL, MySQL, Azure Cosmos DB, ClickHouse, Redis} \\
+        \textbf{Infrastructure \& Tools}{: Kubernetes, Docker, Kafka, Apache Airflow, DBT, Jenkins, Ansible, ELK Stack, Grafana, Prometheus, AWS, Git} \\
+    }}
+\end{itemize}
+\vspace{-13pt}
+
+%----------EDUCATION----------
+\section{\textcolor{title}{Education}}
+\resumeSubHeadingListStart
+    \resumeSubheading
+      {International Institute of Information Technology, Bangalore}{Aug 2020 -- Jun 2022}
+      {Master of Technology, Computer Science and Engineering}{}
+    \resumeSubheading
+      {Swami Keshvanand Institute of Technology, Jaipur}{Aug 2015 -- May 2019}
+      {Bachelor of Technology, Computer Science and Engineering}{}
+\resumeSubHeadingListEnd
+
+%----------ACHIEVEMENTS----------
+\section{\textcolor{title}{Achievements \& Leadership}}
+\resumeSubHeadingListStart
+    \resumeItemListStart
+        \resumeItem{Secured \textbf{AIR 1343} in GATE (98.6 percentile) among 100,000+ candidates in Computer Science \& Engineering.}
+        \resumeItem{Mentored \textbf{50+ students} as Teaching Assistant for \textbf{CS-816 Software Production Engineering} at IIIT-B, covering CI/CD, version control, and production deployments.}
+        \resumeItem{Led the \textbf{Infinite Cultural Fest} at IIIT-B (\textbf{500+ attendees}), managing event planning, logistics, and cross-team coordination.}
+        \resumeItem{Designed and led diversity \& inclusion workshops at IIIT-B, fostering a more inclusive campus environment.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+\end{document}

@@ -1,0 +1,270 @@
+%-------------------------
+% Resume - Anshul Garg
+% V2: Design-Enhanced Edition
+% Color system, typography, spacing, visual hierarchy — all overhauled
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+%=============================================================================
+% PACKAGES
+%=============================================================================
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+\usepackage{soul}            % For letterspacing
+\usepackage{microtype}       % Improved text rendering (kerning, protrusion)
+\input{glyphtounicode}
+
+%=============================================================================
+% FONT — Source Sans Pro (clean, modern, ATS-safe)
+%=============================================================================
+\usepackage[default,light]{sourcesanspro}
+\usepackage[T1]{fontenc}
+
+%=============================================================================
+% COLOR SYSTEM — Sophisticated navy + teal accent palette
+%=============================================================================
+% Primary: Deep navy for section titles and headers — authoritative, not generic
+\definecolor{primary}{HTML}{0D4F8B}
+% Accent: Teal for icons and subtle highlights — adds warmth and personality
+\definecolor{accent}{HTML}{2B7A78}
+% Body text: Soft black — easier on eyes than pure black, better for print
+\definecolor{bodytext}{HTML}{2D2D2D}
+% Muted: For dates, secondary info — pushes them to background
+\definecolor{muted}{HTML}{5A5A5A}
+% Light muted: For separators and very secondary elements
+\definecolor{lightmuted}{HTML}{8A8A8A}
+% Links: Dark navy — visible on screen, near-black on print
+\definecolor{linkblue}{HTML}{0D4F8B}
+
+%=============================================================================
+% HYPERLINKS — Visible but elegant (not hidden, not loud)
+%=============================================================================
+\usepackage[colorlinks=true, urlcolor=linkblue, linkcolor=linkblue, pdfborder={0 0 0}]{hyperref}
+
+%=============================================================================
+% PAGE STYLE
+%=============================================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+%=============================================================================
+% MARGINS — Symmetric, optimized for single-page density
+%=============================================================================
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.6in}
+\addtolength{\textwidth}{1.2in}
+\addtolength{\topmargin}{-0.65in}
+\addtolength{\textheight}{1.55in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+
+% Apply body text color globally
+\color{bodytext}
+
+%=============================================================================
+% SECTION FORMATTING — Uppercase + letterspaced + colored rule
+%=============================================================================
+\titleformat{\section}{
+  \vspace{-6pt}\color{primary}\scshape\raggedright\normalsize\bfseries\uppercase
+}{}{0em}{}[\color{primary}\rule{\textwidth}{0.8pt}\vspace{-6pt}]
+
+%=============================================================================
+% ATS PARSABILITY
+%=============================================================================
+\pdfgentounicode=1
+
+%=============================================================================
+% CUSTOM COMMANDS
+%=============================================================================
+
+% --- Bullet item ---
+\newcommand{\resumeItem}[1]{
+  \item\small{\color{bodytext}{#1}\vspace{-1.5pt}}
+}
+
+% --- Role heading (Company + Role + Dates) ---
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{\color{bodytext}#1} & {\small\color{muted} #2} \\
+      {\small\color{muted}\textit{#3}} & {\small\color{muted}\textit{#4}} \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+% --- Project/role heading (more compact) ---
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{1.0\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & {\small\color{muted} #2}\\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      {\small\color{muted}\textit{#1}} & {\small\color{muted}\textit{#2}} \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-3pt}}
+
+% --- Bullet style: small filled circle (visible but not heavy) ---
+\renewcommand\labelitemi{\color{accent}\footnotesize$\bullet$}
+\renewcommand\labelitemii{\color{accent}\footnotesize$\bullet$}
+
+% --- List wrappers ---
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
+
+% --- Contact separator ---
+\newcommand{\sep}{\enspace{\color{lightmuted}\textbullet}\enspace}
+
+% --- Skill category formatting ---
+\newcommand{\skillcat}[2]{\textbf{\color{primary}#1}{: #2}}
+
+%=============================================================================
+%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%=============================================================================
+
+\begin{document}
+
+%=============================================================================
+% HEADER
+%=============================================================================
+\begin{center}
+    {\fontsize{24pt}{28pt}\selectfont\bfseries\color{primary} Anshul Garg}
+    \\[4pt]
+    {\small\color{muted} Bengaluru, Karnataka}
+    \\[4pt]
+    \small
+    \href{tel:+918560826690}{{\color{accent}\faPhone}\enspace+91-8560826690}%
+    \sep%
+    \href{mailto:anshulgarg.garg509@gmail.com}{{\color{accent}\faEnvelope}\enspace anshulgarg.garg509@gmail.com}%
+    \sep%
+    \href{https://anshul-garg27.github.io/}{{\color{accent}\faGlobe}\enspace anshul-garg27.github.io}%
+    \sep%
+    \href{https://in.linkedin.com/in/anshullkgarg}{{\color{accent}\faLinkedin}\enspace anshullkgarg}%
+    \sep%
+    \href{https://github.com/anshul-garg27}{{\color{accent}\faGithub}\enspace anshul-garg27}%
+    \vspace{-6pt}
+\end{center}
+
+%=============================================================================
+% SUMMARY
+%=============================================================================
+\section{Summary}
+\small\color{bodytext}
+Backend Software Engineer with 3.5+ years of experience building scalable microservices, real-time data platforms, and distributed systems across fintech and SaaS domains. Proficient in Java, Python, and Go with deep expertise in performance optimization, zero-downtime migrations, and high-throughput event processing. Proven impact at scale --- led systems handling 2M+ daily events, 10M+ data points, and integrations adopted by 12+ engineering teams.
+
+\vspace{-2pt}
+
+%=============================================================================
+% WORK EXPERIENCE
+%=============================================================================
+\section{Work Experience}
+\vspace{-4pt}
+\resumeSubHeadingListStart
+
+    \resumeProjectHeading
+      {\textbf{Walmart} {\color{muted}(NRT -- Data Venture)} \enspace{\color{lightmuted}\textbar}\enspace \emph{\color{muted}Software Engineer III}}{Jun 2024 -- Present}
+    \resumeItemListStart
+        \resumeItem{Engineered a high-throughput, Kafka-based audit logging system processing \textbf{2M+ events daily}; delivered as a reusable JAR library adopted by \textbf{12+ teams} for real-time API request/response monitoring via a single POM dependency.}
+        \resumeItem{Built a notification system for Direct-Shipment-Delivery (DSD) suppliers, automating alerts to \textbf{1,200+ associates across 300+ stores}, improving stock replenishment timing by \textbf{35\%}.}
+        \resumeItem{Led migration to \textbf{Spring Boot 3 and Java 17}, resolving critical CVEs and managing backward compatibility, library deprecations, and dependency conflicts with \textbf{zero downtime}.}
+        \resumeItem{Revamped all NRT application controllers using a design-first approach with \textbf{OpenAPI Specification}, reducing integration overhead by \textbf{30\%}.}
+    \resumeItemListEnd
+    \vspace{-10pt}
+
+    \resumeProjectHeading
+      {\textbf{Good Creator Co.} {\color{muted}(SaaS Social Media Analytics)} \enspace{\color{lightmuted}\textbar}\enspace \emph{\color{muted}Software Engineer I}}{Feb 2023 -- May 2024}
+    \resumeItemListStart
+        \resumeItem{Designed an asynchronous data processing system handling \textbf{10M+ daily data points}, improving real-time insights delivery and reducing \textbf{API response times by 25\%} with \textbf{30\% operational cost savings}.}
+        \resumeItem{Built a high-performance logging pipeline with \textbf{RabbitMQ, Python, and Go}, migrating to \textbf{ClickHouse} for a \textbf{2.5x reduction} in log retrieval times supporting \textbf{billions of records}.}
+        \resumeItem{Streamlined ETL pipelines using \textbf{Apache Airflow} and \textbf{DBT} for batch ingestion and data-mart updates, \textbf{cutting data latency by 50\%}.}
+        \resumeItem{Built an \textbf{AWS S3-based asset upload system} processing \textbf{8M images daily} with optimized infrastructure costs.}
+        \resumeItem{Developed real-time Genre Insights and Keyword Analytics modules, \textbf{driving 10\% user engagement growth} through actionable social media intelligence.}
+    \resumeItemListEnd
+    \vspace{-10pt}
+
+    \resumeProjectHeading
+      {\textbf{PayU} {\color{muted}(API Lending)} \enspace{\color{lightmuted}\textbar}\enspace \emph{\color{muted}Software Engineer I}}{Jul 2022 -- Feb 2023}
+    \resumeItemListStart
+        \resumeItem{\textbf{Scaled business operations by 40\%} by enabling multi-source loan access post-disbursal, expanding lending partnerships.}
+        \resumeItem{Reduced loan disbursal journey error rate from \textbf{4.6\% to under 0.3\%} through partner onboarding and process optimization.}
+        \resumeItem{Optimized API responsiveness, cutting loan-disbursal \textbf{TAT from 3.2 min to 1.1 min} using \textbf{Java} and \textbf{Spring Boot}.}
+    \resumeItemListEnd
+    \vspace{-10pt}
+
+    \resumeProjectHeading
+      {\textbf{PayU} \enspace{\color{lightmuted}\textbar}\enspace \emph{\color{muted}Software Engineer Intern}}{Jan 2022 -- Jul 2022}
+    \resumeItemListStart
+        \resumeItem{Refactored the Loan Origination System (LOS) in Java, boosting \textbf{unit test coverage from 30\% to 83\%} and reducing production bugs.}
+        \resumeItem{Automated code quality gates by integrating \textbf{SonarQube and GitHub Actions}, increasing code coverage by \textbf{20\%}.}
+        \resumeItem{Implemented \textbf{Flyway DB migrations}, reducing deployment errors by \textbf{90\%} and doubling release frequency.}
+    \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+\vspace{-6pt}
+
+%=============================================================================
+% TECHNICAL SKILLS
+%=============================================================================
+\section{Technical Skills}
+\vspace{-2pt}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+        \skillcat{Languages}{Java, Python, Go, C++, Shell Scripting} \\[1pt]
+        \skillcat{Backend Frameworks}{Spring Boot 3, Hibernate, JPA, Django, FastAPI} \\[1pt]
+        \skillcat{Databases}{PostgreSQL, MySQL, Azure Cosmos DB, ClickHouse, Redis} \\[1pt]
+        \skillcat{Infrastructure \& Tools}{Kubernetes, Docker, Kafka, Apache Airflow, DBT, Jenkins, Ansible, ELK Stack, Grafana, Prometheus, AWS, Git}
+    }}
+\end{itemize}
+\vspace{-10pt}
+
+%=============================================================================
+% EDUCATION
+%=============================================================================
+\section{Education}
+\resumeSubHeadingListStart
+    \resumeSubheading
+      {International Institute of Information Technology, Bangalore}{Aug 2020 -- Jun 2022}
+      {Master of Technology, Computer Science and Engineering}{}
+    \resumeSubheading
+      {Swami Keshvanand Institute of Technology, Jaipur}{Aug 2015 -- May 2019}
+      {Bachelor of Technology, Computer Science and Engineering}{}
+\resumeSubHeadingListEnd
+\vspace{-2pt}
+
+%=============================================================================
+% ACHIEVEMENTS & LEADERSHIP
+%=============================================================================
+\section{Achievements \& Leadership}
+\resumeSubHeadingListStart
+    \resumeItemListStart
+        \resumeItem{Secured \textbf{AIR 1343} in GATE (98.6 percentile) among 100,000+ candidates in Computer Science \& Engineering.}
+        \resumeItem{Mentored \textbf{50+ students} as Teaching Assistant for \textbf{CS-816 Software Production Engineering} at IIIT-B, covering CI/CD, version control, and production deployments.}
+        \resumeItem{Led the \textbf{Infinite Cultural Fest} at IIIT-B (\textbf{500+ attendees}), managing event planning, logistics, and cross-team coordination.}
+        \resumeItem{Designed and led diversity \& inclusion workshops at IIIT-B, fostering a more inclusive campus environment.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+\end{document}
