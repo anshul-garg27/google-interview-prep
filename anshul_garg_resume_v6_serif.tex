@@ -1,0 +1,258 @@
+%=============================================================================
+% Resume — Anshul Garg
+% V6: Elegant Serif Edition
+%
+% Design Philosophy: Classical Typography meets Modern Content
+% Inspired by Robert Bringhurst, Giambattista Bodoni, book design tradition
+%
+% Principles:
+%   - Palatino (mathpazo) — one of the most readable serif faces ever designed
+%   - Deep burgundy accent — authoritative, warm, distinctive vs. generic blue
+%   - Small caps for section headers — the most elegant emphasis in serif
+%   - Thin hairline rules — structure without weight
+%   - Generous leading (line spacing) — serif text needs more air to breathe
+%   - This resume says: "I am a thoughtful, detail-oriented engineer"
+%   - Optimal for print. Looks like a well-typeset book page.
+%=============================================================================
+
+\documentclass[letterpaper,10.5pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{mathpazo}              % Palatino — designed by Hermann Zapf
+\usepackage[T1]{fontenc}
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+%=============================================================================
+% COLOR SYSTEM — Warm, authoritative
+%
+% Only 3 colors: bodytext + burgundy accent + warm gray
+%   bodytext  #2B2B2B → warm near-black
+%   accent    #7B2D3B → deep burgundy (distinctive, non-generic)
+%   secondary #6B6B6B → warm gray for dates and meta
+%=============================================================================
+\definecolor{bodytext}{HTML}{2B2B2B}
+\definecolor{accent}{HTML}{7B2D3B}
+\definecolor{secondary}{HTML}{6B6B6B}
+
+\usepackage[
+  colorlinks=true,
+  urlcolor=accent,
+  linkcolor=accent,
+  pdfborder={0 0 0}
+]{hyperref}
+
+\hypersetup{
+  pdftitle={Anshul Garg -- Software Engineer},
+  pdfauthor={Anshul Garg},
+  pdfsubject={Resume -- Backend Software Engineer},
+  pdfkeywords={Java, Python, Go, Spring Boot, Kafka, Microservices, Distributed Systems, AWS, Kubernetes}
+}
+
+%=============================================================================
+% PAGE STYLE
+%=============================================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+%=============================================================================
+% MARGINS — Slightly wider for comfortable serif reading
+% Palatino at 10.5pt → ~72 CPL (within Bringhurst optimal range)
+%=============================================================================
+\addtolength{\oddsidemargin}{-0.45in}
+\addtolength{\evensidemargin}{-0.45in}
+\addtolength{\textwidth}{0.9in}
+\addtolength{\topmargin}{-0.6in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\color{bodytext}
+
+% Slightly more leading for serif readability
+\setstretch{1.03}
+
+%=============================================================================
+% SECTION FORMATTING
+% Small caps + thin hairline rule — the most elegant combination in serif
+% The rule is accent-colored but thin (0.4pt) — present but not heavy
+%=============================================================================
+\titleformat{\section}{
+  \vspace{4pt}\color{accent}\raggedright\normalsize\scshape
+}{}{0em}{}[\color{accent}\rule{\textwidth}{0.4pt}\vspace{-4pt}]
+
+%=============================================================================
+% CUSTOM COMMANDS
+%=============================================================================
+\newcommand{\resumeItem}[1]{
+  \item\small{\color{bodytext}#1\vspace{0pt}}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{1.0\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & {\small\color{secondary}#2}\\
+    \end{tabular*}\vspace{-4pt}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{4pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{\color{bodytext}#1} & {\small\color{secondary}#2} \\
+      {\small\color{secondary}\textit{#3}} & {\small\color{secondary}\textit{#4}} \\
+    \end{tabular*}\vspace{-4pt}
+}
+
+\newcommand{\skillrow}[2]{\textsc{\color{accent}#1}\enspace{#2}}
+
+% Bullet: small burgundy diamond — elegant, distinctive
+\renewcommand\labelitemi{\color{accent}\small$\diamond$}
+\renewcommand\labelitemii{\color{accent}\small$\diamond$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.2in, itemsep=0pt, parsep=0pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{0pt}}
+
+\newcommand{\rolesep}{\enspace{\color{secondary}|}\enspace}
+\newcommand{\sep}{\enspace{\color{secondary}\textbullet}\enspace}
+
+%=============================================================================
+\begin{document}
+
+%=============================================================================
+% HEADER — Centered, classical
+% Name in large Palatino with letterspaced small caps feel
+%=============================================================================
+\begin{center}
+    {\fontsize{26pt}{30pt}\selectfont\color{bodytext}Anshul Garg}
+    \\[4pt]
+    {\small\color{secondary}Bengaluru, Karnataka}
+    \\[6pt]
+    \small\color{secondary}
+    \href{tel:+918560826690}{{\color{accent}\faPhone}\enspace+91-8560826690}%
+    \sep%
+    \href{mailto:anshulgarg.garg509@gmail.com}{{\color{accent}\faEnvelope}\enspace anshulgarg.garg509@gmail.com}%
+    \sep%
+    \href{https://anshul-garg27.github.io/}{{\color{accent}\faGlobe}\enspace anshul-garg27.github.io}%
+    \sep%
+    \href{https://in.linkedin.com/in/anshullkgarg}{{\color{accent}\faLinkedin}\enspace anshullkgarg}%
+    \sep%
+    \href{https://github.com/anshul-garg27}{{\color{accent}\faGithub}\enspace anshul-garg27}%
+\end{center}
+\vspace{-6pt}
+
+%=============================================================================
+% SUMMARY
+%=============================================================================
+\section{Summary}
+\small
+Backend Software Engineer with 3.5+ years of experience building scalable microservices, real-time data platforms, and distributed systems across fintech and SaaS domains. Proficient in Java, Python, and Go with deep expertise in performance optimization, zero-downtime migrations, and high-throughput event processing. Proven impact at scale --- systems handling \textbf{2M+ daily events}, \textbf{10M+ data points}, and integrations adopted by \textbf{12+ engineering teams}.
+
+\vspace{-2pt}
+
+%=============================================================================
+% WORK EXPERIENCE
+%=============================================================================
+\section{Work Experience}
+\vspace{-4pt}
+\resumeSubHeadingListStart
+
+    \resumeProjectHeading
+      {\textbf{Walmart}\rolesep Software Engineer III \hfill {\footnotesize\color{secondary}\textit{NRT -- Data Venture}}}{Jun 2024 -- Present}
+    \resumeItemListStart
+        \resumeItem{Processed \textbf{2M+ events daily} via a Kafka-based audit logging system; packaged as a reusable JAR library adopted by \textbf{12+ teams} for real-time API request/response monitoring through a single POM dependency.}
+        \resumeItem{Automated alerts to \textbf{1,200+ associates across 300+ stores} through a DSD supplier notification system, improving stock replenishment timing by \textbf{35\%}.}
+        \resumeItem{Led zero-downtime migration to \textbf{Spring Boot 3 and Java 17}, resolving critical CVEs while managing backward compatibility, library deprecations, and dependency conflicts.}
+        \resumeItem{Reduced integration overhead by \textbf{30\%} by revamping all NRT controllers using a design-first approach with \textbf{OpenAPI Specification}.}
+    \resumeItemListEnd
+    \vspace{4pt}
+
+    \resumeProjectHeading
+      {\textbf{Good Creator Co.}\rolesep Software Engineer I \hfill {\footnotesize\color{secondary}\textit{SaaS Social Media Analytics}}}{Feb 2023 -- May 2024}
+    \resumeItemListStart
+        \resumeItem{Handled \textbf{10M+ daily data points} through an asynchronous processing system, cutting \textbf{API response times by 25\%} and \textbf{operational costs by 30\%}.}
+        \resumeItem{Achieved \textbf{2.5x faster log retrieval} by building a high-performance pipeline with \textbf{RabbitMQ, Python, and Go}, migrating storage to \textbf{ClickHouse} to support \textbf{billions of records}.}
+        \resumeItem{Cut \textbf{data latency by 50\%} by streamlining ETL pipelines using \textbf{Apache Airflow} and \textbf{DBT} for batch ingestion and data-mart updates.}
+        \resumeItem{Processed \textbf{8M images daily} through an \textbf{AWS S3-based} asset upload system with optimized infrastructure costs.}
+        \resumeItem{Drove \textbf{10\% user engagement growth} by developing real-time Genre Insights and Keyword Analytics modules for actionable social media intelligence.}
+    \resumeItemListEnd
+    \vspace{4pt}
+
+    \resumeProjectHeading
+      {\textbf{PayU}\rolesep Software Engineer I \hfill {\footnotesize\color{secondary}\textit{API Lending}}}{Jul 2022 -- Feb 2023}
+    \resumeItemListStart
+        \resumeItem{\textbf{Scaled business operations by 40\%} by enabling multi-source loan access post-disbursal, expanding lending partnerships.}
+        \resumeItem{Reduced disbursal journey errors from \textbf{4.6\% to under 0.3\%} through new partner onboarding and process optimization.}
+        \resumeItem{Cut loan-disbursal \textbf{TAT from 3.2 min to 1.1 min} by optimizing API responsiveness using \textbf{Java} and \textbf{Spring Boot}.}
+    \resumeItemListEnd
+    \vspace{4pt}
+
+    \resumeProjectHeading
+      {\textbf{PayU}\rolesep Software Engineer Intern}{Jan 2022 -- Jul 2022}
+    \resumeItemListStart
+        \resumeItem{Boosted \textbf{unit test coverage from 30\% to 83\%} by refactoring the Loan Origination System in Java, reducing production bugs.}
+        \resumeItem{Increased code coverage by \textbf{20\%} by automating quality gates with \textbf{SonarQube} and \textbf{GitHub Actions}.}
+        \resumeItem{Reduced deployment errors by \textbf{90\%} and doubled release frequency by implementing \textbf{Flyway DB migrations}.}
+    \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+\vspace{-6pt}
+
+%=============================================================================
+% TECHNICAL SKILLS
+%=============================================================================
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}, itemsep=0pt, parsep=0pt]
+    \small{\item{
+        \skillrow{Languages:}{Java, Python, Go, C++, Shell Scripting} \\
+        \skillrow{Frameworks:}{Spring Boot 3, Hibernate, JPA, Django, FastAPI} \\
+        \skillrow{Data:}{PostgreSQL, MySQL, Azure Cosmos DB, ClickHouse, Redis, Kafka, Apache Airflow, DBT} \\
+        \skillrow{Infrastructure:}{Kubernetes, Docker, AWS, Jenkins, Ansible, ELK Stack, Grafana, Prometheus, Git}
+    }}
+\end{itemize}
+\vspace{-6pt}
+
+%=============================================================================
+% EDUCATION
+%=============================================================================
+\section{Education}
+\resumeSubHeadingListStart
+    \resumeSubheading
+      {International Institute of Information Technology, Bangalore}{Aug 2020 -- Jun 2022}
+      {Master of Technology, Computer Science and Engineering}{}
+    \resumeSubheading
+      {Swami Keshvanand Institute of Technology, Jaipur}{Aug 2015 -- May 2019}
+      {Bachelor of Technology, Computer Science and Engineering}{}
+\resumeSubHeadingListEnd
+\vspace{-2pt}
+
+%=============================================================================
+% ACHIEVEMENTS
+%=============================================================================
+\section{Achievements \& Leadership}
+\resumeSubHeadingListStart
+    \resumeItemListStart
+        \resumeItem{Secured \textbf{AIR 1343} in GATE (\textbf{98.6 percentile}) among 100,000+ candidates in Computer Science \& Engineering.}
+        \resumeItem{Mentored \textbf{50+ students} as Teaching Assistant for \textbf{CS-816 Software Production Engineering} at IIIT-B, covering CI/CD pipelines, version control, and production-grade deployments.}
+        \resumeItem{Led the \textbf{Infinite Cultural Fest} at IIIT-B (\textbf{500+ attendees}), managing end-to-end event planning, logistics, and cross-team coordination.}
+        \resumeItem{Designed and facilitated diversity \& inclusion workshops at IIIT-B, fostering a more inclusive campus environment.}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+\end{document}

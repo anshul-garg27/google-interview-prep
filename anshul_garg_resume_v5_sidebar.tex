@@ -1,0 +1,235 @@
+%=============================================================================
+% Resume — Anshul Garg
+% V5: Two-Column Sidebar Edition
+%
+% Design Philosophy: Modern structural layout
+% Inspired by contemporary UI design — card-based, spatial hierarchy
+%
+% Principles:
+%   - Left sidebar (dark) for identity + meta (contact, skills, education)
+%   - Right main column for narrative content (summary, experience)
+%   - Visual separation through color blocks, not lines
+%   - Information density through spatial arrangement
+%   - Sidebar creates a "business card" feel for quick reference
+%   - Main column reads like a focused work narrative
+%=============================================================================
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{microtype}
+\usepackage{tikz}
+\usepackage[default]{sourcesanspro}
+\usepackage[T1]{fontenc}
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+\usepackage[
+  colorlinks=true,
+  urlcolor=white,
+  linkcolor=white,
+  pdfborder={0 0 0}
+]{hyperref}
+
+\hypersetup{
+  pdftitle={Anshul Garg -- Software Engineer},
+  pdfauthor={Anshul Garg},
+  pdfsubject={Resume -- Backend Software Engineer},
+  pdfkeywords={Java, Python, Go, Spring Boot, Kafka, Microservices, Distributed Systems, AWS, Kubernetes}
+}
+
+%=============================================================================
+% COLOR SYSTEM
+%=============================================================================
+\definecolor{sidebar}{HTML}{1B2838}      % Dark charcoal-navy
+\definecolor{sidetext}{HTML}{E8E8E8}     % Light gray for sidebar body
+\definecolor{sideaccent}{HTML}{4ECDC4}   % Teal accent for sidebar
+\definecolor{sidelabel}{HTML}{8899AA}    % Muted label color
+\definecolor{maintext}{HTML}{2D2D2D}     % Main column body text
+\definecolor{mainaccent}{HTML}{0F5289}   % Navy for main column headers
+\definecolor{mainsecondary}{HTML}{646464} % Secondary text in main column
+
+%=============================================================================
+% PAGE STYLE
+%=============================================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Reset all margins to zero, we control layout manually
+\usepackage[left=0in, right=0in, top=0in, bottom=0in]{geometry}
+
+%=============================================================================
+% SIDEBAR SECTION COMMAND
+%=============================================================================
+\newcommand{\sidebarsection}[1]{%
+  {\color{sideaccent}\footnotesize\bfseries\MakeUppercase{#1}}\\[4pt]%
+}
+
+%=============================================================================
+% MAIN COLUMN SECTION COMMAND
+%=============================================================================
+\newcommand{\mainsection}[1]{%
+  \vspace{6pt}%
+  {\color{mainaccent}\normalsize\bfseries #1}%
+  \\[-2pt]%
+  {\color{mainaccent}\rule{0.97\linewidth}{0.5pt}}%
+  \vspace{2pt}%
+}
+
+%=============================================================================
+% MAIN COLUMN COMMANDS
+%=============================================================================
+\newcommand{\jobtitle}[4]{%
+  \vspace{4pt}%
+  \begin{tabular*}{0.97\linewidth}{l@{\extracolsep{\fill}}r}%
+    \small\textbf{\color{maintext}#1}\enspace{\color{mainsecondary}\textbar}\enspace{\color{maintext}#2} & {\small\color{mainsecondary}#3}\\%
+  \end{tabular*}%
+  \ifx&#4&\else{\\\small\color{mainsecondary}\textit{#4}}\fi%
+  \vspace{-4pt}%
+}
+
+\newcommand{\jobitem}[1]{%
+  \item\small{\color{maintext}#1}%
+}
+
+%=============================================================================
+\begin{document}
+
+% Draw sidebar background
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[sidebar] (current page.north west) rectangle ([xshift=2.6in]current page.south west);
+\end{tikzpicture}
+
+% Two-column layout using minipages
+\noindent
+\begin{minipage}[t]{2.6in}
+% ============ SIDEBAR CONTENT ============
+\vspace{0.4in}
+\hspace{0.25in}
+\begin{minipage}[t]{2.1in}
+\raggedright
+
+% --- Name ---
+{\fontsize{20pt}{24pt}\selectfont\bfseries\color{white}Anshul\\Garg}
+\\[6pt]
+{\small\color{sideaccent}Backend Software Engineer}
+\\[4pt]
+{\footnotesize\color{sidelabel}Bengaluru, Karnataka}
+
+\vspace{16pt}
+
+% --- Contact ---
+\sidebarsection{Contact}
+{\footnotesize\color{sidetext}
+\href{tel:+918560826690}{{\color{sideaccent}\faPhone}\enspace +91-8560826690}\\[3pt]
+\href{mailto:anshulgarg.garg509@gmail.com}{{\color{sideaccent}\faEnvelope}\enspace anshulgarg.garg509@gmail.com}\\[3pt]
+\href{https://anshul-garg27.github.io/}{{\color{sideaccent}\faGlobe}\enspace anshul-garg27.github.io}\\[3pt]
+\href{https://in.linkedin.com/in/anshullkgarg}{{\color{sideaccent}\faLinkedin}\enspace anshullkgarg}\\[3pt]
+\href{https://github.com/anshul-garg27}{{\color{sideaccent}\faGithub}\enspace anshul-garg27}
+}
+
+\vspace{14pt}
+
+% --- Skills ---
+\sidebarsection{Languages}
+{\footnotesize\color{sidetext}Java, Python, Go, C++, Shell Scripting}
+
+\vspace{10pt}
+
+\sidebarsection{Frameworks}
+{\footnotesize\color{sidetext}Spring Boot 3, Hibernate, JPA, Django, FastAPI}
+
+\vspace{10pt}
+
+\sidebarsection{Data}
+{\footnotesize\color{sidetext}PostgreSQL, MySQL, Azure Cosmos DB, ClickHouse, Redis, Kafka, Apache Airflow, DBT}
+
+\vspace{10pt}
+
+\sidebarsection{Infrastructure}
+{\footnotesize\color{sidetext}Kubernetes, Docker, AWS, Jenkins, Ansible, ELK Stack, Grafana, Prometheus, Git}
+
+\vspace{14pt}
+
+% --- Education ---
+\sidebarsection{Education}
+{\footnotesize\color{white}\textbf{IIIT Bangalore}}\\
+{\scriptsize\color{sidelabel}M.Tech, CSE\enspace\textbullet\enspace 2020--2022}
+
+\vspace{6pt}
+
+{\footnotesize\color{white}\textbf{SKIT Jaipur}}\\
+{\scriptsize\color{sidelabel}B.Tech, CSE\enspace\textbullet\enspace 2015--2019}
+
+\vspace{14pt}
+
+% --- Achievements ---
+\sidebarsection{Achievements}
+{\footnotesize\color{sidetext}
+\textbf{GATE AIR 1343} — 98.6 percentile among 100K+ candidates\\[4pt]
+\textbf{Teaching Assistant} — Mentored 50+ students in Software Production Engineering\\[4pt]
+\textbf{Cultural Fest Lead} — Organized Infinite Fest for 500+ attendees at IIIT-B
+}
+
+\end{minipage}
+\end{minipage}%
+\begin{minipage}[t]{4.9in}
+% ============ MAIN COLUMN CONTENT ============
+\vspace{0.4in}
+\hspace{0.2in}
+\begin{minipage}[t]{4.5in}
+\color{maintext}
+
+% --- Summary ---
+\mainsection{Summary}
+\small
+Backend Software Engineer with 3.5+ years of experience building scalable microservices, real-time data platforms, and distributed systems across fintech and SaaS domains. Proficient in Java, Python, and Go with deep expertise in performance optimization, zero-downtime migrations, and high-throughput event processing. Proven impact at scale -- systems handling \textbf{2M+ daily events}, \textbf{10M+ data points}, and integrations adopted by \textbf{12+ engineering teams}.
+
+% --- Experience ---
+\mainsection{Work Experience}
+
+\jobtitle{Walmart}{Software Engineer III}{Jun 2024 -- Present}{NRT -- Data Venture}
+\begin{itemize}[leftmargin=0.18in, itemsep=0pt, parsep=0pt, label={\color{mainaccent}\small$\bullet$}]
+    \jobitem{Processed \textbf{2M+ events daily} via a Kafka-based audit logging system; packaged as a reusable JAR library adopted by \textbf{12+ teams} for real-time API monitoring.}
+    \jobitem{Automated alerts to \textbf{1,200+ associates across 300+ stores} through a DSD supplier notification system, improving stock replenishment by \textbf{35\%}.}
+    \jobitem{Led zero-downtime migration to \textbf{Spring Boot 3 and Java 17}, resolving critical CVEs while managing backward compatibility.}
+    \jobitem{Reduced integration overhead by \textbf{30\%} by revamping controllers with \textbf{OpenAPI Specification}.}
+\end{itemize}
+
+\jobtitle{Good Creator Co.}{Software Engineer I}{Feb 2023 -- May 2024}{SaaS Social Media Analytics}
+\begin{itemize}[leftmargin=0.18in, itemsep=0pt, parsep=0pt, label={\color{mainaccent}\small$\bullet$}]
+    \jobitem{Handled \textbf{10M+ daily data points} through an async processing system, cutting \textbf{API response times by 25\%} and \textbf{costs by 30\%}.}
+    \jobitem{Achieved \textbf{2.5x faster log retrieval} with \textbf{RabbitMQ, Python, Go}, migrating to \textbf{ClickHouse} for \textbf{billions of records}.}
+    \jobitem{Cut \textbf{data latency by 50\%} with \textbf{Apache Airflow} and \textbf{DBT} ETL pipelines.}
+    \jobitem{Processed \textbf{8M images daily} through \textbf{AWS S3-based} asset upload system.}
+    \jobitem{Drove \textbf{10\% user engagement growth} via real-time Genre Insights and Keyword Analytics.}
+\end{itemize}
+
+\jobtitle{PayU}{Software Engineer I}{Jul 2022 -- Feb 2023}{API Lending}
+\begin{itemize}[leftmargin=0.18in, itemsep=0pt, parsep=0pt, label={\color{mainaccent}\small$\bullet$}]
+    \jobitem{\textbf{Scaled operations by 40\%} by enabling multi-source loan access post-disbursal.}
+    \jobitem{Reduced disbursal errors from \textbf{4.6\% to under 0.3\%} through process optimization.}
+    \jobitem{Cut loan-disbursal \textbf{TAT from 3.2 min to 1.1 min} using \textbf{Java} and \textbf{Spring Boot}.}
+\end{itemize}
+
+\jobtitle{PayU}{Software Engineer Intern}{Jan 2022 -- Jul 2022}{}
+\begin{itemize}[leftmargin=0.18in, itemsep=0pt, parsep=0pt, label={\color{mainaccent}\small$\bullet$}]
+    \jobitem{Boosted \textbf{test coverage from 30\% to 83\%} by refactoring the Loan Origination System.}
+    \jobitem{Increased code coverage by \textbf{20\%} with \textbf{SonarQube} and \textbf{GitHub Actions}.}
+    \jobitem{Reduced deployment errors by \textbf{90\%} via \textbf{Flyway DB migrations}.}
+\end{itemize}
+
+\end{minipage}
+\end{minipage}
+
+\end{document}

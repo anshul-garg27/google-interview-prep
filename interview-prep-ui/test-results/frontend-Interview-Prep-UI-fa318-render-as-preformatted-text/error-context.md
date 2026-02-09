@@ -1,0 +1,148 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - button "INTERVIEW.PREP Google L4 • 41 docs" [ref=e7] [cursor=pointer]:
+        - generic [ref=e13]:
+          - heading "INTERVIEW.PREP" [level=1] [ref=e14]
+          - paragraph [ref=e15]: Google L4 • 41 docs
+      - generic [ref=e16]:
+        - button "Search (⌘K)" [ref=e17] [cursor=pointer]:
+          - img [ref=e18]
+        - button [ref=e21] [cursor=pointer]:
+          - img [ref=e22]
+        - link [ref=e24] [cursor=pointer]:
+          - /url: https://github.com/anshul-garg27/google-interview-prep
+          - img [ref=e25]
+  - complementary [ref=e28]:
+    - navigation [ref=e29]:
+      - generic [ref=e30]:
+        - button "🎯 Start Here" [ref=e31] [cursor=pointer]:
+          - generic [ref=e32]:
+            - img [ref=e33]
+            - text: 🎯 Start Here
+          - img [ref=e37]
+        - list [ref=e39]:
+          - listitem [ref=e40]:
+            - button "Google Interview Master Guide Start Here" [ref=e41] [cursor=pointer]:
+              - generic [ref=e42]:
+                - generic [ref=e43]: Google Interview Master Guide
+                - generic [ref=e44]: Start Here
+          - listitem [ref=e45]:
+            - button "README - Complete Prep Guide" [ref=e46] [cursor=pointer]:
+              - generic [ref=e48]: README - Complete Prep Guide
+          - listitem [ref=e49]:
+            - button "⚠️ Story Verification Report Critical" [ref=e50] [cursor=pointer]:
+              - generic [ref=e51]:
+                - generic [ref=e52]: ⚠️ Story Verification Report
+                - generic [ref=e53]: Critical
+      - button "Walmart (Current)" [ref=e55] [cursor=pointer]:
+        - generic [ref=e56]:
+          - img [ref=e57]
+          - text: Walmart (Current)
+        - img [ref=e61]
+      - button "Good Creator Co (Previous)" [ref=e64] [cursor=pointer]:
+        - generic [ref=e65]:
+          - img [ref=e66]
+          - text: Good Creator Co (Previous)
+        - img [ref=e74]
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - generic [ref=e79]: Total Docs
+        - generic [ref=e80]: "41"
+      - generic [ref=e81]:
+        - generic [ref=e82]: Questions
+        - generic [ref=e83]: 140+
+  - main [ref=e84]:
+    - generic [ref=e85]:
+      - generic [ref=e86]:
+        - heading "Google L4 Interview Preparation Hub" [level=1] [ref=e87]:
+          - text: Google L4 Interview
+          - text: Preparation Hub
+        - paragraph [ref=e88]: Comprehensive interview materials covering 6 microservices, 140+ questions, and 2 companies worth of experience.
+      - generic [ref=e89]:
+        - heading "Quick Start Paths" [level=2] [ref=e90]
+        - generic [ref=e91]:
+          - button "Essential Reading Core interview prep in 2 hours 3 documents" [ref=e92] [cursor=pointer]:
+            - generic [ref=e93]:
+              - img [ref=e95]
+              - img [ref=e97]
+            - heading "Essential Reading" [level=3] [ref=e99]
+            - paragraph [ref=e100]: Core interview prep in 2 hours
+            - generic [ref=e101]:
+              - img [ref=e102]
+              - generic [ref=e105]: 3 documents
+          - button "Walmart Deep Dive Complete technical overview 3 documents" [ref=e106] [cursor=pointer]:
+            - generic [ref=e107]:
+              - img [ref=e109]
+              - img [ref=e113]
+            - heading "Walmart Deep Dive" [level=3] [ref=e115]
+            - paragraph [ref=e116]: Complete technical overview
+            - generic [ref=e117]:
+              - img [ref=e118]
+              - generic [ref=e121]: 3 documents
+          - button "Behavioral Mastery All STAR stories & questions 3 documents" [ref=e122] [cursor=pointer]:
+            - generic [ref=e123]:
+              - img [ref=e125]
+              - img [ref=e130]
+            - heading "Behavioral Mastery" [level=3] [ref=e132]
+            - paragraph [ref=e133]: All STAR stories & questions
+            - generic [ref=e134]:
+              - img [ref=e135]
+              - generic [ref=e138]: 3 documents
+      - generic [ref=e139]:
+        - generic [ref=e140]:
+          - generic [ref=e141]:
+            - img [ref=e143]
+            - generic [ref=e147]:
+              - heading "Walmart" [level=3] [ref=e148]
+              - paragraph [ref=e149]: Current Company • 2024-Present
+          - generic [ref=e150]:
+            - paragraph [ref=e151]: 6 microservices • Spring Boot 3 • Kafka • PostgreSQL
+            - paragraph [ref=e152]: Multi-region inventory systems processing 2M+ events/day
+          - generic [ref=e153]:
+            - generic [ref=e154]:
+              - generic [ref=e155]: "18"
+              - generic [ref=e156]: Documents
+            - generic [ref=e157]:
+              - generic [ref=e158]: "12"
+              - generic [ref=e159]: Bullets
+        - generic [ref=e160]:
+          - generic [ref=e161]:
+            - img [ref=e163]
+            - generic [ref=e171]:
+              - heading "Good Creator Co" [level=3] [ref=e172]
+              - paragraph [ref=e173]: Previous Company • 2021-2024
+          - generic [ref=e174]:
+            - paragraph [ref=e175]: 6 projects • Python • Go • ClickHouse • ML
+            - paragraph [ref=e176]: Distributed systems processing 10K+ events/sec
+          - generic [ref=e177]:
+            - generic [ref=e178]:
+              - generic [ref=e179]: "14"
+              - generic [ref=e180]: Documents
+            - generic [ref=e181]:
+              - generic [ref=e182]: "6"
+              - generic [ref=e183]: Projects
+      - generic [ref=e184]:
+        - generic [ref=e185]:
+          - img [ref=e186]
+          - generic [ref=e188]: 140+
+          - generic [ref=e189]: Interview Questions
+        - generic [ref=e190]:
+          - img [ref=e191]
+          - generic [ref=e194]: 50+
+          - generic [ref=e195]: Code Examples
+        - generic [ref=e196]:
+          - img [ref=e197]
+          - generic [ref=e200]: 100+
+          - generic [ref=e201]: STAR Stories
+        - generic [ref=e202]:
+          - img [ref=e203]
+          - generic [ref=e206]: 12h
+          - generic [ref=e207]: Reading Time
+    - generic [ref=e208]:
+      - paragraph [ref=e209]: Comprehensive Google L4 Interview Preparation
+      - paragraph [ref=e210]: 41 documents • 140+ questions • 2 companies • Good luck! 🚀
+```

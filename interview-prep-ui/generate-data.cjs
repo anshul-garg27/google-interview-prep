@@ -71,7 +71,7 @@ const output = documents.map(doc => {
 
   try {
     content = fs.readFileSync(filePath, 'utf8');
-    // JSON.stringify handles escaping, no manual escaping needed
+    // No manual escaping needed - JSON.stringify handles it
   } catch (e) {
     console.error(`Could not read ${doc.file}:`, e.message);
     content = `# ${doc.title}\n\nContent not available.`;
