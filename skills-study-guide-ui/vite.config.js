@@ -5,8 +5,11 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   root: __dirname,
+  // GitHub Pages serves from /google-interview-prep/ subpath
+  // Vercel serves from / (root) — Vercel sets VERCEL=1 env var
+  base: process.env.VERCEL ? '/' : '/google-interview-prep/',
   plugins: [react()],
   css: {
     postcss: path.join(__dirname, 'postcss.config.cjs'),
@@ -21,4 +24,4 @@ export default defineConfig({
       }
     }
   }
-})
+}))
