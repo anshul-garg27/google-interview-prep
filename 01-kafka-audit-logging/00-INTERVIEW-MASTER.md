@@ -647,6 +647,17 @@ CONSUMER:
 4. Deserializes binary_data using schema
 ```
 
+### Producer Configuration (Actual Production Values)
+
+| Config | Value | Why |
+|--------|-------|-----|
+| `compression.type` | **LZ4** | Fast compression, ~60% size reduction |
+| `acks` | **all** | Wait for all replicas — zero message loss |
+| `retries` | 10 | Retry on transient failures |
+| `linger.ms` | 20 | Batch for 20ms before sending |
+| `max.request.size` | 10MB | Accommodate large payloads |
+| `security.protocol` | SSL | TLS 1.2 encrypted |
+
 ### Key Design Decisions (Tier 2)
 
 | Decision | Why | Alternative |
