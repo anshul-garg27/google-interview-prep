@@ -6,15 +6,15 @@
 
 ### 30-Second Pitch
 
-> "When Walmart decommissioned Splunk, I designed a replacement that went beyond just logging - suppliers can now query their own API data. Three-tier architecture: reusable library for interception, Kafka for durability, GCS with Parquet for cheap queryable storage. 2 million events daily, zero latency impact, 99% cost reduction."
+> "When Walmart decommissioned Splunk, I designed a replacement that went beyond just logging - suppliers can now query their own API data. Three-tier architecture: reusable library for interception, Kafka for durability, GCS with Parquet for cheap queryable storage. 2-3 million events daily, zero latency impact, 99% cost reduction."
 
 ### 90-Second Pitch
 
 > "My biggest project at Walmart was designing an audit logging system from scratch. When Splunk was being decommissioned, I saw an opportunity to build something better - not just replace logging, but give our external suppliers like Pepsi and Coca-Cola direct access to their API interaction data.
 >
-> I designed a three-tier architecture: a reusable Spring Boot library that intercepts HTTP requests asynchronously, a Kafka publisher for durability with Avro serialization, and a Kafka Connect sink that writes to GCS in Parquet format. BigQuery sits on top - suppliers can run SQL queries on their own data.
+> I designed a three-tier architecture: a reusable Spring Boot library that intercepts HTTP requests asynchronously, a Kafka publisher for durability with Avro serialization, and a Kafka Connect sink that writes to GCS in Parquet format. Hive/Data Discovery and BigQuery sit on top - suppliers can run SQL queries on their own data.
 >
-> The system handles 2 million events daily with less than 5ms P99 latency impact. We went from Splunk costing $50K/month to about $500/month. And three other teams adopted the library within a month."
+> The system handles 2-3 million events daily with less than 5ms P99 latency impact. We went from Splunk costing $50K/month to about $500/month. And four other teams adopted the library within a month."
 
 ### 2-Minute Pitch
 
@@ -28,9 +28,9 @@
 >
 > **Second**, a Kafka publisher service that serializes to Avro (70% smaller than JSON) and publishes to a multi-region Kafka cluster.
 >
-> **Third**, a Kafka Connect sink with custom SMT filters that route US, Canada, and Mexico records to separate GCS buckets in Parquet format. BigQuery external tables sit on top - that's what suppliers query.
+> **Third**, a Kafka Connect sink with custom SMT filters that route US, Canada, and Mexico records to separate GCS buckets in Parquet format. Hive/Data Discovery and BigQuery external tables sit on top - that's what suppliers query.
 >
-> Result: 2 million events daily, P99 under 5ms, suppliers self-serve debugging, 99% cost savings."
+> Result: 2-3 million events daily, P99 under 5ms, suppliers self-serve debugging, 99% cost savings."
 
 ---
 
@@ -43,11 +43,14 @@
 | Cost vs Splunk | **99% reduction** ($50K/mo to ~$500/mo) |
 | Compression (Parquet) | **90%** |
 | Avro vs JSON size | **70% smaller** |
-| Teams adopted library | **3+** |
+| Teams adopted library | **4+** |
 | Integration time | **2 weeks to 1 day** |
 | Data retention | **7 years** |
 | Thread pool | **6 core, 10 max, 100 queue** |
 | PRs across 3 repos | **150+** |
+| Daily data volume | **~10 GB/day** |
+| Load test throughput | **~1.9K pub/sec, ~4K consume/sec** |
+| Availability SLO | **99.9%** |
 
 ---
 
@@ -63,7 +66,7 @@ Structure your architecture answer in layers -- let the interviewer pull you dee
 >
 > Tier 2 is a Kafka publisher service. It serializes the payload to Avro - 70% smaller than JSON - and publishes to a multi-region Kafka cluster with geographic routing headers.
 >
-> Tier 3 is Kafka Connect with custom SMT filters that route US, Canada, and Mexico records to separate GCS buckets in Parquet format. BigQuery external tables sit on top for SQL queries."
+> Tier 3 is Kafka Connect with custom SMT filters that route US, Canada, and Mexico records to separate GCS buckets in Parquet format. Hive/Data Discovery and BigQuery external tables sit on top for SQL queries."
 
 **Level 3 - Go deep on ONE part:**
 > "The most interesting design decision was in Tier 1. HTTP bodies are streams - you can only read them once. If the filter reads the body, the controller gets empty input. I used Spring's ContentCachingWrapper, which caches the bytes so both can read. Combined with @Async and a bounded thread pool - 6 core threads, max 10, queue of 100 - the API response returns immediately while audit happens in the background."
@@ -108,7 +111,7 @@ The challenge: replace Splunk for internal debugging, give suppliers SQL query a
 │  ┌──────────────────┐    ┌─────────────────┐    ┌────────────────────┐    │
 │  │AuditLogging      │ →  │KafkaProducer    │ →  │ Kafka Topic        │    │
 │  │Controller        │    │Service          │    │ api_logs_audit_prod│    │
-│  │(POST /v1/logReq) │    │(Avro + Headers) │    │ (Multi-Region)     │    │
+│  │(POST /v1/logs/api-requests) │    │(Avro + Headers) │    │ (Multi-Region)     │    │
 │  └──────────────────┘    └─────────────────┘    └────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
                                     │
@@ -127,11 +130,11 @@ The challenge: replace Splunk for internal debugging, give suppliers SQL query a
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                           BigQuery                                          │
+│                    Hive / Data Discovery + BigQuery                         │
 │                    (Analytics & Compliance)                                 │
 │                                                                             │
 │   External tables pointing to GCS Parquet files                            │
-│   - Query audit logs with SQL                                               │
+│   - Query audit logs with SQL via Data Discovery and BigQuery              │
 │   - Suppliers can query THEIR OWN data                                      │
 │   - Long-term retention for compliance (7 years)                            │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -182,7 +185,8 @@ The challenge: replace Splunk for internal debugging, give suppliers SQL query a
     - Parquet format
     - Partitioned by service/date/endpoint
 
-11. BigQuery Query
+11. Data Discovery / BigQuery Query
+    - Hive external tables + BigQuery
     - External table points to GCS
     - Suppliers query with SQL
 ```
@@ -200,8 +204,8 @@ The challenge: replace Splunk for internal debugging, give suppliers SQL query a
 │          │                                                                      │
 │          ▼                                                                      │
 │   ┌──────────────┐                                                             │
-│   │  BigQuery    │  SELECT * FROM audit_logs                                   │
-│   │  Console     │  WHERE consumer_id = 'pepsi-supplier-id'                    │
+│   │ Data Discovery / BigQuery Console    │  SELECT * FROM audit_logs                                   │
+│   │              │  WHERE consumer_id = 'pepsi-supplier-id'                    │
 │   │              │  AND response_code >= 400                                    │
 │   │              │  AND DATE(timestamp) > DATE_SUB(CURRENT_DATE(), INTERVAL 7)│
 │   └──────┬───────┘                                                             │
@@ -243,7 +247,7 @@ Why this approach works:
 | Time to add audit logging | 2-3 weeks per service | 1 day (add dependency) |
 | Log format consistency | 0% (ad-hoc) | 100% (standardized) |
 | Cross-service correlation | Not possible | Full trace ID support |
-| Query capability | Splunk SPL (limited) | SQL in BigQuery |
+| Query capability | Splunk SPL (limited) | SQL via Data Discovery + BigQuery |
 | Supplier access | Not possible | Direct query access |
 | Data retention | 30 days (Splunk cost) | 7 years (GCS cheap) |
 | Multi-region support | Manual | Automatic routing |
@@ -254,6 +258,7 @@ Why this approach works:
 1. **Add OpenTelemetry from day one** - Debugging silent failure would've been faster
 2. **Skip the publisher service** - Publish directly to Kafka from library (removes a hop)
 3. **Use Apache Iceberg** - Better than raw Parquet for ACID and GDPR deletes
+4. **Add formal SLOs from day one** - We defined them retroactively in the ADT. Having them upfront would have driven monitoring setup earlier.
 
 ---
 
@@ -266,7 +271,7 @@ Why this approach works:
 <dependency>
     <groupId>com.walmart</groupId>
     <artifactId>dv-api-common-libraries</artifactId>
-    <version>0.0.45</version>
+    <version>0.0.54</version>
 </dependency>
 ```
 
@@ -417,6 +422,8 @@ public class AuditLogService {
 }
 ```
 
+**Security — Private Key Management**: Keys stored in **AKeyless** (Walmart's secret management platform), mounted at runtime to `/etc/secrets/audit_log_private_key.txt`. Never in code repos.
+
 ### ThreadPool Config
 
 ```java
@@ -503,14 +510,15 @@ public class AuditLogPayload {
 | **@Order(LOWEST_PRECEDENCE)** | Run AFTER security filters | Higher priority (miss auth failures) |
 | **ContentCachingWrapper** | Read body without consuming stream | Custom buffering (complex) |
 | **@Async** | Non-blocking, fire-and-forget | Sync (blocks API response) |
+| **WebClient over RestTemplate** | Modern, reactive, better resource handling | RestTemplate (deprecated in Spring 6) |
 | **CCM config for endpoints** | Runtime enable/disable without deploy | Hardcoded list (inflexible) |
 | **isResponseLoggingEnabled** | Per-team config toggle | Hardcoded (blocked adoption) |
 
 ### Library Version Note
 
-The common library is currently on **Spring Boot 2.7.11 / Java 11** (version 0.0.45). It still uses `javax.servlet` imports. The consuming services (like cp-nrti-apis) migrated to Spring Boot 3.2 / Java 17, but the library itself hasn't been migrated yet (PR #16 is open for this).
+The common library is currently on **version 0.0.54** with support for both **JDK 11** and **JDK 17**. It still uses `javax.servlet` imports (Spring Boot 2.7.11 parent). The consuming services (like cp-nrti-apis) have migrated to Spring Boot 3.5.7 / Java 17 with `jakarta.servlet` — the library's servlet API is backwards compatible at the binary level.
 
-If asked: "The library is on Spring Boot 2.7, while consuming services have migrated to 3.2. Spring Boot 3 services can still use a 2.7 library - the servlet API is backwards compatible at the binary level."
+The library uses **WebClient** (Spring WebFlux) for HTTP calls to the publisher service — not RestTemplate. The WebClient call uses `.block()` to convert the reactive chain to synchronous within the filter context.
 
 ---
 
@@ -540,6 +548,10 @@ public class AuditLoggingController implements AuditLogsApi {
   }
 }
 ```
+
+> **Note**: The service has TWO endpoints for backward compatibility:
+> - **Legacy**: `POST /v1/logRequest` (original, still supported)
+> - **OpenAPI-compliant**: `POST /v1/logs/api-requests` (implements generated `AuditLogsApi` interface)
 
 ### KafkaProducerService.java
 
@@ -609,6 +621,8 @@ public class KafkaProducerService implements TargetedResources {
   }
 }
 ```
+
+> **Note on Thread Pool**: The publisher service uses `Executors.newCachedThreadPool()` (unbounded, dynamic sizing) for async processing — NOT the same as the common library's bounded `ThreadPoolTaskExecutor(6/10/100)`.
 
 ### Why Avro
 
@@ -777,6 +791,8 @@ connectors:
       transforms.FilterMX.type: com.walmart.audit.log.sink.converter.AuditLogSinkMXFilter
 ```
 
+> **Note on Error Tolerance**: The production config currently uses `errors.tolerance: all` with DLQ enabled. Bad records go to `api_logs_audit_prod_DLQ` topic with monitoring for DLQ growth. The connector continues processing good records.
+
 ### Production-Tuned Consumer Config
 
 ```yaml
@@ -801,6 +817,21 @@ These are the final tuned values after the 5-day debugging incident. Each value 
 | **Parallel processing** | Each connector runs independently |
 | **Isolated failures** | One connector failing doesn't affect others |
 | **Different policies** | Can have different retry/error configs per region |
+
+### Site ID Mapping (Actual Production Values)
+
+| Country | Production Site ID |
+|---------|-------------------|
+| **US** | `1704989259133687000` |
+| **CA** | `1704989474816248000` |
+| **MX** | `1704989390144984000` |
+
+### Consumer Lag Alerts
+
+| Level | Threshold |
+|-------|-----------|
+| **WARNING** | > 50,000 messages |
+| **CRITICAL** | > 75,000 messages |
 
 ### Why Parquet
 
@@ -921,6 +952,8 @@ private CompletableFuture<Void> handleFailure(String topic, Message msg, String 
 }
 ```
 
+> **Important Clarification**: This CompletableFuture failover is implemented in the **consuming services** (like cp-nrti-apis). In audit-api-logs-srv itself, the current code catches primary failures and logs but does NOT chain to secondary. This is a known gap being addressed.
+
 ### Geographic Routing Flow
 
 ```
@@ -975,6 +1008,7 @@ Answer framework: "We considered [alternatives]. We chose [X] because [reason]. 
 | 8 | Active/Active | 15-min failover | Active/Passive | Compliance requirement |
 | 9 | ContentCachingWrapper | Well-tested | Custom buffering | Edge cases handled |
 | 10 | isResponseLoggingEnabled | Per-team config | Hardcoded | Enabled 3-team adoption |
+| 11 | UNION ALL views | Zero disruption | ETL migration, Dual-write | Splunk backward-compat |
 
 ### Decision 1: Servlet Filter vs AOP vs Sidecar
 
@@ -1081,7 +1115,7 @@ Answer framework: "We considered [alternatives]. We chose [X] because [reason]. 
 
 ## The Debugging Story (5-Day Timeline)
 
-> "Two weeks after launch, I noticed GCS buckets stopped receiving data. No alerts, no errors in dashboards. The system was failing silently - and we were losing compliance-critical audit data.
+> "About six weeks after launch, I noticed GCS buckets stopped receiving data. No alerts, no errors in dashboards. The system was failing silently - and we were losing compliance-critical audit data.
 >
 > **Day 1** - I checked the obvious. Kafka Connect running? Yes. Messages in the topic? Yes - millions backing up. So the issue was between consumption and GCS write. I narrowed the search space.
 >
@@ -1091,7 +1125,7 @@ Answer framework: "We considered [alternatives]. We chose [X] because [reason]. 
 >
 > **Day 4** - This is where it got interesting. I correlated with Kubernetes events and discovered KEDA autoscaling was causing a feedback loop. When lag increased, KEDA scaled up workers. But scaling triggered consumer group rebalancing. During rebalancing, no messages are consumed. So lag increases more, KEDA scales more - infinite loop. I disabled KEDA and switched to CPU-based autoscaling.
 >
-> **Day 5** - After stabilizing, found the last issue. JVM heap exhaustion. Default 512MB wasn't enough for large batch Avro deserialization. Increased to 2GB.
+> **Day 5** - After stabilizing, found the last issue. JVM heap exhaustion. Default 512MB wasn't enough for large batch Avro deserialization. Increased to 7GB (`-Xmx7g -Xms5g`) with G1GC.
 >
 > **Result:** Zero data loss - Kafka retained all messages during the entire debugging period. Backlog cleared in 4 hours once fixed. I created a troubleshooting runbook that's been used twice by other teams."
 
@@ -1165,12 +1199,23 @@ env:
 # After: Explicit 7GB heap
 env:
   - name: KAFKA_HEAP_OPTS
-    value: "-Xms4g -Xmx7g"
+    value: "-Xms5g -Xmx7g"
 ```
 
 ### Key Learning
 
 > "Distributed systems fail in unexpected combinations. It wasn't one bug - it was four issues compounding. And Kafka Connect's default error tolerance was hiding the problems silently. Now I build 'silent failure' monitoring into every system I design."
+
+### The 413 Error Discovery (April 2025)
+
+During data validation, I compared API Proxy counts against Data Discovery (Hive) counts:
+
+| Date | API Proxy | Data Discovery | Lost Records | Root Cause |
+|------|-----------|---------------|-------------|------------|
+| Apr 13 | 1,742,647 | 1,638,352 | ~104K | 413 Payload Too Large |
+| Apr 14 | 2,078,950 | 1,948,468 | ~130K | 413 + 502 errors |
+
+**Fix**: Set 2MB gateway limit (PRs #49-51). After fix, counts matched exactly — zero data loss.
 
 **"What would you do differently?"**
 
@@ -1257,6 +1302,8 @@ We oscillated between `errors.tolerance: all` (silent data loss) and `errors.tol
 - `errors.tolerance: all` -- Connector ignores all errors and keeps running. Problem: silently drops bad records with no visibility. This is what hid our issues for days.
 - `errors.tolerance: none` -- Connector stops on ANY error. Problem: one bad record stops the entire pipeline.
 - **Final answer:** `none` with proper Dead Letter Queue (DLQ) routing and monitoring. Bad records go to DLQ for inspection, connector keeps running for good records, and we get alerts on DLQ growth.
+
+> **Current State**: The production `kc_config.yaml` currently uses `errors.tolerance: all` with DLQ enabled and retry policy (`connect.gcpstorage.error.policy: RETRY`, 5 retries, 5000ms interval). This approach tolerates transient errors while capturing persistent failures in the DLQ.
 
 > "Error tolerance is a design decision, not a config toggle. 'all' means you're choosing silence over safety. 'none' means you're choosing strictness over availability. We chose 'none' with DLQ - strictness with a safety net."
 
@@ -1425,7 +1472,7 @@ Geographic routing required coordinated changes across Tier 2 (publisher) and Ti
 ### Opening Questions
 
 **Q: "Tell me about this audit logging system."**
-> "When Walmart decommissioned Splunk, I built a replacement audit logging system. But I went beyond just logging - I designed it so external suppliers could query their own API interaction data. It handles 2 million events daily with zero API latency impact."
+> "When Walmart decommissioned Splunk, I built a replacement audit logging system. But I went beyond just logging - I designed it so external suppliers could query their own API interaction data. It handles 2-3 million events daily with zero API latency impact."
 
 **Follow-up: "Why was Splunk being decommissioned?"**
 > "Cost and licensing. Splunk is expensive at scale, and Walmart decided not to renew the enterprise license. For us, it was an opportunity to build something better."
@@ -1477,6 +1524,15 @@ Geographic routing required coordinated changes across Tier 2 (publisher) and Ti
 
 **"What happens if both Kafka regions are down?"**
 > "The publisher returns an error, which the common library catches and logs. The API response is not affected because the library call is async."
+
+**"How many teams use this?"**
+> "Four teams and growing: NRT, IAC, cp-nrti-apis, and BULK-FEEDS."
+
+**"What's the data query layer?"**
+> "GCS stores Parquet files. Hive external tables via Data Discovery for internal teams. BigQuery external tables for suppliers. Airflow refreshes Hive partitions daily."
+
+**"What's your testing strategy?"**
+> "Four layers: 80%+ unit coverage, Testcontainers integration tests, R2C contract testing as CI/CD gate, and 36 E2E test scenarios."
 
 ### Unique Questions
 
@@ -1568,7 +1624,7 @@ Use the DETECT, IMPACT, MITIGATE, RECOVER, PREVENT framework.
 
 ### Q9: "What happens during Black Friday at 10x traffic?"
 
-> "Current: 2M events/day = ~23/sec. At 10x: ~230/sec.
+> "Current: 2M events/day = ~23/sec. At 10x: 20M events/day = ~230/sec.
 >
 > Library: Thread pool handles it - 6 core threads at 50ms/call = 120 calls/sec per pod. With 5 pods = 600/sec. Fine.
 >
@@ -1592,10 +1648,10 @@ Use the DETECT, IMPACT, MITIGATE, RECOVER, PREVENT framework.
 
 | Number | How to Say It |
 |--------|---------------|
-| 2M events/day | "...handles 2 million events daily..." |
+| 2M events/day | "...handles 2-3 million events daily..." |
 | <5ms P99 | "...less than 5 milliseconds impact at P99..." |
 | 99% cost reduction | "...went from $50K/month with Splunk to about $500..." |
-| 3+ teams adopted | "...three teams adopted within a month..." |
+| 4+ teams adopted | "...four teams adopted within the first quarter..." |
 | 2 weeks to 1 day | "...integration time dropped from two weeks to one day..." |
 | 70% smaller (Avro) | "...Avro is about 70% smaller than JSON..." |
 | 90% compression (Parquet) | "...Parquet compresses to about 10% of JSON size..." |
@@ -1612,6 +1668,10 @@ Use the DETECT, IMPACT, MITIGATE, RECOVER, PREVENT framework.
 ### How to Pivot AWAY From This Project
 
 > "That's the audit system. I also led a Spring Boot 3 migration that shows a different kind of challenge - not designing something new, but changing the foundation of a running system without downtime. Interested?"
+
+### How to Answer "What Would You Improve?"
+
+> "Four things: (1) Skip the publisher service — publish directly to Kafka from the library. (2) Add OpenTelemetry from day one. (3) Use Apache Iceberg instead of raw Parquet. (4) Define formal SLOs upfront — we defined them retroactively."
 
 ---
 

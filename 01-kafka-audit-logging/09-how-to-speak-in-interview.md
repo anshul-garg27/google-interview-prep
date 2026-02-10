@@ -11,7 +11,7 @@ Jab interviewer bole "Tell me about your work" ya "Tell me about a project":
 
 > "My biggest project at Walmart was designing an audit logging system from scratch. When Splunk was being decommissioned, I saw an opportunity to build something better - not just replace logging, but give our external suppliers like Pepsi and Coca-Cola direct access to their API interaction data.
 >
-> I designed a three-tier architecture: a reusable Spring Boot library that intercepts HTTP requests asynchronously, a Kafka publisher for durability with Avro serialization, and a Kafka Connect sink that writes to GCS in Parquet format. BigQuery sits on top - suppliers can run SQL queries on their own data.
+> I designed a three-tier architecture: a reusable Spring Boot library that intercepts HTTP requests asynchronously, a Kafka publisher for durability with Avro serialization, and a Kafka Connect sink that writes to GCS in Parquet format. Hive/Data Discovery and BigQuery sit on top - suppliers can run SQL queries on their own data.
 >
 > The system handles 2 million events daily with less than 5ms P99 latency impact. We went from Splunk costing $50K/month to about $500/month. And three other teams adopted the library within a month."
 
@@ -31,7 +31,7 @@ Jab interviewer bole "Tell me about your work" ya "Tell me about a project":
 >
 > Tier 2 is a Kafka publisher service. It serializes the payload to Avro - 70% smaller than JSON - and publishes to a multi-region Kafka cluster with geographic routing headers.
 >
-> Tier 3 is Kafka Connect with custom SMT filters that route US, Canada, and Mexico records to separate GCS buckets in Parquet format. BigQuery external tables sit on top for SQL queries."
+> Tier 3 is Kafka Connect with custom SMT filters that route US, Canada, and Mexico records to separate GCS buckets in Parquet format. Hive/Data Discovery and BigQuery external tables sit on top for SQL queries."
 
 ### Level 3 - Go deep on ONE part (Jo sabse interesting lage):
 > "The most interesting design decision was in Tier 1. HTTP bodies are streams - you can only read them once. If the filter reads the body, the controller gets empty input. I used Spring's ContentCachingWrapper, which caches the bytes so both can read. Combined with @Async and a bounded thread pool - 6 core threads, max 10, queue of 100 - the API response returns immediately while audit happens in the background."
@@ -203,9 +203,9 @@ Jab interviewer bole "Tell me about your work" ya "Tell me about a project":
 >
 > **Task:** "When building the audit system, I saw an opportunity beyond just replacing Splunk."
 >
-> **Action:** "I designed the system with supplier self-service in mind. I chose Parquet format specifically because BigQuery can query it directly. I ensured the schema captured everything suppliers need: request body, response body, error messages, status codes.
+> **Action:** "I designed the system with supplier self-service in mind. I chose Parquet format specifically because Hive/Data Discovery and BigQuery can query it directly. I ensured the schema captured everything suppliers need: request body, response body, error messages, status codes.
 >
-> I worked with our data team to set up BigQuery external tables with row-level security - each supplier only sees their own records. Created sample queries and documentation."
+> I worked with our data team to set up Hive/Data Discovery and BigQuery external tables with row-level security - each supplier only sees their own records. Created sample queries and documentation."
 >
 > **Result:** "Suppliers self-service debug in 30 seconds instead of waiting 2 days. Support ticket volume dropped significantly. One supplier told me this was the first time they had visibility into their API interactions with any vendor."
 >
@@ -222,13 +222,16 @@ Don't list numbers. Drop them IN CONTEXT:
 | 2M events/day | "...handles 2 million events daily..." |
 | <5ms P99 | "...less than 5 milliseconds impact at P99..." |
 | 99% cost reduction | "...went from $50K/month with Splunk to about $500..." |
-| 3+ teams adopted | "...three teams adopted within a month..." |
+| 4+ teams adopted | "...four teams adopted within the first quarter..." |
 | 2 weeks → 1 day | "...integration time dropped from two weeks to one day..." |
 | 70% smaller (Avro) | "...Avro is about 70% smaller than JSON..." |
 | 90% compression (Parquet) | "...Parquet compresses to about 10% of JSON size..." |
 | 7 years retention | "...seven years for compliance requirements..." |
 | 6/10/100 thread pool | "...six core threads, max ten, queue of a hundred..." |
 | 150+ PRs across 3 repos | "...over 150 PRs across three repositories..." |
+| 40K-130K/day (413 errors) | "...we were losing up to 130K records per day to payload size limits..." |
+| 99.9% availability SLO | "...designed for 99.9% availability with formal SLOs..." |
+| 36 E2E test scenarios | "...validated with 36 end-to-end test scenarios..." |
 
 ---
 
@@ -245,6 +248,14 @@ If you're talking about something else and want to bring up Kafka:
 If they've heard enough about Kafka and you want to show range:
 
 > "That's the audit system. I also led a Spring Boot 3 migration that shows a different kind of challenge - not designing something new, but changing the foundation of a running system without downtime. Interested?"
+
+### How to Answer "What Would You Improve?"
+
+> "Three things I'd do differently:
+> 1. **Skip the publisher service** — publish directly to Kafka from the library. Removes a network hop and the separate CachedThreadPool.
+> 2. **Add OpenTelemetry from day one** — tracing a single message from HTTP request through Kafka to GCS would have found the silent failure in hours, not days.
+> 3. **Use Apache Iceberg** — better than raw Parquet for ACID transactions and GDPR compliance deletes.
+> 4. **Define formal SLOs upfront** — we defined them retroactively in the ADT. Having them day one would have driven better monitoring setup."
 
 ---
 

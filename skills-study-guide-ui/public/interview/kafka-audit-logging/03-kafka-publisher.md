@@ -80,6 +80,12 @@ public class AuditLoggingController implements AuditLogsApi {
 }
 ```
 
+> **Note**: The service has TWO endpoints for backward compatibility:
+> - **Legacy**: `POST /v1/logRequest` (original, still supported)
+> - **OpenAPI-compliant**: `POST /v1/logs/api-requests` (implements generated `AuditLogsApi` interface)
+>
+> Both return HTTP 204 (No Content) — processing is asynchronous via thread pool.
+
 **Why `NO_CONTENT` (204)?**
 - No response body needed - caller doesn't wait for confirmation
 - Faster response - saves bandwidth
@@ -88,6 +94,8 @@ public class AuditLoggingController implements AuditLogsApi {
 ---
 
 ### 2. KafkaProducerService.java - Kafka Publisher
+
+> **Note on Thread Pool**: The publisher service uses `Executors.newCachedThreadPool()` (unbounded, dynamic sizing) for async processing — NOT the same as the common library's bounded `ThreadPoolTaskExecutor(6/10/100)`. The library's thread pool handles sending audit payloads via HTTP. The publisher's thread pool handles Kafka publishing.
 
 ```java
 @Slf4j
@@ -183,6 +191,34 @@ CONSUMER:
 4. Deserializes binary_data using schema
 ```
 
+### Avro Schema (Actual — 19 Fields)
+
+The `log.avsc` Avro schema defines these fields:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `source_request_id` | string | ✅ | UUID from source |
+| `service_name` | string | ✅ | e.g., "NRT" |
+| `endpoint_name` | string | ✅ | e.g., "transactionHistory" |
+| `endpoint_path` | string | ✅ | Full URL path |
+| `method` | string | ✅ | HTTP method |
+| `response_code` | int | ✅ | HTTP status |
+| `consumer_id` | string | ✅ | From `wm_consumer.id` header |
+| `request_ts` | long | ✅ | Request timestamp (ms) |
+| `response_ts` | long | ✅ | Response timestamp (ms) |
+| `created_ts` | long | ✅ | Record creation time (ms) |
+| `api_version` | string | ⬜ | e.g., "v1" |
+| `trace_id` | string | ⬜ | Distributed trace ID |
+| `supplier_company` | string | ⬜ | Supplier identifier |
+| `request_body` | string | ⬜ | JSON string |
+| `response_body` | string | ⬜ | JSON string (if enabled) |
+| `error_reason` | string | ⬜ | Error message if any |
+| `request_size_bytes` | int | ⬜ | Request payload size |
+| `response_size_bytes` | int | ⬜ | Response payload size |
+| `headers` | string | ⬜ | JSON-serialized headers |
+
+**Kafka Message Key**: `serviceName/endpoint` (e.g., `NRT/transactionHistory`) — ensures same service+endpoint always goes to same partition.
+
 ---
 
 ## Key Design Decisions
@@ -194,6 +230,28 @@ CONSUMER:
 | **Dual KafkaTemplate** | Primary + Secondary region failover | Single region (no DR) |
 | **Header forwarding** | Enables geo-routing downstream | Multiple topics (complex) |
 | **OpenAPI interface** | Contract-first design | Manual controller |
+
+### Producer Configuration (Actual Production Values)
+
+| Config | Value | Why |
+|--------|-------|-----|
+| `key.serializer` | StringSerializer | Simple string keys |
+| `value.serializer` | KafkaAvroSerializer | Confluent Avro for schema enforcement |
+| `compression.type` | **lz4** | Fast compression, ~60% size reduction |
+| `acks` | **all** | Wait for all replicas — zero message loss |
+| `retries` | 10 | Retry on transient failures |
+| `linger.ms` | 20 | Batch for 20ms before sending |
+| `batch.size` | 8192 | 8KB batch size |
+| `max.request.size` | 10MB | Accommodate large payloads |
+| `request.timeout.ms` | 300000 | 5-minute timeout |
+| `security.protocol` | SSL | TLS 1.2 encrypted |
+
+### Additional Implementation Details
+
+- **Factory Pattern**: `TargetedResources` interface with `KafkaProducerService` implementation. Injected via `Map<String, TargetedResources>` — enables adding new targets (database, S3) without modifying controller.
+- **RFC 7807 Problem Detail**: Global exception handler returns standardized error responses with `type`, `title`, `status`, `detail`, `instance`, and `trace_id` — following the HTTP Problem Detail standard.
+- **Consumer ID**: Extracted from `wm_consumer.id` header with `"NA"` fallback if missing. Used for supplier identification in analytics.
+- **Headers**: Serialized as pretty-printed JSON via `ObjectMapper.writer().withDefaultPrettyPrinter()` — stored in the `headers` field of the Avro LogEvent.
 
 ---
 

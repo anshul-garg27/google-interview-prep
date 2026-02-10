@@ -206,6 +206,27 @@
 ### "What's the latency impact?"
 > "P99 under 5ms. The filter adds ~1ms for caching, the rest happens asynchronously after response is sent."
 
+**"How did you validate data accuracy?"**
+> "I cross-referenced API Proxy request counts against Hive/Data Discovery record counts daily. Found a 5-7% data loss — up to 130K records/day lost to 413 Payload Too Large errors. After setting the 2MB gateway limit, counts matched exactly."
+
+**"What's your testing strategy?"**
+> "Four layers: unit tests with 80%+ coverage across all tiers, integration tests with Testcontainers for Kafka, R2C contract testing as a CI/CD gate, and 36 E2E test scenarios covering happy path, error handling, and analytics queries. Plus load testing at 3x production volume."
+
+**"How do you handle secrets and security?"**
+> "AKeyless for secret management — SSL certs, GCS keys, and private keys mounted at runtime. Every audit request is signed with HMAC-SHA256 using a per-service consumer ID and rotating key. Headers are allowlisted — only 6 specific headers forwarded to Kafka to prevent sensitive data leakage."
+
+**"What's your CI/CD pipeline?"**
+> "Code push triggers Looper CI — Maven build, SonarQube analysis, Snyk security scan. Then R2C contract tests validate API spec compliance. Stage deploy to both EUS2 and SCUS regions. Automaton performance tests run post-deploy. Production requires a CRQ, then Flagger canary deployment rolls from 10% to 50% traffic with automated rollback if 5xx rate exceeds 1%."
+
+**"What monitoring do you have?"**
+> "Grafana golden signals dashboards for health, latency, and memory. Prometheus metrics on every pod. Consumer lag alerts at 50K warning and 75K critical. Dynatrace APM with distributed tracing via OpenTelemetry. GCS write rate monitoring — if rate drops to zero, we get alerted immediately."
+
+**"How many teams use this?"**
+> "Four teams and growing: NRT (Near Real Time APIs), IAC (Inventory Activity Capture), cp-nrti-apis, and BULK-FEEDS. Each team configures independently via CCM — they just add the Maven dependency and set their endpoint regex patterns."
+
+**"What's the data query layer?"**
+> "GCS stores Parquet files. Hive external tables sit on top via Data Discovery — Walmart's internal query tool. We also have BigQuery external tables for suppliers who need SQL access. An Airflow workflow refreshes Hive partitions daily, and an Automic job handles the MSCK REPAIR TABLE operations."
+
 ---
 
 *Practice these out loud until they feel natural!*

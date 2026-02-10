@@ -23,11 +23,11 @@ This library demonstrates:
 ## The Magic: Zero-Code Integration
 
 ```xml
-<!-- That's ALL a consuming service needs to add -->
+<!-- For JDK 11 -->
 <dependency>
     <groupId>com.walmart</groupId>
     <artifactId>dv-api-common-libraries</artifactId>
-    <version>0.0.45</version>
+    <version>0.0.54</version>
 </dependency>
 ```
 
@@ -214,6 +214,19 @@ public class AuditLogService {
 }
 ```
 
+**Key Implementation Detail — WebClient, Not RestTemplate**: The HTTP service uses `WebClient` (reactive) with `.block()`:
+```java
+// AuditHttpServiceImpl.java — actual production code
+return webClient.method(method)
+    .uri(uri)
+    .headers(headers -> headers.addAll(httpEntity.getHeaders()))
+    .body(Optional.ofNullable(httpEntity.getBody())
+        .map(BodyInserters::fromValue)
+        .orElseGet(BodyInserters::empty))
+    .exchangeToMono(response -> response.toEntity(responseType))
+    .block(); // Converts reactive to synchronous for filter context
+```
+
 **Why `@Async`?**
 - API response time should not depend on audit logging
 - If audit service is slow, user still gets fast response
@@ -313,6 +326,28 @@ public class AuditLogPayload {
 | **@Async** | Non-blocking, fire-and-forget | Sync (blocks API response) |
 | **CCM config for endpoints** | Runtime enable/disable without deploy | Hardcoded list (inflexible) |
 | **ThreadPool (6 core, 10 max, 100 queue)** | Handle bursts, bounded memory | Unbounded (OOM risk) |
+| **WebClient over RestTemplate** | Modern, reactive, better resource handling | RestTemplate (deprecated in Spring 6) |
+
+### Security — Signature Authentication
+
+Every audit log request is cryptographically signed:
+
+```java
+// Signature generation per request
+SignatureDetails signatureDetails = AuthSign.getAuthSign(
+    consumerId,           // Unique per consuming service
+    privateKey,           // RSA key from AKeyless, mounted at runtime
+    keyVersion            // Rotatable key version
+);
+```
+
+**Headers added to every audit request:**
+- `WM_CONSUMER.ID` — unique consumer identifier
+- `WM_SEC.AUTH_SIGNATURE` — HMAC-SHA256 signature
+- `WM_SEC.KEY_VERSION` — supports key rotation
+- `WM_CONSUMER.INTIMESTAMP` — timestamp for replay protection
+
+**Private key management**: Stored in **AKeyless** (Walmart's secret management platform), mounted at runtime to `/etc/secrets/audit_log_private_key.txt`. Never stored in code or config repos.
 
 ---
 
@@ -365,12 +400,11 @@ public class AuditLogPayload {
 
 ---
 
-## Important Detail: Library Version
+### Library Version Note
 
-The common library is currently on **Spring Boot 2.7.11 / Java 11** (version 0.0.45). It still uses `javax.servlet` imports. The consuming services (like cp-nrti-apis) migrated to Spring Boot 3.2 / Java 17, but the library itself hasn't been migrated yet (PR #16 is open for this).
+The common library is currently on **version 0.0.54** with support for both **JDK 11** and **JDK 17**. It still uses `javax.servlet` imports (Spring Boot 2.7.11 parent). The consuming services (like cp-nrti-apis) have migrated to Spring Boot 3.5.7 / Java 17 with `jakarta.servlet` — the library's servlet API is backwards compatible at the binary level.
 
-**Interview Point:** If asked about this:
-> "The library is on Spring Boot 2.7, while consuming services have migrated to 3.2. Spring Boot 3 services can still use a 2.7 library - the servlet API is backwards compatible at the binary level. Migrating the library to Jakarta is on our roadmap."
+The library uses **WebClient** (Spring WebFlux) for HTTP calls to the publisher service — not RestTemplate. The WebClient call uses `.block()` to convert the reactive chain to synchronous within the filter context.
 
 ---
 

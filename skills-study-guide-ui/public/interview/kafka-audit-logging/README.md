@@ -26,7 +26,7 @@
 
 ## 30-Second Pitch
 
-> "When Walmart decommissioned Splunk, I designed and built a replacement audit logging system for our supplier APIs. The key constraint was that external suppliers like Pepsi and Coca-Cola needed to query their own API interaction history. I built a three-tier architecture: a reusable library that intercepts HTTP requests asynchronously, a Kafka publisher for durability, and a GCS sink that stores data in Parquet format - queryable via BigQuery. The system handles **2 million events daily** with **zero API latency impact**, and suppliers can now self-serve their own debugging."
+> "When Walmart decommissioned Splunk, I designed and built a replacement audit logging system for our supplier APIs. The key constraint was that external suppliers like Pepsi and Coca-Cola needed to query their own API interaction history. I built a three-tier architecture: a reusable library that intercepts HTTP requests asynchronously, a Kafka publisher for durability, and a GCS sink that stores data in Parquet format - queryable via Hive/Data Discovery and BigQuery. The system handles **2-3 million events daily** with **zero API latency impact**, and suppliers can now self-serve their own debugging."
 
 ---
 
@@ -39,9 +39,12 @@
 | Cost vs Splunk | **99% reduction** |
 | Compression (Parquet) | **90%** |
 | Avro vs JSON size | **70% smaller** |
-| Teams adopted library | **3+** |
+| Teams adopted library | **4+** |
 | Integration time | **2 weeks → 1 day** |
 | Data retention | **7 years** |
+| Daily data volume | **~10 GB/day** |
+| Load test throughput | **~1.9K pub/sec, ~4K consume/sec** |
+| Availability SLO | **99.9%** |
 
 ---
 
@@ -62,7 +65,7 @@
 │  TIER 2: AUDIT API SERVICE (audit-api-logs-srv)                             │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────┐         │
 │  │ REST Controller │→ │ KafkaProducer   │→ │ Kafka Topic         │         │
-│  │ POST /v1/logReq │  │ Avro + Headers  │  │ api_logs_audit_prod │         │
+│  │ POST /v1/logs/api-requests │  │ Avro + Headers  │  │ api_logs_audit_prod │         │
 │  └─────────────────┘  └─────────────────┘  └─────────────────────┘         │
 └─────────────────────────────────────────────────────────────────────────────┘
                                     │
@@ -77,8 +80,8 @@
                                     │
                                     ▼
                            ┌─────────────────┐
-                           │    BigQuery     │  ← Suppliers query here!
-                           │ External Tables │
+                           │ Hive / Data Discovery │  ← Suppliers query here!
+                           │ + BigQuery External Tables │
                            └─────────────────┘
 ```
 
@@ -135,4 +138,23 @@
 
 ---
 
-*Last Updated: February 2026*
+## What's New (From Real Code & Confluence)
+
+| Detail | Value |
+|--------|-------|
+| Library version (latest) | **0.0.54** |
+| Spring Boot (publisher) | **3.3.10** (Java 17) |
+| Spring Boot (NRT APIs) | **3.5.7** (Java 17) |
+| US wm-site-id | `1704989259133687000` |
+| Consumer lag alerts | WARNING: 50K, CRITICAL: 75K |
+| Flush config | 50MB / 5000 records / 10 min |
+| Kafka producer compression | **LZ4** |
+| Kafka acks config | **all** (wait for all replicas) |
+| GCS Sink resources (prod) | 10 CPU, 12Gi RAM per pod |
+| JVM Heap (GCS Sink prod) | `-Xmx7g -Xms5g` with G1GC |
+| Secret management | **AKeyless** |
+| Canary deployment | Flagger: 10% step, 50% max, 1% error threshold |
+
+---
+
+*Last Updated: February 2026 (v2 - code-verified)*

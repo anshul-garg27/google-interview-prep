@@ -147,6 +147,8 @@ private CompletableFuture<Void> handleFailure(String topic, Message msg, String 
 }
 ```
 
+> **Important Clarification**: This improved failover pattern with `CompletableFuture` is implemented in the **consuming services** (like cp-nrti-apis) for their IAC/DSC Kafka publishing. In the audit-api-logs-srv publisher itself, the current code catches primary failures and logs them but does NOT automatically chain to the secondary template. This is a known gap — if asked: "The consuming services have proper CompletableFuture failover. The publisher service logs primary failures and is next in line for the failover upgrade."
+
 ---
 
 ## Geographic Routing via wm-site-id Header
@@ -203,6 +205,18 @@ configOverrides:
 | **RPO (Data Loss)** | 4 hours | **Zero** |
 | **Downtime during migration** | Minimal | **Zero** |
 | **Data parity** | >99% | **100%** |
+
+### Production Validation Data (April 2025)
+
+We validated data parity by comparing API Proxy counts against Data Discovery (Hive) counts:
+
+| Date | API Proxy Total | Data Discovery Total | Difference | Root Cause |
+|------|----------------|---------------------|------------|------------|
+| Apr 8 | 2,264,634 | 2,385,317 | +120,683 | DD has retries; 39K lost to 413 errors |
+| Apr 13 | 1,742,647 | 1,638,352 | -104,295 | 104,345 records lost to 413 + 5 to 502 |
+| Apr 14 | 2,078,950 | 1,948,468 | -130,438 | 130,232 lost to 413 + 11 to 502 |
+
+**Key Finding**: 5-7% of audit events were being silently dropped due to **413 Payload Too Large** errors — up to 130K records/day. After setting the 2MB gateway limit (PR #49-51), API Proxy count exactly matched Data Discovery count.
 
 ---
 

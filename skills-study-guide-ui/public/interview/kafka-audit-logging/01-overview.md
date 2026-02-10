@@ -15,6 +15,8 @@ Two things happened simultaneously:
    - External suppliers (Pepsi, Coca-Cola, Unilever) use our APIs
    - They asked: "Why did my request fail? Show me my interactions"
    - They wanted self-service debugging capability
+
+3. **Product Metrics** - Leadership wanted real-time dashboards to understand API adoption — which suppliers are using which endpoints, error patterns, and usage trends. This data drives investment decisions.
 ```
 
 ### The Challenge
@@ -47,11 +49,12 @@ Two things happened simultaneously:
 │                        audit-api-logs-srv                                   │
 │                     (Kafka Producer Service)                                │
 │                                                                             │
-│  ┌──────────────────┐    ┌─────────────────┐    ┌────────────────────┐    │
-│  │AuditLogging      │ →  │KafkaProducer    │ →  │ Kafka Topic        │    │
-│  │Controller        │    │Service          │    │ api_logs_audit_prod│    │
-│  │(POST /v1/logReq) │    │(Avro + Headers) │    │ (Multi-Region)     │    │
-│  └──────────────────┘    └─────────────────┘    └────────────────────┘    │
+│  ┌──────────────────────────┐    ┌─────────────────┐    ┌────────────────────┐    │
+│  │AuditLogging              │ →  │KafkaProducer    │ →  │ Kafka Topic        │    │
+│  │Controller                │    │Service          │    │ api_logs_audit_prod│    │
+│  │(POST /v1/logs/api-       │    │(Avro + Headers) │    │ (Multi-Region)     │    │
+│  │       requests)          │    │                 │    │                    │    │
+│  └──────────────────────────┘    └─────────────────┘    └────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
@@ -69,12 +72,12 @@ Two things happened simultaneously:
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                           BigQuery                                          │
+│                  Hive / Data Discovery + BigQuery                           │
 │                    (Analytics & Compliance)                                 │
 │                                                                             │
 │   External tables pointing to GCS Parquet files                            │
 │   - Query audit logs with SQL                                               │
-│   - Suppliers can query THEIR OWN data                                      │
+│   - Suppliers can query THEIR OWN data via Hive / Data Discovery + BigQuery│
 │   - Long-term retention for compliance (7 years)                            │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -93,6 +96,67 @@ Two things happened simultaneously:
 | Data retention | 30 days (Splunk cost) | 7 years (GCS cheap) |
 | Multi-region support | Manual | Automatic routing |
 | Cost per event | ~$0.001 (Splunk) | ~$0.00001 (GCS) |
+
+### Formal SLOs (From Architecture Design Template)
+
+| Type | SLI | Objective |
+|------|-----|-----------|
+| **Availability** | Valid requests successfully served within 100ms | ≥ 99.9% |
+| **Latency** | P95 response time for successful requests | ≤ 200ms |
+| **Error Rate (4xx)** | 4xx responses vs 2xx | ≤ 1% |
+| **Error Rate (5xx)** | 5xx responses vs 2xx | < 0.5% |
+| **RPO** | Maximum data loss during disruption | 30 minutes |
+| **RTO** | Recovery time after disruption | ≤ 24 hours (formal), achieved 15 minutes |
+| **Volume** | Annual event processing capacity | 1 billion/year |
+
+### Testing Strategy
+
+- **Unit Tests**: 80%+ code coverage across all tiers. LoggingFilter tested with MockMvc + ContentCachingWrapper. SMT filters tested with mock ConnectRecord headers.
+- **Integration Tests**: Testcontainers for Kafka in audit-api-logs-srv. Container tests for GCS sink.
+- **Contract Testing**: R2C (Request-to-Contract) testing integrated into CI/CD pipeline. Contract test gate blocks deployment if API spec changes break consumers.
+- **E2E Testing**: 36 test scenarios covering IAC/TransactionHistory endpoints, Kafka schema validation, Hive DB traceability, and supplier analytics queries.
+- **Load Testing**: Tested at 30 and 50 virtual users. ~1.9K requests published/sec, ~4K consumed/sec with 0 failures. System handles 3x production load.
+- **QA Sign-off**: Component testing for both audit-logs-srv and GCS Sink Service — positive, negative, edge, and boundary test cases all passing.
+
+### CI/CD Pipeline
+
+```
+Code Push → Looper CI → Maven Build + SonarQube → Contract Tests (R2C)
+    → Stage Deploy (EUS2 + SCUS) → Automaton Performance Tests
+    → CRQ for Production → Flagger Canary (10% → 50%) → Full Rollout
+```
+
+- **Canary Deployment**: Flagger with Istio — 10% step weight, 50% max, 2-minute intervals, 1% error threshold
+- **API Linting**: Automated spec validation on every PR
+- **Security Scanning**: Snyk + CodeGate on every build
+
+### Project Timeline (Shipped in ~5 Weeks)
+
+| Milestone | Date |
+|-----------|------|
+| Dev Deployment | Jan 10, 2025 |
+| Stage Deployment (Initial) | Jan 10, 2025 |
+| Stage Deployment (Reviewed) | Jan 17, 2025 |
+| QA Sign-off | Jan 24, 2025 |
+| **Production Deployment** | **Feb 5, 2025** |
+| Multi-region rollout (CRQ) | March 2025 |
+| Production incidents & tuning | May 2025 |
+| Multi-country (US/CA/MX) support | Nov 2025 |
+
+> "From design to production in 5 weeks. The cross-team dependency with Core Services (Kafka, GCS infra) was the biggest risk — I managed that by starting infra requests in parallel with development."
+
+### Consuming Services — Multi-Kafka Architecture
+
+The NRT consuming service (`cp-nrti-apis`) has **4 separate Kafka templates** for different event types:
+
+| Template | Region | Purpose |
+|----------|--------|---------|
+| `kafkaPrimaryTemplate` (IAC) | EUS2 | Inventory Activity Capture - primary |
+| `kafkaSecondaryTemplate` (IAC) | SCUS | Inventory Activity Capture - failover |
+| `kafkaDscPrimaryTemplate` (DSC) | EUS2 | Direct Shipment Capture - primary |
+| `kafkaDscSecondaryTemplate` (DSC) | SCUS | Direct Shipment Capture - failover |
+
+Each template pair implements CompletableFuture failover: primary fails → automatically chains to secondary region. The audit logging pipeline uses the same Kafka cluster but a separate topic (`api_logs_audit_prod`).
 
 ---
 
@@ -245,6 +309,7 @@ Two things happened simultaneously:
 1. **Add OpenTelemetry from day one** - Debugging silent failure would've been faster
 2. **Skip the publisher service** - Publish directly to Kafka from library (removes a hop)
 3. **Use Apache Iceberg** - Better than raw Parquet for ACID and GDPR deletes
+4. **Add formal SLOs from day one** - We defined them retroactively in the ADT. Having them upfront would have driven monitoring setup earlier.
 
 ---
 

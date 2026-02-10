@@ -224,7 +224,21 @@ connectors:
       transforms.FilterMX.type: com.walmart.audit.log.sink.converter.AuditLogSinkMXFilter
 ```
 
+> **Note on Error Tolerance**: The production config currently uses `errors.tolerance: all` with DLQ enabled. We oscillated between `all` (silent data loss risk) and `none` (connector stops on any error). The current approach uses `all` + DLQ + monitoring: bad records go to `api_logs_audit_prod_DLQ` topic, we get alerts on DLQ growth, and the connector continues processing good records. The Operations Guide documents a 4-step troubleshooting runbook for when issues arise.
+
 ---
+
+## Production-Tuned Consumer Config
+
+The `kc_config.yaml` file includes critical consumer tuning parameters that were optimized through production troubleshooting:
+
+```yaml
+# Consumer tuning (Critical for stability!)
+max.poll.records: 50
+max.poll.interval.ms: 300000    # 5 minutes
+heartbeat.interval.ms: 5000
+session.timeout.ms: 15000
+```
 
 ## Why 3 Separate Connectors?
 
@@ -234,6 +248,42 @@ connectors:
 | **Parallel processing** | Each connector runs independently |
 | **Isolated failures** | One connector failing doesn't affect others |
 | **Different policies** | Can have different retry/error configs per region |
+
+### Site ID Mapping (Actual Production Values)
+
+The `wm-site-id` header uses **18-digit numeric identifiers**, not country codes:
+
+| Country | Production Site ID | Stage Site ID |
+|---------|-------------------|---------------|
+| **US** | `1704989259133687000` | `1694066566785477000` |
+| **CA** | `1704989474816248000` | `1694066641269922000` |
+| **MX** | `1704989390144984000` | `1694066631493876000` |
+
+These are loaded from environment-specific properties files at connector startup via `AuditApiLogsGcsSinkPropertiesUtil.getSiteIdForCountryCode()`.
+
+### Flush Configuration (When Data Hits GCS)
+
+| Property | Threshold | What It Means |
+|----------|-----------|---------------|
+| `flush.size` | 50 MB | Flush when buffer exceeds 50MB |
+| `flush.count` | 5,000 records | Flush when 5000 records buffered |
+| `flush.interval` | 600 seconds (10 min) | Flush every 10 min regardless |
+
+**Behavior**: Whichever threshold is hit first triggers the flush. With typical 4KB records, flush.count (5000) triggers first (~20MB). The 10-minute interval ensures periodic flushes even with low throughput.
+
+### Consumer Lag Alerts (Production)
+
+| Level | Threshold | Action |
+|-------|-----------|--------|
+| **WARNING** | > 50,000 messages | Investigate — check consumer group, connector status |
+| **CRITICAL** | > 75,000 messages | Immediate action — check heap, restart connector if needed |
+
+### 4-Step Troubleshooting Runbook
+
+1. **Consumer groups analysis**: Check K8s logs for exceptions/memory errors. Is consumer group rebalancing or inactive?
+2. **Connector status check**: Use REST API (`/connectors/{name}/status`). If rebalancing > 10 min, restart. Enable TRACE logging.
+3. **Grafana golden signals**: Check memory utilization, CPU. Update `kitt.yml` configs if needed.
+4. **Heap dump analysis**: If OOM errors, update `KAFKA_HEAP_OPTS` in `kitt.yml`. Current production: `-Xmx7g -Xms5g` with G1GC.
 
 ---
 

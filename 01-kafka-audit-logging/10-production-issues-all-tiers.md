@@ -335,6 +335,35 @@ This required coordinated changes across tiers:
 - Always verify configs per environment (Day 1 topic issues)
 - Complete filter rewrites may be needed, not just patches
 
+### Data Validation — The 413 Error Discovery (April 2025)
+
+During validation (April 8-14, 2025), I compared API Proxy counts vs Data Discovery (Hive) counts:
+
+| Date | API Proxy | Data Discovery | Lost Records | Root Cause |
+|------|-----------|---------------|-------------|------------|
+| Apr 8 | 2,264,634 | 2,385,317 | ~39K to 413 | Payload too large |
+| Apr 10 | 2,064,281 | 1,999,681 | ~39K to 413 | Same root cause |
+| Apr 12 | 2,090,565 | 2,000,182 | ~91K to 413 | Larger payloads on weekends |
+| Apr 13 | 1,742,647 | 1,638,352 | ~104K to 413+502 | Worst day: 104,345+5=104,350 |
+| Apr 14 | 2,078,950 | 1,948,468 | ~130K to 413+502 | Peak: 130,232+11=130,243 |
+
+**After fix (PR #49-51)**: API Proxy count exactly matched Data Discovery count — zero data loss.
+
+> "This was discovered through systematic data validation, not alerting. Lesson: always verify data at every tier boundary."
+
+### BULK-FEEDS Validation (April 27, 2025)
+
+BULK-FEEDS service was the 4th team to adopt. Hourly validation showed **exact match** between API Proxy and Data Discovery:
+
+| Time Window | API Proxy | Data Discovery | Match? |
+|-------------|-----------|---------------|--------|
+| 5-6 PM IST | 21,242 | 21,242 | ✅ Exact |
+| 6-7 PM IST | 8,638 | 8,638 | ✅ Exact |
+| 7-8 PM IST | 20,816 | 20,816 | ✅ Exact |
+| 8-9 PM IST | 30,968 | 30,968 | ✅ Exact |
+
+> "After the 413 fix, every new team onboarded with zero data loss from day one."
+
 ---
 
 *This file supplements [06-debugging-stories.md](./06-debugging-stories.md) with the COMPLETE production history.*

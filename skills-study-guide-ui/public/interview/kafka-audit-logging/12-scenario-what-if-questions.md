@@ -126,7 +126,7 @@
 
 ## Q9: "What happens during Black Friday at 10x traffic?"
 
-> "Current: 2M events/day = ~23/sec. At 10x: 200K events/day = ~230/sec.
+> "Current: 2M events/day = ~23/sec. At 10x: **20M events/day** = ~230/sec.
 >
 > **Library tier:** Thread pool handles it - 6 core threads at 50ms/call = 120 calls/sec per pod. With 5 pods = 600/sec. Fine.
 >
@@ -156,6 +156,44 @@
 > **Caution:** Replaying creates duplicate files in GCS. BigQuery queries need DISTINCT on request_id during the replay period.
 >
 > **Better approach:** Apache Iceberg table would handle upserts properly. On our roadmap."
+
+---
+
+## Q11: "What if a new country needs to be added (e.g., UK)?"
+
+> **DETECT:** "Product team requests UK market support."
+>
+> **IMPACT:** "No existing data affected. Current US/CA/MX continue working."
+>
+> **IMPLEMENT:**
+> 1. Add UK site ID mapping to `audit_api_logs_gcs_sink_prod_properties.yaml`
+> 2. Create `AuditLogSinkUKFilter.java` extending `BaseAuditLogSinkFilter` — 5 lines of code
+> 3. Add new connector in `kc_config.yaml` with `FilterUK` transform
+> 4. Create new GCS bucket `audit-api-logs-uk-prod`
+> 5. Create Hive external table for UK data
+>
+> **Timeline:** "About 2 days — most time spent on CRQ and testing, not code. The architecture was designed for this extensibility."
+>
+> **This is the power of sink-side SMT filtering:** "Adding a country = deploying a new connector. Zero changes to the producer or library."
+
+---
+
+## Q12: "What if you need to delete a specific supplier's data for compliance (GDPR)?"
+
+> **DETECT:** "Legal/compliance request for supplier data deletion."
+>
+> **IMPACT:** "Hard with immutable GCS Parquet files. Can't delete individual records."
+>
+> **Current Process:**
+> 1. Identify all Parquet files containing supplier's data (query Hive by `consumer_id`)
+> 2. Read each file, filter out supplier's records, write new file
+> 3. Replace original file in GCS
+> 4. Verify deletion via Data Discovery query
+>
+> **Better Design (if rebuilding):**
+> "Two approaches: (1) **Apache Iceberg** tables support row-level deletes natively — this is on our roadmap. (2) **Crypto-shredding** — encrypt each record with a supplier-specific key. For deletion, destroy the key. Data remains but is unreadable."
+>
+> **PREVENT:** "Design for compliance from day one. We now discuss data governance requirements before building any new pipeline."
 
 ---
 

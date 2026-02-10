@@ -7,7 +7,7 @@
 ## PRODUCTION ISSUE #1: The Silent Failure (PRs #35-61)
 
 ### Situation
-Two weeks after launching the GCS sink in production, I noticed GCS buckets stopped receiving data. No errors in dashboards. The system was failing silently - losing compliance-critical audit data.
+About six weeks after launching the GCS sink in production, I noticed GCS buckets stopped receiving data. No errors in dashboards. The system was failing silently - losing compliance-critical audit data.
 
 ### Timeline of Debugging
 
@@ -37,7 +37,7 @@ Two weeks after launching the GCS sink in production, I noticed GCS buckets stop
 **Day 5: Final issue (May 16, 2025)**
 - JVM heap exhaustion
 - Default 512MB wasn't enough for large batch Avro deserialization
-- **Fix (PR #57, May 15 → #61, May 16):** Increased heap progressively
+- **Fix (PR #57, May 15 → #61, May 16):** Increased JVM heap — initially tried 2GB, but after further analysis increased to 7GB (`-Xmx7g -Xms5g`) with G1GC garbage collector tuned for low-pause operation.
 
 ### Result
 - **Zero data loss** - Kafka retained all messages during debugging
@@ -83,6 +83,18 @@ public boolean verifyHeader(ConnectRecord<?> record) {
 > - Day 5: Found heap exhaustion on large batches. Increased JVM heap to 2GB."
 >
 > **Result:** "Zero data loss because Kafka retained messages. Backlog cleared in 4 hours. Created runbook used twice since. Key learning: Kafka Connect's error tolerance can hide issues - always add monitoring."
+
+### Quantified Impact — The 413 Error Discovery
+
+During the validation phase (April 2025), I cross-referenced API Proxy request counts with Data Discovery (Hive) record counts. The numbers didn't match — we were losing 40,000-130,000 records per day.
+
+**Root cause**: The API Proxy gateway had a default 1MB payload limit. Large responses (especially inventory status with hundreds of items) were hitting **413 Payload Too Large** before reaching the audit publisher.
+
+**Fix**: Set `APIPROXY_QOS_REQUEST_PAYLOAD_SIZE: 2097152` (2MB) — PRs #49-51.
+
+**Result**: After the fix, API Proxy count exactly matched Data Discovery count — zero data loss.
+
+> "This taught me to always validate data at every tier boundary. Monitoring inputs doesn't guarantee outputs are correct."
 
 ---
 
