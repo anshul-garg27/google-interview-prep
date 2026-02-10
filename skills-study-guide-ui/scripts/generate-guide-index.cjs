@@ -114,3 +114,6 @@ fs.writeFileSync(
 );
 
 console.log(`Generated index for ${index.length} guides (${files.length} files copied to public/guides/)`);
+
+// Also copy interview prep files
+require('./copy-interview-files.cjs');

@@ -1,9 +1,11 @@
 import { useState, memo } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { Copy, Check, BoxSelect } from 'lucide-react'
+import { Copy, Check, BoxSelect, ChevronRight, Code2 } from 'lucide-react'
 import { useTheme } from '../../context/ThemeContext'
 import MermaidDiagram from './MermaidDiagram'
+
+const COLLAPSE_THRESHOLD = 5 // Lines above which code blocks collapse
 
 const LANGUAGE_LABELS = {
   js: 'JavaScript', jsx: 'JSX', ts: 'TypeScript', tsx: 'TSX',
@@ -95,6 +97,8 @@ const CodeBlock = memo(function CodeBlock({ inline, className, children, node, .
   }
 
   const label = LANGUAGE_LABELS[language] || language
+  const lineCount = code.split('\n').length
+  const isCollapsible = lineCount > COLLAPSE_THRESHOLD
 
   const handleCopy = async () => {
     try {
@@ -110,6 +114,19 @@ const CodeBlock = memo(function CodeBlock({ inline, className, children, node, .
     }
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  // Collapsible wrapper for long code blocks
+  if (isCollapsible) {
+    return <CollapsibleCode
+      code={code}
+      language={language}
+      label={label}
+      lineCount={lineCount}
+      darkMode={darkMode}
+      handleCopy={handleCopy}
+      copied={copied}
+    />
   }
 
   return (
@@ -158,5 +175,97 @@ const CodeBlock = memo(function CodeBlock({ inline, className, children, node, .
     </div>
   )
 })
+
+// Collapsible code block for long code snippets
+function CollapsibleCode({ code, language, label, lineCount, darkMode, handleCopy, copied }) {
+  const [expanded, setExpanded] = useState(false)
+  // Show first 3 lines as preview
+  const preview = code.split('\n').slice(0, 3).join('\n')
+
+  return (
+    <div className="code-block-wrapper not-prose">
+      {/* Header — always visible, clickable to expand */}
+      <div
+        className="code-block-header cursor-pointer select-none"
+        onClick={() => setExpanded(prev => !prev)}
+        role="button"
+        aria-expanded={expanded}
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setExpanded(prev => !prev) } }}
+      >
+        <span className="flex items-center gap-2">
+          <ChevronRight
+            size={13}
+            className={`transition-transform duration-200 ${expanded ? 'rotate-90' : ''}`}
+          />
+          <Code2 size={12} />
+          <span>{label}</span>
+          <span className="text-[var(--text-tertiary)] font-normal">{lineCount} lines</span>
+        </span>
+        <div className="flex items-center gap-3">
+          {expanded && (
+            <button
+              onClick={(e) => { e.stopPropagation(); handleCopy() }}
+              className="flex items-center gap-1 text-[10px] hover:text-[var(--text-primary)] transition-colors"
+              aria-label="Copy code"
+            >
+              {copied ? (
+                <><Check size={12} className="text-emerald-500" /><span className="text-emerald-500">Copied</span></>
+              ) : (
+                <><Copy size={12} /><span>Copy</span></>
+              )}
+            </button>
+          )}
+          <span className="text-[10px] text-[var(--text-tertiary)]">
+            {expanded ? 'collapse' : 'expand'}
+          </span>
+        </div>
+      </div>
+
+      {/* Code content — collapsed or expanded */}
+      <div
+        className="grid transition-[grid-template-rows] duration-300 ease-in-out"
+        style={{ gridTemplateRows: expanded ? '1fr' : '0fr' }}
+      >
+        <div className="overflow-hidden">
+          <SyntaxHighlighter
+            style={darkMode ? oneDark : oneLight}
+            language={language}
+            PreTag="div"
+            customStyle={{
+              margin: 0,
+              padding: '1rem 1.25rem',
+              background: 'var(--code-bg)',
+              fontSize: '13px',
+              lineHeight: '1.7',
+              borderRadius: 0,
+            }}
+            codeTagProps={{
+              style: { fontFamily: "'JetBrains Mono', monospace" }
+            }}
+          >
+            {code}
+          </SyntaxHighlighter>
+        </div>
+      </div>
+
+      {/* Preview when collapsed — show first 3 lines faded */}
+      {!expanded && (
+        <div className="relative overflow-hidden" style={{ maxHeight: '4.5em' }}>
+          <pre
+            className="font-mono text-[13px] leading-[1.5] px-5 py-2 text-[var(--text-tertiary)]"
+            style={{ margin: 0, background: 'var(--code-bg)' }}
+          >
+            {preview}
+          </pre>
+          <div
+            className="absolute inset-x-0 bottom-0 h-8"
+            style={{ background: 'linear-gradient(transparent, var(--code-bg))' }}
+          />
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default CodeBlock

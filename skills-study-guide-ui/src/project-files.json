@@ -1,0 +1,318 @@
+{
+  "kafka-audit-logging": [
+    {
+      "file": "01-overview.md",
+      "label": "Overview"
+    },
+    {
+      "file": "02-common-library.md",
+      "label": "Common Library"
+    },
+    {
+      "file": "03-kafka-publisher.md",
+      "label": "Kafka Publisher"
+    },
+    {
+      "file": "04-gcs-sink.md",
+      "label": "Gcs Sink"
+    },
+    {
+      "file": "05-multi-region.md",
+      "label": "Multi Region"
+    },
+    {
+      "file": "06-debugging-stories.md",
+      "label": "Debugging Stories"
+    },
+    {
+      "file": "07-interview-qa.md",
+      "label": "Interview Qa"
+    },
+    {
+      "file": "08-prs-reference.md",
+      "label": "Prs Reference"
+    },
+    {
+      "file": "09-how-to-speak-in-interview.md",
+      "label": "How To Speak In Interview"
+    },
+    {
+      "file": "10-production-issues-all-tiers.md",
+      "label": "Production Issues All Tiers"
+    },
+    {
+      "file": "11-technical-decisions-deep-dive.md",
+      "label": "Technical Decisions Deep Dive"
+    },
+    {
+      "file": "12-scenario-what-if-questions.md",
+      "label": "Scenario What If Questions"
+    },
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ],
+  "spring-boot-3-migration": [
+    {
+      "file": "01-overview.md",
+      "label": "Overview"
+    },
+    {
+      "file": "02-technical-challenges.md",
+      "label": "Technical Challenges"
+    },
+    {
+      "file": "03-code-changes.md",
+      "label": "Code Changes"
+    },
+    {
+      "file": "04-deployment-strategy.md",
+      "label": "Deployment Strategy"
+    },
+    {
+      "file": "05-production-issues.md",
+      "label": "Production Issues"
+    },
+    {
+      "file": "06-interview-qa.md",
+      "label": "Interview Qa"
+    },
+    {
+      "file": "07-how-to-speak-in-interview.md",
+      "label": "How To Speak In Interview"
+    },
+    {
+      "file": "08-technical-decisions-deep-dive.md",
+      "label": "Technical Decisions Deep Dive"
+    },
+    {
+      "file": "09-prs-reference.md",
+      "label": "Prs Reference"
+    },
+    {
+      "file": "10-scenario-what-if-questions.md",
+      "label": "Scenario What If Questions"
+    },
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ],
+  "dsd-notification-system": [
+    {
+      "file": "01-overview.md",
+      "label": "Overview"
+    },
+    {
+      "file": "02-technical-implementation.md",
+      "label": "Technical Implementation"
+    },
+    {
+      "file": "03-interview-qa.md",
+      "label": "Interview Qa"
+    },
+    {
+      "file": "04-how-to-speak-in-interview.md",
+      "label": "How To Speak In Interview"
+    },
+    {
+      "file": "05-technical-decisions-deep-dive.md",
+      "label": "Technical Decisions Deep Dive"
+    },
+    {
+      "file": "06-prs-reference.md",
+      "label": "Prs Reference"
+    },
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ],
+  "common-library-jar": [
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ],
+  "openapi-dc-inventory": [
+    {
+      "file": "01-overview.md",
+      "label": "Overview"
+    },
+    {
+      "file": "02-openapi-design-first.md",
+      "label": "Openapi Design First"
+    },
+    {
+      "file": "03-dc-inventory-implementation.md",
+      "label": "Dc Inventory Implementation"
+    },
+    {
+      "file": "04-technical-decisions-deep-dive.md",
+      "label": "Technical Decisions Deep Dive"
+    },
+    {
+      "file": "05-interview-qa.md",
+      "label": "Interview Qa"
+    },
+    {
+      "file": "06-how-to-speak-in-interview.md",
+      "label": "How To Speak In Interview"
+    },
+    {
+      "file": "07-prs-reference.md",
+      "label": "Prs Reference"
+    },
+    {
+      "file": "08-scenario-what-if-questions.md",
+      "label": "Scenario What If Questions"
+    },
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ],
+  "transaction-event-history": [
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ],
+  "observability": [
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ],
+  "gcc-beat-scraping": [
+    {
+      "file": "01-technical-implementation.md",
+      "label": "Technical Implementation"
+    },
+    {
+      "file": "02-technical-decisions.md",
+      "label": "Technical Decisions"
+    },
+    {
+      "file": "03-interview-qa.md",
+      "label": "Interview Qa"
+    },
+    {
+      "file": "04-how-to-speak.md",
+      "label": "How To Speak"
+    },
+    {
+      "file": "05-scenario-questions.md",
+      "label": "Scenario Questions"
+    },
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ],
+  "gcc-event-grpc": [
+    {
+      "file": "01-technical-implementation.md",
+      "label": "Technical Implementation"
+    },
+    {
+      "file": "02-technical-decisions.md",
+      "label": "Technical Decisions"
+    },
+    {
+      "file": "03-interview-qa.md",
+      "label": "Interview Qa"
+    },
+    {
+      "file": "04-how-to-speak.md",
+      "label": "How To Speak"
+    },
+    {
+      "file": "05-scenario-questions.md",
+      "label": "Scenario Questions"
+    },
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ],
+  "gcc-stir-data-platform": [
+    {
+      "file": "01-technical-implementation.md",
+      "label": "Technical Implementation"
+    },
+    {
+      "file": "02-technical-decisions.md",
+      "label": "Technical Decisions"
+    },
+    {
+      "file": "03-interview-qa.md",
+      "label": "Interview Qa"
+    },
+    {
+      "file": "04-how-to-speak.md",
+      "label": "How To Speak"
+    },
+    {
+      "file": "05-scenario-questions.md",
+      "label": "Scenario Questions"
+    },
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ],
+  "gcc-coffee-saas-api": [
+    {
+      "file": "01-technical-implementation.md",
+      "label": "Technical Implementation"
+    },
+    {
+      "file": "02-technical-decisions.md",
+      "label": "Technical Decisions"
+    },
+    {
+      "file": "03-interview-qa.md",
+      "label": "Interview Qa"
+    },
+    {
+      "file": "04-how-to-speak.md",
+      "label": "How To Speak"
+    },
+    {
+      "file": "05-scenario-questions.md",
+      "label": "Scenario Questions"
+    },
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ],
+  "gcc-fake-follower-ml": [
+    {
+      "file": "01-technical-implementation.md",
+      "label": "Technical Implementation"
+    },
+    {
+      "file": "02-technical-decisions.md",
+      "label": "Technical Decisions"
+    },
+    {
+      "file": "03-interview-qa.md",
+      "label": "Interview Qa"
+    },
+    {
+      "file": "04-how-to-speak.md",
+      "label": "How To Speak"
+    },
+    {
+      "file": "05-scenario-questions.md",
+      "label": "Scenario Questions"
+    },
+    {
+      "file": "README.md",
+      "label": "README"
+    }
+  ]
+}
